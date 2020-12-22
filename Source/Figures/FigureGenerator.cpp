@@ -9,6 +9,7 @@
 
 FigureGenerator::FigureGenerator(juce::ValueTree &as) : appState(as)
 {
+    // GLOBAL
     globalSettingsHeading.setText("Global settings",
                                   juce::dontSendNotification);
     addAndMakeVisible(&globalSettingsHeading);
@@ -22,11 +23,21 @@ FigureGenerator::FigureGenerator(juce::ValueTree &as) : appState(as)
     numEventsLabel.setText("Number of events: ", juce::dontSendNotification);
     addAndMakeVisible(&numEventsLabel);
 
+    // PARTICLE SELECTION
     particleSelectionHeading.setText("Particle selection",
                                      juce::dontSendNotification);
     addAndMakeVisible(&particleSelectionHeading);
     particleSelectionHeading.setFont(juce::Font(20.0f, juce::Font::bold));
 
+    particleSelectionProtocolLabel.setText("Selection strategy: ",
+                                           juce::dontSendNotification);
+    addAndMakeVisible(&particleSelectionProtocolLabel);
+
+    addAndMakeVisible(&particleSelectionProtocol);
+    particleSelectionProtocol.addItem("AdjacentSteps", 1);
+    particleSelectionProtocol.addItem("Basic", 2);
+
+    // ONSET SELECTION
     onsetSelectionHeading.setText("Onset selection",
                                   juce::dontSendNotification);
     addAndMakeVisible(&onsetSelectionHeading);
@@ -56,6 +67,15 @@ void FigureGenerator::resized()
 
     auto particleSelectionArea = area.removeFromLeft(colWidth);
     particleSelectionHeading.setBounds(particleSelectionArea.removeFromTop(50));
+
+    auto particleSelectionProtocolArea =
+        particleSelectionArea.removeFromTop(45);
+    auto psProtocolColWidth = particleSelectionProtocolArea.getWidth() / 2;
+    particleSelectionProtocolLabel.setBounds(
+        particleSelectionProtocolArea.removeFromLeft(psProtocolColWidth)
+            .reduced(margin));
+    particleSelectionProtocol.setBounds(
+        particleSelectionProtocolArea.reduced(margin));
 
     auto onsetSelectionArea = area;
     onsetSelectionHeading.setBounds(onsetSelectionArea.removeFromTop(50));

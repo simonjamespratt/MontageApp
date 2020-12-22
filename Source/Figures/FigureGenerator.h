@@ -24,6 +24,8 @@ class FigureGenerator : public juce::Component {
     juce::Label numEventsLabel;
 
     juce::Label particleSelectionHeading;
+    juce::Label particleSelectionProtocolLabel;
+    juce::ComboBox particleSelectionProtocol;
 
     juce::Label onsetSelectionHeading;
 
