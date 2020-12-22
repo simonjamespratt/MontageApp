@@ -17,7 +17,6 @@ class FigureGenerator : public juce::Component {
 
   private:
     juce::ValueTree &appState;
-    juce::ValueTree generatedFigure;
 
     juce::Label globalSettingsHeading;
     juce::TextEditor numEventsInput;

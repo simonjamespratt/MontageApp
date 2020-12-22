@@ -15,7 +15,7 @@ Figures::Figures(te::Engine &e, juce::ValueTree &as)
     heading.setFont(juce::Font(24.0f, juce::Font::bold));
     addAndMakeVisible(&heading);
 
-    generateButton.setButtonText("Generate figure");
+    generateButton.setButtonText("Generate");
     addAndMakeVisible(&generateButton);
     generateButton.onClick = [this] {
         generateAndArrangeFigure();
@@ -33,7 +33,8 @@ void Figures::resized()
     auto area = getLocalBounds();
 
     auto headingArea = area.removeFromTop(50);
-    heading.setBounds(headingArea);
+    heading.setBounds(headingArea.removeFromLeft(250));
+    generateButton.setBounds(headingArea.removeFromLeft(200).reduced(10));
 
     auto heightUnit = area.getHeight() / 3;
     auto figureControlArea = area.removeFromTop(heightUnit);
@@ -42,9 +43,6 @@ void Figures::resized()
 
     figureManager.setBounds(
         figureControlArea.removeFromRight(figureManagerAreaColUnit));
-
-    auto genButtonArea = figureControlArea.removeFromBottom(30);
-    generateButton.setBounds(genButtonArea);
 
     figureGenerator.setBounds(figureControlArea);
 

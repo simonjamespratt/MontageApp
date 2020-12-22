@@ -58,6 +58,7 @@ void FigureGenerator::resized()
 
     auto globalSettingsArea = area.removeFromLeft(colWidth);
     globalSettingsHeading.setBounds(globalSettingsArea.removeFromTop(50));
+
     auto numEventsArea = globalSettingsArea.removeFromTop(45);
     auto numEventsColWidth = numEventsArea.getWidth() / 3;
     numEventsLabel.setBounds(
