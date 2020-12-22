@@ -9,9 +9,28 @@
 
 FigureGenerator::FigureGenerator(juce::ValueTree &as) : appState(as)
 {
-    holdingMessage.setText("holding area for figure generation options.",
-                           juce::dontSendNotification);
-    addAndMakeVisible(&holdingMessage);
+    globalSettingsHeading.setText("Global settings",
+                                  juce::dontSendNotification);
+    addAndMakeVisible(&globalSettingsHeading);
+    globalSettingsHeading.setFont(juce::Font(20.0f, juce::Font::bold));
+
+    numEventsInput.setText("0", juce::dontSendNotification);
+    addAndMakeVisible(&numEventsInput);
+    numEventsInput.setInputRestrictions(0, "0123456789");
+    numEventsInput.setJustification(juce::Justification::centredLeft);
+
+    numEventsLabel.setText("Number of events: ", juce::dontSendNotification);
+    addAndMakeVisible(&numEventsLabel);
+
+    particleSelectionHeading.setText("Particle selection",
+                                     juce::dontSendNotification);
+    addAndMakeVisible(&particleSelectionHeading);
+    particleSelectionHeading.setFont(juce::Font(20.0f, juce::Font::bold));
+
+    onsetSelectionHeading.setText("Onset selection",
+                                  juce::dontSendNotification);
+    addAndMakeVisible(&onsetSelectionHeading);
+    onsetSelectionHeading.setFont(juce::Font(20.0f, juce::Font::bold));
 }
 
 FigureGenerator::~FigureGenerator()
@@ -22,8 +41,24 @@ void FigureGenerator::paint(juce::Graphics &g)
 
 void FigureGenerator::resized()
 {
+    auto margin = 10;
     auto area = getLocalBounds();
-    holdingMessage.setBounds(area.removeFromTop(50));
+    auto colWidth = area.getWidth() / 3;
+
+    auto globalSettingsArea = area.removeFromLeft(colWidth);
+    globalSettingsHeading.setBounds(globalSettingsArea.removeFromTop(50));
+    auto numEventsArea = globalSettingsArea.removeFromTop(45);
+    auto numEventsColWidth = numEventsArea.getWidth() / 3;
+    numEventsLabel.setBounds(
+        numEventsArea.removeFromLeft(numEventsColWidth * 2).reduced(margin));
+    numEventsInput.setBounds(
+        numEventsArea.removeFromRight(numEventsColWidth).reduced(margin));
+
+    auto particleSelectionArea = area.removeFromLeft(colWidth);
+    particleSelectionHeading.setBounds(particleSelectionArea.removeFromTop(50));
+
+    auto onsetSelectionArea = area;
+    onsetSelectionHeading.setBounds(onsetSelectionArea.removeFromTop(50));
 }
 
 Figure FigureGenerator::generateFigure()

@@ -35,13 +35,18 @@ void Figures::resized()
     auto headingArea = area.removeFromTop(50);
     heading.setBounds(headingArea);
 
-    auto genButtonArea = area.removeFromTop(30);
-    generateButton.setBounds(genButtonArea);
-
     auto heightUnit = area.getHeight() / 3;
     auto figureControlArea = area.removeFromTop(heightUnit);
-    figureGenerator.setBounds(figureControlArea.removeFromLeft(400));
-    figureManager.setBounds(figureControlArea);
+
+    auto figureManagerAreaColUnit = figureControlArea.getWidth() / 3.0;
+
+    figureManager.setBounds(
+        figureControlArea.removeFromRight(figureManagerAreaColUnit));
+
+    auto genButtonArea = figureControlArea.removeFromBottom(30);
+    generateButton.setBounds(genButtonArea);
+
+    figureGenerator.setBounds(figureControlArea);
 
     sequencer.setBounds(area);
 }

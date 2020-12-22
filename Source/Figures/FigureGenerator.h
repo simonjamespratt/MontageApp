@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Identifiers.h"
 #include "Figure.h"
+#include "Identifiers.h"
 
 #include <juce_gui_basics/juce_gui_basics.h>
 
@@ -19,8 +19,13 @@ class FigureGenerator : public juce::Component {
     juce::ValueTree &appState;
     juce::ValueTree generatedFigure;
 
-    // TODO: replace with UI for fig gen options
-    juce::Label holdingMessage;
+    juce::Label globalSettingsHeading;
+    juce::TextEditor numEventsInput;
+    juce::Label numEventsLabel;
+
+    juce::Label particleSelectionHeading;
+
+    juce::Label onsetSelectionHeading;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(FigureGenerator)
 };
