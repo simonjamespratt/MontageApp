@@ -1,9 +1,10 @@
 target_sources(Montage PRIVATE
     FigureGenerator.cpp
     FigureGenerator.h
+    FigureParticleSelection.cpp
+    FigureParticleSelection.h
     FigureProcessor.cpp
     FigureProcessor.h
-
 )
 
 target_include_directories(Montage

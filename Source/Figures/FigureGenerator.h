@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Figure.h"
+#include "FigureParticleSelection.h"
 #include "Identifiers.h"
 
 #include <juce_gui_basics/juce_gui_basics.h>
@@ -22,9 +23,7 @@ class FigureGenerator : public juce::Component {
     juce::TextEditor numEventsInput;
     juce::Label numEventsLabel;
 
-    juce::Label particleSelectionHeading;
-    juce::Label particleSelectionProtocolLabel;
-    juce::ComboBox particleSelectionProtocol;
+    FigureParticleSelection figureParticleSelection;
 
     juce::Label onsetSelectionHeading;
 
