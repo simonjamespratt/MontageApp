@@ -12,6 +12,12 @@ FigureParticleSelection::FigureParticleSelection()
     addAndMakeVisible(&protocol);
     protocol.addItem("AdjacentSteps", 1);
     protocol.addItem("Basic", 2);
+    protocol.onChange = [this] {
+        protocolChanged();
+    };
+
+    addChildComponent(&adjacentStepsCtrl);
+    addChildComponent(&basicCtrl);
 }
 
 FigureParticleSelection::~FigureParticleSelection()
@@ -27,9 +33,33 @@ void FigureParticleSelection::resized()
 
     heading.setBounds(area.removeFromTop(50));
 
-    auto protocolArea = area.removeFromTop(45);
-    auto protocolColWidth = protocolArea.getWidth() / 2;
+    auto chooseProtocolArea = area.removeFromTop(45);
+    auto protocolColWidth = chooseProtocolArea.getWidth() / 2;
     protocolLabel.setBounds(
-        protocolArea.removeFromLeft(protocolColWidth).reduced(margin));
-    protocol.setBounds(protocolArea.reduced(margin));
+        chooseProtocolArea.removeFromLeft(protocolColWidth).reduced(margin));
+    protocol.setBounds(chooseProtocolArea.reduced(margin));
+
+    auto controlsArea = area.removeFromTop(50);
+
+    adjacentStepsCtrl.setBounds(controlsArea);
+    basicCtrl.setBounds(controlsArea);
+}
+
+// Private methods
+void FigureParticleSelection::protocolChanged()
+{
+    adjacentStepsCtrl.setVisible(false);
+    basicCtrl.setVisible(false);
+
+    switch(protocol.getSelectedId()) {
+    case 1:
+        adjacentStepsCtrl.setVisible(true);
+        break;
+    case 2:
+        basicCtrl.setVisible(true);
+        break;
+
+    default:
+        break;
+    }
 }
