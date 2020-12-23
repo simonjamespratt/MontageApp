@@ -1,6 +1,7 @@
 #pragma once
 #include "AdjacentStepsProtocolController.h"
 #include "BasicProtocolController.h"
+#include "CycleProtocolController.h"
 
 #include <juce_gui_basics/juce_gui_basics.h>
 
@@ -13,11 +14,16 @@ class FigureParticleSelection : public juce::Component {
 
   private:
     juce::Label heading;
-    juce::Label protocolLabel;
-    juce::ComboBox protocol;
-    void protocolChanged();
+    juce::Label protocolSelectorLabel;
+    juce::ComboBox protocolSelector;
 
     // Number protocol controllers
     BasicProtocolController basicCtrl;
     AdjacentStepsProtocolController adjacentStepsCtrl;
+    CycleProtocolController cycleCtrl;
+
+    void protocolChanged();
+    void addProtocols();
+    void hideProtocols();
+    void setProtocolBounds(juce::Rectangle<int> area);
 };

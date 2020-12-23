@@ -3,6 +3,8 @@ target_sources(Montage PRIVATE
     AdjacentStepsProtocolController.h
     BasicProtocolController.cpp
     BasicProtocolController.h
+    CycleProtocolController.cpp
+    CycleProtocolController.h
 )
 
 target_include_directories(Montage

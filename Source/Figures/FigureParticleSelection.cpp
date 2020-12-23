@@ -6,18 +6,19 @@ FigureParticleSelection::FigureParticleSelection()
     addAndMakeVisible(&heading);
     heading.setFont(juce::Font(20.0f, juce::Font::bold));
 
-    protocolLabel.setText("Selection strategy: ", juce::dontSendNotification);
-    addAndMakeVisible(&protocolLabel);
+    protocolSelectorLabel.setText("Selection strategy: ",
+                                  juce::dontSendNotification);
+    addAndMakeVisible(&protocolSelectorLabel);
 
-    addAndMakeVisible(&protocol);
-    protocol.addItem("AdjacentSteps", 1);
-    protocol.addItem("Basic", 2);
-    protocol.onChange = [this] {
+    addAndMakeVisible(&protocolSelector);
+    protocolSelector.addItem("AdjacentSteps", 1);
+    protocolSelector.addItem("Basic", 2);
+    protocolSelector.addItem("Cycle", 3);
+    protocolSelector.onChange = [this] {
         protocolChanged();
     };
 
-    addChildComponent(&adjacentStepsCtrl);
-    addChildComponent(&basicCtrl);
+    addProtocols();
 }
 
 FigureParticleSelection::~FigureParticleSelection()
@@ -35,31 +36,51 @@ void FigureParticleSelection::resized()
 
     auto chooseProtocolArea = area.removeFromTop(45);
     auto protocolColWidth = chooseProtocolArea.getWidth() / 2;
-    protocolLabel.setBounds(
+    protocolSelectorLabel.setBounds(
         chooseProtocolArea.removeFromLeft(protocolColWidth).reduced(margin));
-    protocol.setBounds(chooseProtocolArea.reduced(margin));
+    protocolSelector.setBounds(chooseProtocolArea.reduced(margin));
 
-    auto controlsArea = area.removeFromTop(50);
-
-    adjacentStepsCtrl.setBounds(controlsArea);
-    basicCtrl.setBounds(controlsArea);
+    auto controlsArea = area;
+    setProtocolBounds(controlsArea);
 }
 
 // Private methods
 void FigureParticleSelection::protocolChanged()
 {
-    adjacentStepsCtrl.setVisible(false);
-    basicCtrl.setVisible(false);
+    hideProtocols();
 
-    switch(protocol.getSelectedId()) {
+    switch(protocolSelector.getSelectedId()) {
     case 1:
         adjacentStepsCtrl.setVisible(true);
         break;
     case 2:
         basicCtrl.setVisible(true);
         break;
-
+    case 3:
+        cycleCtrl.setVisible(true);
+        break;
     default:
         break;
     }
+}
+
+void FigureParticleSelection::addProtocols()
+{
+    addChildComponent(&adjacentStepsCtrl);
+    addChildComponent(&basicCtrl);
+    addChildComponent(&cycleCtrl);
+}
+
+void FigureParticleSelection::hideProtocols()
+{
+    adjacentStepsCtrl.setVisible(false);
+    basicCtrl.setVisible(false);
+    cycleCtrl.setVisible(false);
+}
+
+void FigureParticleSelection::setProtocolBounds(juce::Rectangle<int> area)
+{
+    adjacentStepsCtrl.setBounds(area);
+    basicCtrl.setBounds(area);
+    cycleCtrl.setBounds(area);
 }

@@ -95,6 +95,7 @@
         "stop_token": "cpp",
         "codecvt": "cpp",
         "list": "cpp",
-        "cfenv": "cpp"
+        "cfenv": "cpp",
+        "*.mm": "cpp"
     }
 }
