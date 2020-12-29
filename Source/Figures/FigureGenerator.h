@@ -3,21 +3,30 @@
 #include "Figure.h"
 #include "FigureParticleSelection.h"
 #include "Identifiers.h"
+#include "ParticleCollection.h"
 
 #include <juce_gui_basics/juce_gui_basics.h>
+#include <memory>
 
-class FigureGenerator : public juce::Component {
+class FigureGenerator : public juce::Component,
+                        public juce::ValueTree::Listener {
   public:
-    FigureGenerator(juce::ValueTree &as);
+    FigureGenerator(juce::ValueTree as);
     ~FigureGenerator();
 
     void paint(juce::Graphics &) override;
     void resized() override;
 
+    // TODO: Data management: VT listeners - reevaluate when proper data
+    // handling is implemented
+    void valueTreeChildAdded(juce::ValueTree &parent,
+                             juce::ValueTree &childAdded) override;
+
     Figure generateFigure();
 
   private:
-    juce::ValueTree &appState;
+    juce::ValueTree appState;
+    std::unique_ptr<ParticleCollection> particleCollectionMember;
 
     juce::Label globalSettingsHeading;
     juce::TextEditor numEventsInput;

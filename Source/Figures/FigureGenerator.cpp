@@ -7,8 +7,12 @@
 #include <CollectionsProducer.hpp>
 #include <DurationsProducer.hpp>
 
-FigureGenerator::FigureGenerator(juce::ValueTree &as) : appState(as)
+FigureGenerator::FigureGenerator(juce::ValueTree as) : appState(as)
 {
+    // TODO: Data management: when proper data handling is in place this will
+    // need to be addressed
+    appState.addListener(this);
+
     // GLOBAL
     globalSettingsHeading.setText("Global settings",
                                   juce::dontSendNotification);
@@ -100,4 +104,37 @@ Figure FigureGenerator::generateFigure()
                                    durationsProducer,
                                    collectionsProducer,
                                    figureCollection);
+}
+
+void FigureGenerator::valueTreeChildAdded(juce::ValueTree &parent,
+                                          juce::ValueTree &childAdded)
+{
+    auto childType = childAdded.getType();
+
+    if(childType == IDs::PARTICLES) {
+        DBG("Particles added!!!!!!!");
+        // when the particles sub-tree is added, create the particles collection
+        particleCollectionMember =
+            std::make_unique<ParticleCollection>(childAdded);
+    }
+
+    if(childType == IDs::PARTICLE) {
+        // check how many particles are in the particles collection
+        // if > 1
+        // check that particleCollection is not nullptr
+        // check if the producer is nullptr: if it is, create it and set it to
+        // use basic protocol for particle selection
+
+        // remove the UI figure gen blocked message (may need to check if it
+        // already exists first)
+
+        // add the FigureParticleSelection component and pass it the current
+        // params for the producer
+
+        // also set its dropdown to the currently used protocol (basic in this
+        // case)
+    }
+
+    // TODO: Add listener for removal of child trees (particle) and reverse the
+    // above
 }
