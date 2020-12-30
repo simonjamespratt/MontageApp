@@ -28,6 +28,7 @@ class FigureGenerator : public juce::Component,
     juce::ValueTree appState;
     std::unique_ptr<ParticleCollection> particleCollectionMember;
 
+    juce::Label blockedMessage;
     juce::Label globalSettingsHeading;
     juce::TextEditor numEventsInput;
     juce::Label numEventsLabel;
@@ -36,18 +37,12 @@ class FigureGenerator : public juce::Component,
 
     juce::Label onsetSelectionHeading;
 
-    // TODO: make the particles collection a member
     // TODO: make producer a member
-    // TODO: set particle selection to basic protocol initially
-    // TODO: inform the selector UI dropdown which protocol (basic) is initially
-    // selected
+
     // TODO: allow UI dropdown and settings UI to update protocol params
 
     // TODO: If particles collection size changes, call producer and update any
     // UI that needs to know
-
-    // TODO: when the particle collections size is < 2 (producer will throw
-    // error)
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(FigureGenerator)
 };

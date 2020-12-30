@@ -2,7 +2,6 @@
 
 #include "FigureCollection.h"
 #include "FigureProcessor.h"
-#include "ParticleCollection.h"
 
 #include <CollectionsProducer.hpp>
 #include <DurationsProducer.hpp>
@@ -13,26 +12,30 @@ FigureGenerator::FigureGenerator(juce::ValueTree as) : appState(as)
     // need to be addressed
     appState.addListener(this);
 
+    addAndMakeVisible(&blockedMessage);
+    blockedMessage.setText("Not enough particles to generate a figure",
+                           juce::dontSendNotification);
+
     // GLOBAL
     globalSettingsHeading.setText("Global settings",
                                   juce::dontSendNotification);
-    addAndMakeVisible(&globalSettingsHeading);
+    addChildComponent(&globalSettingsHeading);
     globalSettingsHeading.setFont(juce::Font(20.0f, juce::Font::bold));
 
     numEventsInput.setText("0", juce::dontSendNotification);
-    addAndMakeVisible(&numEventsInput);
+    addChildComponent(&numEventsInput);
     numEventsInput.setInputRestrictions(0, "0123456789");
     numEventsInput.setJustification(juce::Justification::centredLeft);
 
     numEventsLabel.setText("Number of events: ", juce::dontSendNotification);
-    addAndMakeVisible(&numEventsLabel);
+    addChildComponent(&numEventsLabel);
 
-    addAndMakeVisible(&figureParticleSelection);
+    addChildComponent(&figureParticleSelection);
 
     // ONSET SELECTION
     onsetSelectionHeading.setText("Onset selection",
                                   juce::dontSendNotification);
-    addAndMakeVisible(&onsetSelectionHeading);
+    addChildComponent(&onsetSelectionHeading);
     onsetSelectionHeading.setFont(juce::Font(20.0f, juce::Font::bold));
 }
 
@@ -47,6 +50,8 @@ void FigureGenerator::resized()
     auto margin = 10;
     auto area = getLocalBounds();
     auto colWidth = area.getWidth() / 3;
+
+    blockedMessage.setBounds(area);
 
     auto globalSettingsArea = area.removeFromLeft(colWidth);
     globalSettingsHeading.setBounds(globalSettingsArea.removeFromTop(50));
@@ -114,25 +119,35 @@ void FigureGenerator::valueTreeChildAdded(juce::ValueTree &parent,
     if(childType == IDs::PARTICLES) {
         DBG("Particles added!!!!!!!");
         // when the particles sub-tree is added, create the particles collection
+        // TODO: rename this to particleCollection
         particleCollectionMember =
             std::make_unique<ParticleCollection>(childAdded);
     }
 
     if(childType == IDs::PARTICLE) {
-        // check how many particles are in the particles collection
-        // if > 1
-        // check that particleCollection is not nullptr
-        // check if the producer is nullptr: if it is, create it and set it to
-        // use basic protocol for particle selection
+        jassert(particleCollectionMember != nullptr);
 
-        // remove the UI figure gen blocked message (may need to check if it
-        // already exists first)
+        auto numberOfParticles =
+            particleCollectionMember->getParticles().size();
 
-        // add the FigureParticleSelection component and pass it the current
-        // params for the producer
+        if(numberOfParticles > 1) {
+            DBG("Got enough particles!!!!!!!!!");
+            // check if the producer is nullptr: if it is, create it and set it
+            // to use basic protocol for particle selection
 
-        // also set its dropdown to the currently used protocol (basic in this
-        // case)
+            // remove the UI figure gen blocked message (may need to check if it
+            // already exists first)
+
+            // add the components for generating figures (setVisible())
+
+            // add the FigureParticleSelection component and pass it the current
+            // params for the producer
+
+            // also set its dropdown to the currently used protocol (basic in
+            // this case)
+        } else {
+            DBG("Not enough particles!!!!!!!!!");
+        }
     }
 
     // TODO: Add listener for removal of child trees (particle) and reverse the
