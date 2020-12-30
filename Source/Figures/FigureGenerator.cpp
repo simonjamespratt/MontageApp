@@ -147,13 +147,15 @@ void FigureGenerator::valueTreeChildAdded(juce::ValueTree &parent,
                 }
             }
 
-            // remove the UI figure gen blocked message (may need to check if it
-            // already exists first)
-
-            // add the components for generating figures (setVisible())
+            blockedMessage.setVisible(false);
+            globalSettingsHeading.setVisible(true);
+            numEventsInput.setVisible(true);
+            numEventsLabel.setVisible(true);
+            onsetSelectionHeading.setVisible(true);
 
             // add the FigureParticleSelection component and pass it the current
-            // params for the producer
+            // params for the producer - this is currently added in constructor,
+            // so need to think about that
 
             // also set its dropdown to the currently used protocol (basic in
             // this case)
