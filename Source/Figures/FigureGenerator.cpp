@@ -3,7 +3,6 @@
 #include "FigureCollection.h"
 #include "FigureProcessor.h"
 
-#include <CollectionsProducer.hpp>
 #include <DurationsProducer.hpp>
 
 FigureGenerator::FigureGenerator(juce::ValueTree as) : appState(as)
@@ -127,13 +126,26 @@ void FigureGenerator::valueTreeChildAdded(juce::ValueTree &parent,
     if(childType == IDs::PARTICLE) {
         jassert(particleCollectionMember != nullptr);
 
-        auto numberOfParticles =
-            particleCollectionMember->getParticles().size();
+        auto particles = particleCollectionMember->getParticles();
 
-        if(numberOfParticles > 1) {
+        if(particles.size() > 1) {
             DBG("Got enough particles!!!!!!!!!");
-            // check if the producer is nullptr: if it is, create it and set it
-            // to use basic protocol for particle selection
+
+            if(particleProducer == nullptr) {
+                particleProducer =
+                    std::make_unique<aleatoric::CollectionsProducer<Particle>>(
+                        particles,
+                        aleatoric::NumberProtocol::create(
+                            aleatoric::NumberProtocol::Type::basic));
+
+                auto paramType =
+                    particleProducer->getParams().getActiveProtocol();
+
+                if(paramType == aleatoric::NumberProtocolParameters::Protocols::
+                                    ActiveProtocol::basic) {
+                    DBG("protocol type is basic");
+                }
+            }
 
             // remove the UI figure gen blocked message (may need to check if it
             // already exists first)

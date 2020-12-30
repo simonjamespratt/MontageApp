@@ -5,6 +5,7 @@
 #include "Identifiers.h"
 #include "ParticleCollection.h"
 
+#include <CollectionsProducer.hpp>
 #include <juce_gui_basics/juce_gui_basics.h>
 #include <memory>
 
@@ -27,6 +28,7 @@ class FigureGenerator : public juce::Component,
   private:
     juce::ValueTree appState;
     std::unique_ptr<ParticleCollection> particleCollectionMember;
+    std::unique_ptr<aleatoric::CollectionsProducer<Particle>> particleProducer;
 
     juce::Label blockedMessage;
     juce::Label globalSettingsHeading;
@@ -36,8 +38,6 @@ class FigureGenerator : public juce::Component,
     FigureParticleSelection figureParticleSelection;
 
     juce::Label onsetSelectionHeading;
-
-    // TODO: make producer a member
 
     // TODO: allow UI dropdown and settings UI to update protocol params
 
