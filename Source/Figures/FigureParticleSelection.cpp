@@ -1,6 +1,8 @@
 #include "FigureParticleSelection.h"
 
-FigureParticleSelection::FigureParticleSelection()
+FigureParticleSelection::FigureParticleSelection(
+    std::shared_ptr<aleatoric::CollectionsProducer<Particle>> particleProducer)
+: producer(particleProducer)
 {
     heading.setText("Particle selection", juce::dontSendNotification);
     addAndMakeVisible(&heading);
@@ -19,6 +21,7 @@ FigureParticleSelection::FigureParticleSelection()
     };
 
     addProtocols();
+    setInitialActiveProtocol();
 }
 
 FigureParticleSelection::~FigureParticleSelection()
@@ -83,4 +86,29 @@ void FigureParticleSelection::setProtocolBounds(juce::Rectangle<int> area)
     adjacentStepsCtrl.setBounds(area);
     basicCtrl.setBounds(area);
     cycleCtrl.setBounds(area);
+}
+
+void FigureParticleSelection::setInitialActiveProtocol()
+{
+    auto activeProtocol = producer->getParams().getActiveProtocol();
+    using namespace aleatoric;
+    const auto basic =
+        NumberProtocolParameters::Protocols::ActiveProtocol::basic;
+    const auto adjacentSteps =
+        NumberProtocolParameters::Protocols::ActiveProtocol::adjacentSteps;
+    const auto cycle =
+        NumberProtocolParameters::Protocols::ActiveProtocol::cycle;
+    switch(activeProtocol) {
+    case adjacentSteps:
+        protocolSelector.setSelectedId(1);
+        break;
+    case basic:
+        protocolSelector.setSelectedId(2);
+        break;
+    case cycle:
+        protocolSelector.setSelectedId(3);
+        break;
+    default:
+        break;
+    }
 }

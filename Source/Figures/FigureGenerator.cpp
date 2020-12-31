@@ -29,8 +29,6 @@ FigureGenerator::FigureGenerator(juce::ValueTree as) : appState(as)
     numEventsLabel.setText("Number of events: ", juce::dontSendNotification);
     addChildComponent(&numEventsLabel);
 
-    addChildComponent(&figureParticleSelection);
-
     // ONSET SELECTION
     onsetSelectionHeading.setText("Onset selection",
                                   juce::dontSendNotification);
@@ -63,7 +61,9 @@ void FigureGenerator::resized()
         numEventsArea.removeFromRight(numEventsColWidth).reduced(margin));
 
     auto particleSelectionArea = area.removeFromLeft(colWidth);
-    figureParticleSelection.setBounds(particleSelectionArea);
+    if(figureParticleSelection != nullptr) {
+        figureParticleSelection->setBounds(particleSelectionArea);
+    }
 
     auto onsetSelectionArea = area;
     onsetSelectionHeading.setBounds(onsetSelectionArea.removeFromTop(50));
@@ -129,22 +129,12 @@ void FigureGenerator::valueTreeChildAdded(juce::ValueTree &parent,
         auto particles = particleCollectionMember->getParticles();
 
         if(particles.size() > 1) {
-            DBG("Got enough particles!!!!!!!!!");
-
             if(particleProducer == nullptr) {
                 particleProducer =
-                    std::make_unique<aleatoric::CollectionsProducer<Particle>>(
+                    std::make_shared<aleatoric::CollectionsProducer<Particle>>(
                         particles,
                         aleatoric::NumberProtocol::create(
                             aleatoric::NumberProtocol::Type::basic));
-
-                auto paramType =
-                    particleProducer->getParams().getActiveProtocol();
-
-                if(paramType == aleatoric::NumberProtocolParameters::Protocols::
-                                    ActiveProtocol::basic) {
-                    DBG("protocol type is basic");
-                }
             }
 
             blockedMessage.setVisible(false);
@@ -153,14 +143,10 @@ void FigureGenerator::valueTreeChildAdded(juce::ValueTree &parent,
             numEventsLabel.setVisible(true);
             onsetSelectionHeading.setVisible(true);
 
-            // add the FigureParticleSelection component and pass it the current
-            // params for the producer - this is currently added in constructor,
-            // so need to think about that
-
-            // also set its dropdown to the currently used protocol (basic in
-            // this case)
-        } else {
-            DBG("Not enough particles!!!!!!!!!");
+            figureParticleSelection =
+                std::make_unique<FigureParticleSelection>(particleProducer);
+            addAndMakeVisible(*figureParticleSelection);
+            resized();
         }
     }
 

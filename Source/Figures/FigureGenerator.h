@@ -28,14 +28,14 @@ class FigureGenerator : public juce::Component,
   private:
     juce::ValueTree appState;
     std::unique_ptr<ParticleCollection> particleCollectionMember;
-    std::unique_ptr<aleatoric::CollectionsProducer<Particle>> particleProducer;
+    std::shared_ptr<aleatoric::CollectionsProducer<Particle>> particleProducer;
 
     juce::Label blockedMessage;
     juce::Label globalSettingsHeading;
     juce::TextEditor numEventsInput;
     juce::Label numEventsLabel;
 
-    FigureParticleSelection figureParticleSelection;
+    std::unique_ptr<FigureParticleSelection> figureParticleSelection;
 
     juce::Label onsetSelectionHeading;
 
