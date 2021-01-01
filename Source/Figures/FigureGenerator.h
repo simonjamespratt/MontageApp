@@ -45,6 +45,10 @@ class FigureGenerator : public juce::Component,
 
     // TODO: allow UI dropdown and settings UI to update protocol params
 
+    // TODO: Hook up the num events input to be used by generateFigure()
+
+    // TODO: Hook up particleProducer member to be used in generateFigure()
+
     // TODO: If particles collection size changes, call producer and update any
     // UI that needs to know
 

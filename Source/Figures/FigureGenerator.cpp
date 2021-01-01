@@ -116,7 +116,6 @@ void FigureGenerator::valueTreeChildAdded(juce::ValueTree &parent,
     auto childType = childAdded.getType();
 
     if(childType == IDs::PARTICLES) {
-        DBG("Particles added!!!!!!!");
         // when the particles sub-tree is added, create the particles collection
         // TODO: rename this to particleCollection
         particleCollectionMember =
