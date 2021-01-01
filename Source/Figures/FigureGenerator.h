@@ -23,6 +23,10 @@ class FigureGenerator : public juce::Component,
     void valueTreeChildAdded(juce::ValueTree &parent,
                              juce::ValueTree &childAdded) override;
 
+    void valueTreeChildRemoved(juce::ValueTree &parent,
+                               juce::ValueTree &childRemoved,
+                               int index) override;
+
     Figure generateFigure();
 
   private:

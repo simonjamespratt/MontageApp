@@ -137,19 +137,45 @@ void FigureGenerator::valueTreeChildAdded(juce::ValueTree &parent,
                             aleatoric::NumberProtocol::Type::basic));
             }
 
+            if(figureParticleSelection == nullptr) {
+                figureParticleSelection =
+                    std::make_unique<FigureParticleSelection>(particleProducer);
+                addAndMakeVisible(*figureParticleSelection);
+            }
+
             blockedMessage.setVisible(false);
             globalSettingsHeading.setVisible(true);
             numEventsInput.setVisible(true);
             numEventsLabel.setVisible(true);
             onsetSelectionHeading.setVisible(true);
 
-            figureParticleSelection =
-                std::make_unique<FigureParticleSelection>(particleProducer);
-            addAndMakeVisible(*figureParticleSelection);
             resized();
         }
     }
+}
 
-    // TODO: Add listener for removal of child trees (particle) and reverse the
-    // above
+void FigureGenerator::valueTreeChildRemoved(juce::ValueTree &parent,
+                                            juce::ValueTree &childRemoved,
+                                            int index)
+{
+    auto childType = childRemoved.getType();
+
+    if(childType == IDs::PARTICLE) {
+        jassert(particleCollectionMember != nullptr);
+
+        auto particles = particleCollectionMember->getParticles();
+
+        if(particles.size() < 2) {
+            particleProducer = nullptr;
+            figureParticleSelection = nullptr;
+
+            blockedMessage.setVisible(true);
+            globalSettingsHeading.setVisible(false);
+            numEventsInput.setVisible(false);
+            numEventsLabel.setVisible(false);
+            onsetSelectionHeading.setVisible(false);
+
+            resized();
+        }
+    }
 }
