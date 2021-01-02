@@ -50,21 +50,41 @@ void FigureParticleSelection::resized()
 // Private methods
 void FigureParticleSelection::protocolChanged()
 {
-    hideProtocols();
+    using namespace aleatoric;
 
     switch(protocolSelector.getSelectedId()) {
     case 1:
-        adjacentStepsCtrl.setVisible(true);
+        producer->setProtocol(
+            NumberProtocol::create(NumberProtocol::Type::adjacentSteps));
         break;
     case 2:
-        basicCtrl.setVisible(true);
+        producer->setProtocol(
+            NumberProtocol::create(NumberProtocol::Type::basic));
         break;
     case 3:
-        cycleCtrl.setVisible(true);
+        producer->setProtocol(
+            NumberProtocol::create(NumberProtocol::Type::cycle));
         break;
     default:
         break;
     }
+
+    auto newParams = producer->getParams();
+    auto activeProtocol = newParams.getActiveProtocol();
+    if(activeProtocol ==
+       NumberProtocolParameters::Protocols::ActiveProtocol::adjacentSteps) {
+        DBG("adjacentSteps is active");
+    }
+    if(activeProtocol ==
+       NumberProtocolParameters::Protocols::ActiveProtocol::basic) {
+        DBG("basic is active");
+    }
+    if(activeProtocol ==
+       NumberProtocolParameters::Protocols::ActiveProtocol::cycle) {
+        DBG("cycle is active");
+    }
+
+    setVisibility();
 }
 
 void FigureParticleSelection::addProtocols()
@@ -98,15 +118,37 @@ void FigureParticleSelection::setInitialActiveProtocol()
         NumberProtocolParameters::Protocols::ActiveProtocol::adjacentSteps;
     const auto cycle =
         NumberProtocolParameters::Protocols::ActiveProtocol::cycle;
+
     switch(activeProtocol) {
     case adjacentSteps:
-        protocolSelector.setSelectedId(1);
+        protocolSelector.setSelectedId(1, juce::dontSendNotification);
         break;
     case basic:
-        protocolSelector.setSelectedId(2);
+        protocolSelector.setSelectedId(2, juce::dontSendNotification);
         break;
     case cycle:
-        protocolSelector.setSelectedId(3);
+        protocolSelector.setSelectedId(3, juce::dontSendNotification);
+        break;
+    default:
+        break;
+    }
+
+    setVisibility();
+}
+
+void FigureParticleSelection::setVisibility()
+{
+    hideProtocols();
+
+    switch(protocolSelector.getSelectedId()) {
+    case 1:
+        adjacentStepsCtrl.setVisible(true);
+        break;
+    case 2:
+        basicCtrl.setVisible(true);
+        break;
+    case 3:
+        cycleCtrl.setVisible(true);
         break;
     default:
         break;

@@ -43,7 +43,5 @@ class FigureGenerator : public juce::Component,
 
     juce::Label onsetSelectionHeading;
 
-    // TODO: allow UI dropdown and settings UI to update protocol params
-
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(FigureGenerator)
 };

@@ -35,4 +35,12 @@ class FigureParticleSelection : public juce::Component {
     void hideProtocols();
     void setProtocolBounds(juce::Rectangle<int> area);
     void setInitialActiveProtocol();
+    void setVisibility();
+
+    // TODO: Get the new default params for that new protocol and pass them to
+    // the child protocol UI component which should set its controls to those
+    // default values
+
+    // TODO: When a child component changes a param value, update the producer
+    // params
 };
