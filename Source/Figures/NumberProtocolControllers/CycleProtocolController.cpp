@@ -27,6 +27,24 @@ void CycleProtocolController::resized()
     reverseDirection.setBounds(area.removeFromTop(45).reduced(margin));
 }
 
+void CycleProtocolController::setInitialDefaults(
+    aleatoric::NumberProtocolParameters::Protocols params)
+{
+    jassert(
+        params.getActiveProtocol() ==
+        aleatoric::NumberProtocolParameters::Protocols::ActiveProtocol::cycle);
+
+    auto cylceParams = params.getCycle();
+
+    auto isBidirectional = cylceParams.getBidirectional();
+    bidirectional.setToggleState(isBidirectional, juce::dontSendNotification);
+
+    auto isReverseDirection = cylceParams.getReverseDirection();
+    reverseDirection.setToggleState(isReverseDirection,
+                                    juce::dontSendNotification);
+}
+
+// Private methods
 void CycleProtocolController::updateState(juce::Button &button)
 {
     auto buttonName = button.getName();

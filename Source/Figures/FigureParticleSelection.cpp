@@ -64,24 +64,10 @@ void FigureParticleSelection::protocolChanged()
     case 3:
         producer->setProtocol(
             NumberProtocol::create(NumberProtocol::Type::cycle));
+        cycleCtrl.setInitialDefaults(producer->getParams());
         break;
     default:
         break;
-    }
-
-    auto newParams = producer->getParams();
-    auto activeProtocol = newParams.getActiveProtocol();
-    if(activeProtocol ==
-       NumberProtocolParameters::Protocols::ActiveProtocol::adjacentSteps) {
-        DBG("adjacentSteps is active");
-    }
-    if(activeProtocol ==
-       NumberProtocolParameters::Protocols::ActiveProtocol::basic) {
-        DBG("basic is active");
-    }
-    if(activeProtocol ==
-       NumberProtocolParameters::Protocols::ActiveProtocol::cycle) {
-        DBG("cycle is active");
     }
 
     setVisibility();
