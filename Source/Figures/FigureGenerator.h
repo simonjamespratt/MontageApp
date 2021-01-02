@@ -31,7 +31,7 @@ class FigureGenerator : public juce::Component,
 
   private:
     juce::ValueTree appState;
-    std::unique_ptr<ParticleCollection> particleCollectionMember;
+    std::unique_ptr<ParticleCollection> particleCollection;
     std::shared_ptr<aleatoric::CollectionsProducer<Particle>> particleProducer;
 
     juce::Label blockedMessage;
@@ -43,14 +43,10 @@ class FigureGenerator : public juce::Component,
 
     juce::Label onsetSelectionHeading;
 
-    // TODO: allow UI dropdown and settings UI to update protocol params
-
-    // TODO: Hook up the num events input to be used by generateFigure()
-
-    // TODO: Hook up particleProducer member to be used in generateFigure()
-
     // TODO: If particles collection size changes, call producer and update any
     // UI that needs to know
+
+    // TODO: allow UI dropdown and settings UI to update protocol params
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(FigureGenerator)
 };

@@ -31,7 +31,7 @@ target_compile_definitions(Montage PRIVATE
     JUCE_APPLICATION_NAME_STRING="$<TARGET_PROPERTY:Montage,JUCE_PRODUCT_NAME>"
     JUCE_APPLICATION_VERSION_STRING="$<TARGET_PROPERTY:Montage,JUCE_VERSION>"
     AUDIO_ASSETS_DIR="${montage_SOURCE_DIR}/assets/audio"
-    PRE_POPULATE_DUMMY_DATA=0 # TODO: this should probably be in a gen expression
+    PRE_POPULATE_DUMMY_DATA=1 # TODO: this should probably be in a gen expression
 )
 
 target_link_libraries(Montage
