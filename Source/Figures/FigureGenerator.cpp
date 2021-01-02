@@ -120,12 +120,17 @@ void FigureGenerator::valueTreeChildAdded(juce::ValueTree &parent,
                         particles,
                         aleatoric::NumberProtocol::create(
                             aleatoric::NumberProtocol::Type::basic));
+            } else {
+                particleProducer->setSource(particles);
             }
 
             if(figureParticleSelection == nullptr) {
                 figureParticleSelection =
                     std::make_unique<FigureParticleSelection>(particleProducer);
                 addAndMakeVisible(*figureParticleSelection);
+            } else {
+                // TODO: call the figureParticleSelector to let it know params
+                // will have changed to defaults
             }
 
             blockedMessage.setVisible(false);
@@ -161,6 +166,10 @@ void FigureGenerator::valueTreeChildRemoved(juce::ValueTree &parent,
             onsetSelectionHeading.setVisible(false);
 
             resized();
+        } else {
+            particleProducer->setSource(particles);
+            // TODO: call the figureParticleSelector to let it know params
+            // will have changed to defaults
         }
     }
 }

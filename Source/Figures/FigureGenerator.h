@@ -43,9 +43,6 @@ class FigureGenerator : public juce::Component,
 
     juce::Label onsetSelectionHeading;
 
-    // TODO: If particles collection size changes, call producer and update any
-    // UI that needs to know
-
     // TODO: allow UI dropdown and settings UI to update protocol params
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(FigureGenerator)
