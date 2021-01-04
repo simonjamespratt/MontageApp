@@ -5,6 +5,9 @@ target_sources(Montage PRIVATE
     BasicProtocolController.h
     CycleProtocolController.cpp
     CycleProtocolController.h
+    ProtocolControllerBroadcaster.h
+    ProtocolControllerBroadcaster.cpp
+    ProtocolControllerListener.h
 )
 
 target_include_directories(Montage
