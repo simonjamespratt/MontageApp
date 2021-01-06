@@ -1,11 +1,16 @@
 #include "ProtocolControllerBroadcaster.h"
 
-void ProtocolControllerBroadcaster::addListener(
-    std::shared_ptr<ProtocolControllerListener> listener)
+ProtocolControllerBroadcaster::ProtocolControllerBroadcaster()
+{}
+
+void ProtocolControllerBroadcaster::addListener(Listener listener)
 {
     listeners.push_back(listener);
 }
 
-void ProtocolControllerBroadcaster::removeListener(
-    std::shared_ptr<ProtocolControllerListener> listener)
-{}
+void ProtocolControllerBroadcaster::notify()
+{
+    for(auto &listener : listeners) {
+        listener();
+    }
+}
