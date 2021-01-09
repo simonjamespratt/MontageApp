@@ -20,7 +20,7 @@ FigureParticleSelection::FigureParticleSelection(
         protocolChanged();
     };
 
-    cycleCtrl.addListener([this] { updateParams(); });
+    cycleCtrl.attach([this] { updateParams(); });
 
     addProtocols();
     setInitialActiveProtocol();
@@ -145,5 +145,7 @@ void FigureParticleSelection::setVisibility()
 
 void FigureParticleSelection::updateParams()
 {
-    DBG("updateParams called in FigParticleSelection!!!!!");
+    // TODO: which controller was updated?
+    auto newParams = cycleCtrl.getParams();
+    producer->setParams(newParams);
 }

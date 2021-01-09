@@ -37,7 +37,4 @@ class FigureParticleSelection : public juce::Component {
     void setInitialActiveProtocol();
     void setVisibility();
     void updateParams();
-
-    // TODO: When a child component changes a param value, update the producer
-    // params
 };

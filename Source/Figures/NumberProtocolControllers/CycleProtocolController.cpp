@@ -1,15 +1,16 @@
 #include "CycleProtocolController.h"
 
 CycleProtocolController::CycleProtocolController()
-: bidirectional("Bidirectional"), reverseDirection("Reverse Direction")
+: bidirectionalToggle("Bidirectional"),
+  reverseDirectionToggle("Reverse Direction")
 {
-    addAndMakeVisible(&bidirectional);
-    addAndMakeVisible(&reverseDirection);
-    bidirectional.onClick = [this] {
-        updateState(bidirectional);
+    addAndMakeVisible(&bidirectionalToggle);
+    addAndMakeVisible(&reverseDirectionToggle);
+    bidirectionalToggle.onClick = [this] {
+        updateState(bidirectionalToggle);
     };
-    reverseDirection.onClick = [this] {
-        updateState(reverseDirection);
+    reverseDirectionToggle.onClick = [this] {
+        updateState(reverseDirectionToggle);
     };
 }
 
@@ -23,8 +24,8 @@ void CycleProtocolController::resized()
 {
     auto margin = 10;
     auto area = getLocalBounds();
-    bidirectional.setBounds(area.removeFromTop(45).reduced(margin));
-    reverseDirection.setBounds(area.removeFromTop(45).reduced(margin));
+    bidirectionalToggle.setBounds(area.removeFromTop(45).reduced(margin));
+    reverseDirectionToggle.setBounds(area.removeFromTop(45).reduced(margin));
 }
 
 void CycleProtocolController::setInitialDefaults(
@@ -36,23 +37,33 @@ void CycleProtocolController::setInitialDefaults(
 
     auto cylceParams = params.getCycle();
 
-    auto isBidirectional = cylceParams.getBidirectional();
-    bidirectional.setToggleState(isBidirectional, juce::dontSendNotification);
+    isBidirectional = cylceParams.getBidirectional();
+    bidirectionalToggle.setToggleState(isBidirectional,
+                                       juce::dontSendNotification);
 
-    auto isReverseDirection = cylceParams.getReverseDirection();
-    reverseDirection.setToggleState(isReverseDirection,
-                                    juce::dontSendNotification);
+    isReverseDirection = cylceParams.getReverseDirection();
+    reverseDirectionToggle.setToggleState(isReverseDirection,
+                                          juce::dontSendNotification);
 }
 
-void CycleProtocolController::addListener(Listener listener)
+aleatoric::NumberProtocolParameters::Protocols
+CycleProtocolController::getParams()
 {
-    listeners.emplace_back(listener);
+    return aleatoric::NumberProtocolParameters::Protocols(
+        aleatoric::NumberProtocolParameters::Cycle(isBidirectional,
+                                                   isReverseDirection));
 }
 
-void CycleProtocolController::notify()
+// Observers
+void CycleProtocolController::attach(Observer observer)
 {
-    for(auto const &listener : listeners) {
-        listener();
+    observers.emplace_back(observer);
+}
+
+void CycleProtocolController::notifyParamsChanged()
+{
+    for(auto const &observer : observers) {
+        observer();
     }
 }
 
@@ -63,12 +74,12 @@ void CycleProtocolController::updateState(juce::Button &button)
     auto state = button.getToggleState();
 
     if(buttonName == "Bidirectional") {
-        // do something abour bidirectional using state
+        isBidirectional = state;
     }
 
     if(buttonName == "Reverse Direction") {
-        // do something abour Reverse Direction using state
+        isReverseDirection = state;
     }
 
-    notify();
+    notifyParamsChanged();
 }

@@ -5,28 +5,27 @@
 #include <vector>
 
 class CycleProtocolController : public juce::Component {
-    using Listener = std::function<void()>;
+    using Observer = std::function<void()>;
 
   public:
     CycleProtocolController();
     ~CycleProtocolController();
     void paint(juce::Graphics &g) override;
     void resized() override;
-    void
-    setInitialDefaults(aleatoric::NumberProtocolParameters::Protocols params);
+    void setInitialDefaults(aleatoric::NumberProtocolParameters::Protocols params);
+    aleatoric::NumberProtocolParameters::Protocols getParams();
 
-    // TODO: rename to attach()
-    void addListener(Listener listener);
-
-    // TODO: add method to detach()
-
-    void notify();
+    // Observers
+    void attach(Observer observer);
+    void notifyParamsChanged();
 
   private:
-    juce::ToggleButton bidirectional;
-    juce::ToggleButton reverseDirection;
+    bool isBidirectional = false;
+    bool isReverseDirection = false;
+    juce::ToggleButton bidirectionalToggle;
+    juce::ToggleButton reverseDirectionToggle;
 
-    std::vector<Listener> listeners;
+    std::vector<Observer> observers;
 
     void updateState(juce::Button &button);
 };
