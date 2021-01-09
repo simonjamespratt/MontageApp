@@ -1,7 +1,5 @@
 #pragma once
 
-#include "ProtocolControllerBroadcaster.h"
-
 #include <NumberProtocolParameters.hpp>
 #include <juce_gui_basics/juce_gui_basics.h>
 #include <vector>
@@ -16,7 +14,12 @@ class CycleProtocolController : public juce::Component {
     void resized() override;
     void
     setInitialDefaults(aleatoric::NumberProtocolParameters::Protocols params);
+
+    // TODO: rename to attach()
     void addListener(Listener listener);
+
+    // TODO: add method to detach()
+
     void notify();
 
   private:

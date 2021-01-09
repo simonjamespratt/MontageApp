@@ -49,11 +49,6 @@ void FigureParticleSelection::resized()
     setProtocolBounds(controlsArea);
 }
 
-void FigureParticleSelection::updateParams()
-{
-    DBG("updateParams called in FigParticleSelection!!!!!");
-}
-
 // Private methods
 void FigureParticleSelection::protocolChanged()
 {
@@ -146,4 +141,9 @@ void FigureParticleSelection::setVisibility()
     default:
         break;
     }
+}
+
+void FigureParticleSelection::updateParams()
+{
+    DBG("updateParams called in FigParticleSelection!!!!!");
 }
