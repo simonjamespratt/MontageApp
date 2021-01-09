@@ -5,12 +5,12 @@ ProtocolControllerBroadcaster::ProtocolControllerBroadcaster()
 
 void ProtocolControllerBroadcaster::addListener(Listener listener)
 {
-    listeners.push_back(listener);
+    listeners.emplace_back(std::move(listener));
 }
 
 void ProtocolControllerBroadcaster::notify()
 {
-    for(auto &listener : listeners) {
+    for(auto const &listener : listeners) {
         listener();
     }
 }

@@ -44,6 +44,18 @@ void CycleProtocolController::setInitialDefaults(
                                     juce::dontSendNotification);
 }
 
+void CycleProtocolController::addListener(Listener listener)
+{
+    listeners.emplace_back(listener);
+}
+
+void CycleProtocolController::notify()
+{
+    for(auto const &listener : listeners) {
+        listener();
+    }
+}
+
 // Private methods
 void CycleProtocolController::updateState(juce::Button &button)
 {
@@ -57,4 +69,6 @@ void CycleProtocolController::updateState(juce::Button &button)
     if(buttonName == "Reverse Direction") {
         // do something abour Reverse Direction using state
     }
+
+    notify();
 }

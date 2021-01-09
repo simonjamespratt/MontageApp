@@ -11,6 +11,7 @@ class ProtocolControllerBroadcaster {
   public:
     virtual ~ProtocolControllerBroadcaster() = default;
     void addListener(Listener listener);
+    // TODO: reinstate this
     // virtual void removeListener();
     void notify();
 

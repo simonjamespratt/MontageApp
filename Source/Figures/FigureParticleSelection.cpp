@@ -20,6 +20,8 @@ FigureParticleSelection::FigureParticleSelection(
         protocolChanged();
     };
 
+    cycleCtrl.addListener([this] { updateParams(); });
+
     addProtocols();
     setInitialActiveProtocol();
 }
@@ -45,6 +47,11 @@ void FigureParticleSelection::resized()
 
     auto controlsArea = area;
     setProtocolBounds(controlsArea);
+}
+
+void FigureParticleSelection::updateParams()
+{
+    DBG("updateParams called in FigParticleSelection!!!!!");
 }
 
 // Private methods
