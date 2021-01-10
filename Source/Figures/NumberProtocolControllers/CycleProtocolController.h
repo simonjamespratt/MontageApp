@@ -5,14 +5,16 @@
 #include <vector>
 
 class CycleProtocolController : public juce::Component {
-    using Observer = std::function<void()>;
+    using Observer = std::function<void(
+        aleatoric::NumberProtocolParameters::Protocols newParams)>;
 
   public:
     CycleProtocolController();
     ~CycleProtocolController();
     void paint(juce::Graphics &g) override;
     void resized() override;
-    void setInitialDefaults(aleatoric::NumberProtocolParameters::Protocols params);
+    void
+    setInitialDefaults(aleatoric::NumberProtocolParameters::Protocols params);
     aleatoric::NumberProtocolParameters::Protocols getParams();
 
     // Observers

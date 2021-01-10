@@ -62,8 +62,9 @@ void CycleProtocolController::attach(Observer observer)
 
 void CycleProtocolController::notifyParamsChanged()
 {
+    auto newParams = getParams();
     for(auto const &observer : observers) {
-        observer();
+        observer(newParams);
     }
 }
 

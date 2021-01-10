@@ -36,5 +36,5 @@ class FigureParticleSelection : public juce::Component {
     void setProtocolBounds(juce::Rectangle<int> area);
     void setInitialActiveProtocol();
     void setVisibility();
-    void updateParams();
+    void updateParams(aleatoric::NumberProtocolParameters::Protocols newParams);
 };

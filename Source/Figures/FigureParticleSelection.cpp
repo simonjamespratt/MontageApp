@@ -20,7 +20,10 @@ FigureParticleSelection::FigureParticleSelection(
         protocolChanged();
     };
 
-    cycleCtrl.attach([this] { updateParams(); });
+    cycleCtrl.attach(
+        [this](aleatoric::NumberProtocolParameters::Protocols newParams) {
+            updateParams(newParams);
+        });
 
     addProtocols();
     setInitialActiveProtocol();
@@ -143,9 +146,8 @@ void FigureParticleSelection::setVisibility()
     }
 }
 
-void FigureParticleSelection::updateParams()
+void FigureParticleSelection::updateParams(
+    aleatoric::NumberProtocolParameters::Protocols newParams)
 {
-    // TODO: which controller was updated?
-    auto newParams = cycleCtrl.getParams();
     producer->setParams(newParams);
 }
