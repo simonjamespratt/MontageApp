@@ -28,7 +28,7 @@ void CycleProtocolController::resized()
     reverseDirectionToggle.setBounds(area.removeFromTop(45).reduced(margin));
 }
 
-void CycleProtocolController::setInitialDefaults(
+void CycleProtocolController::setParams(
     aleatoric::NumberProtocolParameters::Protocols params)
 {
     jassert(

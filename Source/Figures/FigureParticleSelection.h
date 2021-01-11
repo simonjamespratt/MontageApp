@@ -2,6 +2,7 @@
 #include "AdjacentStepsProtocolController.h"
 #include "BasicProtocolController.h"
 #include "CycleProtocolController.h"
+#include "NumberProtocolController.h"
 #include "Particle.h"
 
 #include <CollectionsProducer.hpp>
@@ -25,10 +26,7 @@ class FigureParticleSelection : public juce::Component {
     juce::Label protocolSelectorLabel;
     juce::ComboBox protocolSelector;
 
-    // Number protocol controllers
-    BasicProtocolController basicCtrl;
-    AdjacentStepsProtocolController adjacentStepsCtrl;
-    CycleProtocolController cycleCtrl;
+    std::unique_ptr<NumberProtocolController> controller;
 
     void protocolChanged();
     void addProtocols();

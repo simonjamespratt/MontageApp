@@ -20,12 +20,6 @@ FigureParticleSelection::FigureParticleSelection(
         protocolChanged();
     };
 
-    cycleCtrl.attach(
-        [this](aleatoric::NumberProtocolParameters::Protocols newParams) {
-            updateParams(newParams);
-        });
-
-    addProtocols();
     setInitialActiveProtocol();
 }
 
@@ -49,7 +43,10 @@ void FigureParticleSelection::resized()
     protocolSelector.setBounds(chooseProtocolArea.reduced(margin));
 
     auto controlsArea = area;
-    setProtocolBounds(controlsArea);
+
+    if(controller != nullptr) {
+        controller->setBounds(controlsArea);
+    }
 }
 
 // Private methods
@@ -61,42 +58,31 @@ void FigureParticleSelection::protocolChanged()
     case 1:
         producer->setProtocol(
             NumberProtocol::create(NumberProtocol::Type::adjacentSteps));
+        controller = std::make_unique<AdjacentStepsProtocolController>();
         break;
     case 2:
         producer->setProtocol(
             NumberProtocol::create(NumberProtocol::Type::basic));
+        controller = std::make_unique<BasicProtocolController>();
         break;
     case 3:
         producer->setProtocol(
             NumberProtocol::create(NumberProtocol::Type::cycle));
-        cycleCtrl.setInitialDefaults(producer->getParams());
+        controller = std::make_unique<CycleProtocolController>();
         break;
     default:
         break;
     }
 
-    setVisibility();
-}
+    controller->setParams(producer->getParams());
 
-void FigureParticleSelection::addProtocols()
-{
-    addChildComponent(&adjacentStepsCtrl);
-    addChildComponent(&basicCtrl);
-    addChildComponent(&cycleCtrl);
-}
+    controller->attach(
+        [this](aleatoric::NumberProtocolParameters::Protocols newParams) {
+            updateParams(newParams);
+        });
 
-void FigureParticleSelection::hideProtocols()
-{
-    adjacentStepsCtrl.setVisible(false);
-    basicCtrl.setVisible(false);
-    cycleCtrl.setVisible(false);
-}
-
-void FigureParticleSelection::setProtocolBounds(juce::Rectangle<int> area)
-{
-    adjacentStepsCtrl.setBounds(area);
-    basicCtrl.setBounds(area);
-    cycleCtrl.setBounds(area);
+    addAndMakeVisible(*controller);
+    resized();
 }
 
 void FigureParticleSelection::setInitialActiveProtocol()
@@ -119,27 +105,6 @@ void FigureParticleSelection::setInitialActiveProtocol()
         break;
     case cycle:
         protocolSelector.setSelectedId(3, juce::dontSendNotification);
-        break;
-    default:
-        break;
-    }
-
-    setVisibility();
-}
-
-void FigureParticleSelection::setVisibility()
-{
-    hideProtocols();
-
-    switch(protocolSelector.getSelectedId()) {
-    case 1:
-        adjacentStepsCtrl.setVisible(true);
-        break;
-    case 2:
-        basicCtrl.setVisible(true);
-        break;
-    case 3:
-        cycleCtrl.setVisible(true);
         break;
     default:
         break;

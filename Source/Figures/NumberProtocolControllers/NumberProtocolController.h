@@ -9,11 +9,16 @@ class NumberProtocolController : public juce::Component {
         aleatoric::NumberProtocolParameters::Protocols newParams)>;
 
   public:
+    virtual void
+    setParams(aleatoric::NumberProtocolParameters::Protocols params) = 0;
+
     virtual aleatoric::NumberProtocolParameters::Protocols getParams() = 0;
+
     virtual ~NumberProtocolController() = default;
 
     // Observers
     void attach(Observer observer);
+
     void notifyParamsChanged();
 
   private:

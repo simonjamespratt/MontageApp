@@ -4,11 +4,16 @@
 class CycleProtocolController : public NumberProtocolController {
   public:
     CycleProtocolController();
+
     ~CycleProtocolController();
+
     void paint(juce::Graphics &g) override;
+
     void resized() override;
+
     void
-    setInitialDefaults(aleatoric::NumberProtocolParameters::Protocols params);
+    setParams(aleatoric::NumberProtocolParameters::Protocols params) override;
+
     aleatoric::NumberProtocolParameters::Protocols getParams() override;
 
   private:

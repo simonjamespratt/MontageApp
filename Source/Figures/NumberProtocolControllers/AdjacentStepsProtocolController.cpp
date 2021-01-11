@@ -18,6 +18,10 @@ void AdjacentStepsProtocolController::resized()
     text.setBounds(area);
 }
 
+void AdjacentStepsProtocolController::setParams(
+    aleatoric::NumberProtocolParameters::Protocols params)
+{}
+
 aleatoric::NumberProtocolParameters::Protocols
 AdjacentStepsProtocolController::getParams()
 {
