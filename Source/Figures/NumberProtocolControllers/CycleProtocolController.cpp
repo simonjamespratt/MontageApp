@@ -54,20 +54,6 @@ CycleProtocolController::getParams()
                                                    isReverseDirection));
 }
 
-// Observers
-void CycleProtocolController::attach(Observer observer)
-{
-    observers.emplace_back(observer);
-}
-
-void CycleProtocolController::notifyParamsChanged()
-{
-    auto newParams = getParams();
-    for(auto const &observer : observers) {
-        observer(newParams);
-    }
-}
-
 // Private methods
 void CycleProtocolController::updateState(juce::Button &button)
 {

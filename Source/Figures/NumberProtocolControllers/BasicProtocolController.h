@@ -1,13 +1,14 @@
 #pragma once
 
-#include <juce_gui_basics/juce_gui_basics.h>
+#include "NumberProtocolController.h"
 
-class BasicProtocolController : public juce::Component {
+class BasicProtocolController : public NumberProtocolController {
   public:
     BasicProtocolController();
     ~BasicProtocolController();
     void paint(juce::Graphics &g) override;
     void resized() override;
+    aleatoric::NumberProtocolParameters::Protocols getParams() override;
 
   private:
     juce::Label text;

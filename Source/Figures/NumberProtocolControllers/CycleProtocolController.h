@@ -1,13 +1,7 @@
 #pragma once
+#include "NumberProtocolController.h"
 
-#include <NumberProtocolParameters.hpp>
-#include <juce_gui_basics/juce_gui_basics.h>
-#include <vector>
-
-class CycleProtocolController : public juce::Component {
-    using Observer = std::function<void(
-        aleatoric::NumberProtocolParameters::Protocols newParams)>;
-
+class CycleProtocolController : public NumberProtocolController {
   public:
     CycleProtocolController();
     ~CycleProtocolController();
@@ -15,19 +9,13 @@ class CycleProtocolController : public juce::Component {
     void resized() override;
     void
     setInitialDefaults(aleatoric::NumberProtocolParameters::Protocols params);
-    aleatoric::NumberProtocolParameters::Protocols getParams();
-
-    // Observers
-    void attach(Observer observer);
-    void notifyParamsChanged();
+    aleatoric::NumberProtocolParameters::Protocols getParams() override;
 
   private:
     bool isBidirectional = false;
     bool isReverseDirection = false;
     juce::ToggleButton bidirectionalToggle;
     juce::ToggleButton reverseDirectionToggle;
-
-    std::vector<Observer> observers;
 
     void updateState(juce::Button &button);
 };

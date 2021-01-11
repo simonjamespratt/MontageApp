@@ -17,3 +17,10 @@ void BasicProtocolController::resized()
     auto area = getLocalBounds();
     text.setBounds(area);
 }
+
+aleatoric::NumberProtocolParameters::Protocols
+BasicProtocolController::getParams()
+{
+    return aleatoric::NumberProtocolParameters::Protocols(
+        aleatoric::NumberProtocolParameters::Basic());
+}
