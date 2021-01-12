@@ -1,5 +1,15 @@
 #include "FigureParticleSelection.h"
 
+ProtocolConfig::ProtocolConfig(int id,
+                               juce::String name,
+                               Type type,
+                               Params::Protocols::ActiveProtocol activeType)
+: selectorId(id),
+  humanName(name),
+  protocolType(type),
+  activeProtocolType(activeType)
+{}
+
 FigureParticleSelection::FigureParticleSelection(
     std::shared_ptr<aleatoric::CollectionsProducer<Particle>> particleProducer)
 : producer(particleProducer)
@@ -87,13 +97,10 @@ void FigureParticleSelection::protocolChanged()
 void FigureParticleSelection::setInitialActiveProtocol()
 {
     auto activeProtocol = producer->getParams().getActiveProtocol();
-    using namespace aleatoric;
-    const auto basic =
-        NumberProtocolParameters::Protocols::ActiveProtocol::basic;
-    const auto adjacentSteps =
-        NumberProtocolParameters::Protocols::ActiveProtocol::adjacentSteps;
-    const auto cycle =
-        NumberProtocolParameters::Protocols::ActiveProtocol::cycle;
+    using Params = aleatoric::NumberProtocolParameters;
+    const auto basic = Params::Protocols::ActiveProtocol::basic;
+    const auto adjacentSteps = Params::Protocols::ActiveProtocol::adjacentSteps;
+    const auto cycle = Params::Protocols::ActiveProtocol::cycle;
 
     switch(activeProtocol) {
     case adjacentSteps:

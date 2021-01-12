@@ -9,6 +9,19 @@
 #include <juce_gui_basics/juce_gui_basics.h>
 #include <memory>
 
+struct ProtocolConfig {
+    using Type = aleatoric::NumberProtocol::Type;
+    using Params = aleatoric::NumberProtocolParameters;
+    ProtocolConfig(int id,
+                   juce::String name,
+                   Type type,
+                   Params::Protocols::ActiveProtocol activeType);
+    int selectorId;
+    juce::String humanName;
+    Type protocolType;
+    Params::Protocols::ActiveProtocol activeProtocolType;
+};
+
 class FigureParticleSelection : public juce::Component {
   public:
     FigureParticleSelection(
