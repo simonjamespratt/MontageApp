@@ -29,10 +29,6 @@ class FigureParticleSelection : public juce::Component {
     std::unique_ptr<NumberProtocolController> controller;
 
     void protocolChanged();
-    void addProtocols();
-    void hideProtocols();
-    void setProtocolBounds(juce::Rectangle<int> area);
     void setInitialActiveProtocol();
-    void setVisibility();
     void updateParams(aleatoric::NumberProtocolParameters::Protocols newParams);
 };

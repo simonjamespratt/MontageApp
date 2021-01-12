@@ -1,6 +1,7 @@
 #include "CycleProtocolController.h"
 
-CycleProtocolController::CycleProtocolController()
+CycleProtocolController::CycleProtocolController(
+    aleatoric::NumberProtocolParameters::Protocols initialParams)
 : bidirectionalToggle("Bidirectional"),
   reverseDirectionToggle("Reverse Direction")
 {
@@ -12,6 +13,8 @@ CycleProtocolController::CycleProtocolController()
     reverseDirectionToggle.onClick = [this] {
         updateState(reverseDirectionToggle);
     };
+
+    setParams(initialParams);
 }
 
 CycleProtocolController::~CycleProtocolController()

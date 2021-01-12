@@ -3,7 +3,8 @@
 
 class CycleProtocolController : public NumberProtocolController {
   public:
-    CycleProtocolController();
+    CycleProtocolController(
+        aleatoric::NumberProtocolParameters::Protocols initialParams);
 
     ~CycleProtocolController();
 

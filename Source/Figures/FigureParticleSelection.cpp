@@ -68,13 +68,12 @@ void FigureParticleSelection::protocolChanged()
     case 3:
         producer->setProtocol(
             NumberProtocol::create(NumberProtocol::Type::cycle));
-        controller = std::make_unique<CycleProtocolController>();
+        controller =
+            std::make_unique<CycleProtocolController>(producer->getParams());
         break;
     default:
         break;
     }
-
-    controller->setParams(producer->getParams());
 
     controller->attach(
         [this](aleatoric::NumberProtocolParameters::Protocols newParams) {
