@@ -8,8 +8,13 @@
 #include <CollectionsProducer.hpp>
 #include <juce_gui_basics/juce_gui_basics.h>
 #include <memory>
+#include <vector>
 
 struct ProtocolConfig {
+    // TODO: Could Aleatoric use NumberProtocol::Type for ActiveProtcol instead
+    // of having to have a separate enum class? Also should the nested classes
+    // in NumberProtocolParameters be split out to avoid the :: everywhere in
+    // the calling code?
     using Type = aleatoric::NumberProtocol::Type;
     using Params = aleatoric::NumberProtocolParameters;
     ProtocolConfig(int id,
@@ -40,6 +45,15 @@ class FigureParticleSelection : public juce::Component {
     juce::ComboBox protocolSelector;
 
     std::unique_ptr<NumberProtocolController> controller;
+
+    // TODO: this probably needs to go somethere accessible from other classes,
+    // e.g. Onset/duration selector when it's created. Maybe ProtocolConfig
+    // should be extracted from here and should have a static method that
+    // returns a vector containing all protocol configs?
+    std::vector<ProtocolConfig> protocolConfigurations;
+    void initialiseProtocolConfigurations();
+
+    void configureProtocolSelector();
 
     void protocolChanged();
     void setInitialActiveProtocol();

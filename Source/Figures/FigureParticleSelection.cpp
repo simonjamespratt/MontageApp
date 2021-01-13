@@ -1,5 +1,7 @@
 #include "FigureParticleSelection.h"
 
+#include <algorithm>
+
 ProtocolConfig::ProtocolConfig(int id,
                                juce::String name,
                                Type type,
@@ -14,6 +16,8 @@ FigureParticleSelection::FigureParticleSelection(
     std::shared_ptr<aleatoric::CollectionsProducer<Particle>> particleProducer)
 : producer(particleProducer)
 {
+    initialiseProtocolConfigurations();
+
     heading.setText("Particle selection", juce::dontSendNotification);
     addAndMakeVisible(&heading);
     heading.setFont(juce::Font(20.0f, juce::Font::bold));
@@ -23,9 +27,7 @@ FigureParticleSelection::FigureParticleSelection(
     addAndMakeVisible(&protocolSelectorLabel);
 
     addAndMakeVisible(&protocolSelector);
-    protocolSelector.addItem("AdjacentSteps", 1);
-    protocolSelector.addItem("Basic", 2);
-    protocolSelector.addItem("Cycle", 3);
+    configureProtocolSelector();
     protocolSelector.onChange = [this] {
         protocolChanged();
     };
@@ -97,23 +99,19 @@ void FigureParticleSelection::protocolChanged()
 void FigureParticleSelection::setInitialActiveProtocol()
 {
     auto activeProtocol = producer->getParams().getActiveProtocol();
-    using Params = aleatoric::NumberProtocolParameters;
-    const auto basic = Params::Protocols::ActiveProtocol::basic;
-    const auto adjacentSteps = Params::Protocols::ActiveProtocol::adjacentSteps;
-    const auto cycle = Params::Protocols::ActiveProtocol::cycle;
 
-    switch(activeProtocol) {
-    case adjacentSteps:
-        protocolSelector.setSelectedId(1, juce::dontSendNotification);
-        break;
-    case basic:
-        protocolSelector.setSelectedId(2, juce::dontSendNotification);
-        break;
-    case cycle:
-        protocolSelector.setSelectedId(3, juce::dontSendNotification);
-        break;
-    default:
-        break;
+    // TODO: This could be a method on ProtocolConfig::findByActiveProtocolType
+    // that returns the config you need
+    auto it =
+        std::find_if(protocolConfigurations.begin(),
+                     protocolConfigurations.end(),
+                     [&activeProtocol](const ProtocolConfig &config) {
+                         return config.activeProtocolType == activeProtocol;
+                     });
+
+    if(it != protocolConfigurations.end()) {
+        protocolSelector.setSelectedId(it->selectorId,
+                                       juce::dontSendNotification);
     }
 }
 
@@ -121,4 +119,35 @@ void FigureParticleSelection::updateParams(
     aleatoric::NumberProtocolParameters::Protocols newParams)
 {
     producer->setParams(newParams);
+}
+
+void FigureParticleSelection::initialiseProtocolConfigurations()
+{
+    using Type = aleatoric::NumberProtocol::Type;
+    using Params = aleatoric::NumberProtocolParameters;
+
+    protocolConfigurations.emplace_back(
+        ProtocolConfig(1,
+                       "Adjacent Steps",
+                       Type::adjacentSteps,
+                       Params::Protocols::ActiveProtocol::adjacentSteps));
+
+    protocolConfigurations.emplace_back(
+        ProtocolConfig(2,
+                       "Basic",
+                       Type::basic,
+                       Params::Protocols::ActiveProtocol::basic));
+
+    protocolConfigurations.emplace_back(
+        ProtocolConfig(3,
+                       "Cycle",
+                       Type::cycle,
+                       Params::Protocols::ActiveProtocol::cycle));
+}
+
+void FigureParticleSelection::configureProtocolSelector()
+{
+    for(auto &&config : protocolConfigurations) {
+        protocolSelector.addItem(config.humanName, config.selectorId);
+    }
 }
