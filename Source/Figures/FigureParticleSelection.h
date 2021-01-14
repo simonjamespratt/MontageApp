@@ -38,6 +38,8 @@ class FigureParticleSelection : public juce::Component {
     void paint(juce::Graphics &g) override;
     void resized() override;
 
+    void resetParams();
+
   private:
     std::shared_ptr<aleatoric::CollectionsProducer<Particle>> producer;
     juce::Label heading;

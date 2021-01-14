@@ -129,8 +129,7 @@ void FigureGenerator::valueTreeChildAdded(juce::ValueTree &parent,
                     std::make_unique<FigureParticleSelection>(particleProducer);
                 addAndMakeVisible(*figureParticleSelection);
             } else {
-                // TODO: call the figureParticleSelector to let it know params
-                // will have changed to defaults
+                figureParticleSelection->resetParams();
             }
 
             blockedMessage.setVisible(false);
@@ -168,8 +167,7 @@ void FigureGenerator::valueTreeChildRemoved(juce::ValueTree &parent,
             resized();
         } else {
             particleProducer->setSource(particles);
-            // TODO: call the figureParticleSelector to let it know params
-            // will have changed to defaults
+            figureParticleSelection->resetParams();
         }
     }
 }

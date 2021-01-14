@@ -61,31 +61,33 @@ void FigureParticleSelection::resized()
     }
 }
 
+void FigureParticleSelection::resetParams()
+{
+    if(controller != nullptr) {
+        controller->setParams(producer->getParams());
+    }
+}
+
 // Private methods
 void FigureParticleSelection::protocolChanged()
 {
     using namespace aleatoric;
 
-    switch(protocolSelector.getSelectedId()) {
-    case 1:
-        producer->setProtocol(
-            NumberProtocol::create(NumberProtocol::Type::adjacentSteps));
-        controller = std::make_unique<AdjacentStepsProtocolController>();
-        break;
-    case 2:
-        producer->setProtocol(
-            NumberProtocol::create(NumberProtocol::Type::basic));
-        controller = std::make_unique<BasicProtocolController>();
-        break;
-    case 3:
-        producer->setProtocol(
-            NumberProtocol::create(NumberProtocol::Type::cycle));
-        controller =
-            std::make_unique<CycleProtocolController>(producer->getParams());
-        break;
-    default:
-        break;
-    }
+    auto id = protocolSelector.getSelectedId();
+
+    // TODO: This coul be a method on Protocol::findByProtocolType that returns
+    // the config you need
+    auto it = std::find_if(protocolConfigurations.begin(),
+                           protocolConfigurations.end(),
+                           [&id](const ProtocolConfig &config) {
+                               return config.selectorId == id;
+                           });
+    jassert(it != protocolConfigurations.end());
+
+    auto selectedConfig = *it;
+    producer->setProtocol(NumberProtocol::create(selectedConfig.protocolType));
+    controller = NumberProtocolController::create(selectedConfig.protocolType,
+                                                  producer->getParams());
 
     controller->attach(
         [this](aleatoric::NumberProtocolParameters::Protocols newParams) {
@@ -108,11 +110,9 @@ void FigureParticleSelection::setInitialActiveProtocol()
                      [&activeProtocol](const ProtocolConfig &config) {
                          return config.activeProtocolType == activeProtocol;
                      });
+    jassert(it != protocolConfigurations.end());
 
-    if(it != protocolConfigurations.end()) {
-        protocolSelector.setSelectedId(it->selectorId,
-                                       juce::dontSendNotification);
-    }
+    protocolSelector.setSelectedId(it->selectorId, juce::dontSendNotification);
 }
 
 void FigureParticleSelection::updateParams(
