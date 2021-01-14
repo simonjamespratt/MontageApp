@@ -5,6 +5,8 @@ target_sources(Montage PRIVATE
     FigureParticleSelection.h
     FigureProcessor.cpp
     FigureProcessor.h
+    ProtocolConfig.cpp
+    ProtocolConfig.h
 )
 
 target_include_directories(Montage

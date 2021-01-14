@@ -2,16 +2,6 @@
 
 #include <algorithm>
 
-ProtocolConfig::ProtocolConfig(int id,
-                               juce::String name,
-                               Type type,
-                               Params::Protocols::ActiveProtocol activeType)
-: selectorId(id),
-  humanName(name),
-  protocolType(type),
-  activeProtocolType(activeType)
-{}
-
 FigureParticleSelection::FigureParticleSelection(
     std::shared_ptr<aleatoric::CollectionsProducer<Particle>> particleProducer)
 : producer(particleProducer)

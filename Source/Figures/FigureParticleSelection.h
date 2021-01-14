@@ -1,31 +1,13 @@
 #pragma once
-#include "AdjacentStepsProtocolController.h"
-#include "BasicProtocolController.h"
-#include "CycleProtocolController.h"
+
 #include "NumberProtocolController.h"
 #include "Particle.h"
+#include "ProtocolConfig.h"
 
 #include <CollectionsProducer.hpp>
 #include <juce_gui_basics/juce_gui_basics.h>
 #include <memory>
 #include <vector>
-
-struct ProtocolConfig {
-    // TODO: Could Aleatoric use NumberProtocol::Type for ActiveProtcol instead
-    // of having to have a separate enum class? Also should the nested classes
-    // in NumberProtocolParameters be split out to avoid the :: everywhere in
-    // the calling code?
-    using Type = aleatoric::NumberProtocol::Type;
-    using Params = aleatoric::NumberProtocolParameters;
-    ProtocolConfig(int id,
-                   juce::String name,
-                   Type type,
-                   Params::Protocols::ActiveProtocol activeType);
-    int selectorId;
-    juce::String humanName;
-    Type protocolType;
-    Params::Protocols::ActiveProtocol activeProtocolType;
-};
 
 class FigureParticleSelection : public juce::Component {
   public:
