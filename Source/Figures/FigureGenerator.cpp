@@ -29,11 +29,7 @@ FigureGenerator::FigureGenerator(juce::ValueTree as) : appState(as)
     numEventsLabel.setText("Number of events: ", juce::dontSendNotification);
     addChildComponent(&numEventsLabel);
 
-    // ONSET SELECTION
-    onsetSelectionHeading.setText("Onset selection",
-                                  juce::dontSendNotification);
-    addChildComponent(&onsetSelectionHeading);
-    onsetSelectionHeading.setFont(juce::Font(20.0f, juce::Font::bold));
+    addAndMakeVisible(&figureOnsetSelection);
 }
 
 FigureGenerator::~FigureGenerator()
@@ -66,7 +62,7 @@ void FigureGenerator::resized()
     }
 
     auto onsetSelectionArea = area;
-    onsetSelectionHeading.setBounds(onsetSelectionArea.removeFromTop(50));
+    figureOnsetSelection.setBounds(onsetSelectionArea);
 }
 
 Figure FigureGenerator::generateFigure()
@@ -136,7 +132,7 @@ void FigureGenerator::valueTreeChildAdded(juce::ValueTree &parent,
             globalSettingsHeading.setVisible(true);
             numEventsInput.setVisible(true);
             numEventsLabel.setVisible(true);
-            onsetSelectionHeading.setVisible(true);
+            figureOnsetSelection.setVisible(true);
 
             resized();
         }
@@ -162,7 +158,7 @@ void FigureGenerator::valueTreeChildRemoved(juce::ValueTree &parent,
             globalSettingsHeading.setVisible(false);
             numEventsInput.setVisible(false);
             numEventsLabel.setVisible(false);
-            onsetSelectionHeading.setVisible(false);
+            figureOnsetSelection.setVisible(false);
 
             resized();
         } else {

@@ -1,6 +1,8 @@
 target_sources(Montage PRIVATE
     FigureGenerator.cpp
     FigureGenerator.h
+    FigureOnsetSelection.cpp
+    FigureOnsetSelection.h
     FigureParticleSelection.cpp
     FigureParticleSelection.h
     FigureProcessor.cpp

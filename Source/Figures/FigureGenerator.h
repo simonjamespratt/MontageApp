@@ -1,11 +1,13 @@
 #pragma once
 
 #include "Figure.h"
+#include "FigureOnsetSelection.h"
 #include "FigureParticleSelection.h"
 #include "Identifiers.h"
 #include "ParticleCollection.h"
 
 #include <CollectionsProducer.hpp>
+#include <DurationsProducer.hpp>
 #include <juce_gui_basics/juce_gui_basics.h>
 #include <memory>
 
@@ -32,16 +34,17 @@ class FigureGenerator : public juce::Component,
   private:
     juce::ValueTree appState;
     std::unique_ptr<ParticleCollection> particleCollection;
+
     std::shared_ptr<aleatoric::CollectionsProducer<Particle>> particleProducer;
+    std::unique_ptr<FigureParticleSelection> figureParticleSelection;
+
+    // std::shared_ptr<aleatoric::DurationsProducer> durationProducer;
+    FigureOnsetSelection figureOnsetSelection;
 
     juce::Label blockedMessage;
     juce::Label globalSettingsHeading;
     juce::TextEditor numEventsInput;
     juce::Label numEventsLabel;
-
-    std::unique_ptr<FigureParticleSelection> figureParticleSelection;
-
-    juce::Label onsetSelectionHeading;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(FigureGenerator)
 };
