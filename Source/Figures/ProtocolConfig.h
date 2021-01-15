@@ -9,19 +9,26 @@ struct ProtocolConfig {
     // of having to have a separate enum class? Also should the nested classes
     // in NumberProtocolParameters be split out to avoid the :: everywhere in
     // the calling code?
-    using Type = aleatoric::NumberProtocol::Type;
-    using Params = aleatoric::NumberProtocolParameters;
-    ProtocolConfig(int id,
-                   juce::String name,
-                   Type type,
-                   Params::Protocols::ActiveProtocol activeType);
-    int selectorId;
-    juce::String humanName;
-    Type protocolType;
-    Params::Protocols::ActiveProtocol activeProtocolType;
+    ProtocolConfig(
+        int id,
+        juce::String name,
+        aleatoric::NumberProtocol::Type protocolType,
+        aleatoric::NumberProtocolParameters::Protocols::ActiveProtocol
+            activeProtocol);
+    int getId() const;
+    juce::String getName() const;
+    aleatoric::NumberProtocol::Type getProtocolType() const;
+    aleatoric::NumberProtocolParameters::Protocols::ActiveProtocol
+    getActiveProtocol() const;
 
     static std::vector<ProtocolConfig> getConfigurations();
 
   private:
+    int m_id;
+    juce::String m_name;
+    aleatoric::NumberProtocol::Type m_protocolType;
+    aleatoric::NumberProtocolParameters::Protocols::ActiveProtocol
+        m_activeProtocol;
+
     static std::vector<ProtocolConfig> configs;
 };

@@ -35,7 +35,6 @@ class FigureParticleSelection : public juce::Component {
     // should be extracted from here and should have a static method that
     // returns a vector containing all protocol configs?
     std::vector<ProtocolConfig> protocolConfigurations;
-    void initialiseProtocolConfigurations();
 
     void configureProtocolSelector();
 

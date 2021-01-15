@@ -4,10 +4,9 @@
 
 FigureParticleSelection::FigureParticleSelection(
     std::shared_ptr<aleatoric::CollectionsProducer<Particle>> particleProducer)
-: producer(particleProducer)
+: producer(particleProducer),
+  protocolConfigurations(ProtocolConfig::getConfigurations())
 {
-    initialiseProtocolConfigurations();
-
     heading.setText("Particle selection", juce::dontSendNotification);
     addAndMakeVisible(&heading);
     heading.setFont(juce::Font(20.0f, juce::Font::bold));
@@ -67,17 +66,18 @@ void FigureParticleSelection::protocolChanged()
 
     // TODO: This coul be a method on Protocol::findByProtocolType that returns
     // the config you need
-    auto it = std::find_if(protocolConfigurations.begin(),
-                           protocolConfigurations.end(),
-                           [&id](const ProtocolConfig &config) {
-                               return config.selectorId == id;
-                           });
+    auto it = std::find_if(
+        protocolConfigurations.begin(),
+        protocolConfigurations.end(),
+        [&id](const ProtocolConfig &config) { return config.getId() == id; });
     jassert(it != protocolConfigurations.end());
 
     auto selectedConfig = *it;
-    producer->setProtocol(NumberProtocol::create(selectedConfig.protocolType));
-    controller = NumberProtocolController::create(selectedConfig.protocolType,
-                                                  producer->getParams());
+    producer->setProtocol(
+        NumberProtocol::create(selectedConfig.getProtocolType()));
+    controller =
+        NumberProtocolController::create(selectedConfig.getProtocolType(),
+                                         producer->getParams());
 
     controller->attach(
         [this](aleatoric::NumberProtocolParameters::Protocols newParams) {
@@ -98,11 +98,11 @@ void FigureParticleSelection::setInitialActiveProtocol()
         std::find_if(protocolConfigurations.begin(),
                      protocolConfigurations.end(),
                      [&activeProtocol](const ProtocolConfig &config) {
-                         return config.activeProtocolType == activeProtocol;
+                         return config.getActiveProtocol() == activeProtocol;
                      });
     jassert(it != protocolConfigurations.end());
 
-    protocolSelector.setSelectedId(it->selectorId, juce::dontSendNotification);
+    protocolSelector.setSelectedId(it->getId(), juce::dontSendNotification);
 }
 
 void FigureParticleSelection::updateParams(
@@ -111,33 +111,9 @@ void FigureParticleSelection::updateParams(
     producer->setParams(newParams);
 }
 
-void FigureParticleSelection::initialiseProtocolConfigurations()
-{
-    using Type = aleatoric::NumberProtocol::Type;
-    using Params = aleatoric::NumberProtocolParameters;
-
-    protocolConfigurations.emplace_back(
-        ProtocolConfig(1,
-                       "Adjacent Steps",
-                       Type::adjacentSteps,
-                       Params::Protocols::ActiveProtocol::adjacentSteps));
-
-    protocolConfigurations.emplace_back(
-        ProtocolConfig(2,
-                       "Basic",
-                       Type::basic,
-                       Params::Protocols::ActiveProtocol::basic));
-
-    protocolConfigurations.emplace_back(
-        ProtocolConfig(3,
-                       "Cycle",
-                       Type::cycle,
-                       Params::Protocols::ActiveProtocol::cycle));
-}
-
 void FigureParticleSelection::configureProtocolSelector()
 {
     for(auto &&config : protocolConfigurations) {
-        protocolSelector.addItem(config.humanName, config.selectorId);
+        protocolSelector.addItem(config.getName(), config.getId());
     }
 }
