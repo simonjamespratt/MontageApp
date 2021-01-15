@@ -23,6 +23,12 @@ struct ProtocolConfig {
 
     static std::vector<ProtocolConfig> getConfigurations();
 
+    static ProtocolConfig findByActiveProtocol(
+        const aleatoric::NumberProtocolParameters::Protocols::ActiveProtocol
+            &activeProtocol);
+
+    static ProtocolConfig findById(const int &id);
+
   private:
     int m_id;
     juce::String m_name;

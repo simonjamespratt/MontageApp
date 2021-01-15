@@ -4,8 +4,7 @@
 
 FigureParticleSelection::FigureParticleSelection(
     std::shared_ptr<aleatoric::CollectionsProducer<Particle>> particleProducer)
-: producer(particleProducer),
-  protocolConfigurations(ProtocolConfig::getConfigurations())
+: producer(particleProducer)
 {
     heading.setText("Particle selection", juce::dontSendNotification);
     addAndMakeVisible(&heading);
@@ -63,16 +62,8 @@ void FigureParticleSelection::protocolChanged()
     using namespace aleatoric;
 
     auto id = protocolSelector.getSelectedId();
+    auto selectedConfig = ProtocolConfig::findById(id);
 
-    // TODO: This coul be a method on Protocol::findByProtocolType that returns
-    // the config you need
-    auto it = std::find_if(
-        protocolConfigurations.begin(),
-        protocolConfigurations.end(),
-        [&id](const ProtocolConfig &config) { return config.getId() == id; });
-    jassert(it != protocolConfigurations.end());
-
-    auto selectedConfig = *it;
     producer->setProtocol(
         NumberProtocol::create(selectedConfig.getProtocolType()));
     controller =
@@ -91,18 +82,8 @@ void FigureParticleSelection::protocolChanged()
 void FigureParticleSelection::setInitialActiveProtocol()
 {
     auto activeProtocol = producer->getParams().getActiveProtocol();
-
-    // TODO: This could be a method on ProtocolConfig::findByActiveProtocolType
-    // that returns the config you need
-    auto it =
-        std::find_if(protocolConfigurations.begin(),
-                     protocolConfigurations.end(),
-                     [&activeProtocol](const ProtocolConfig &config) {
-                         return config.getActiveProtocol() == activeProtocol;
-                     });
-    jassert(it != protocolConfigurations.end());
-
-    protocolSelector.setSelectedId(it->getId(), juce::dontSendNotification);
+    auto config = ProtocolConfig::findByActiveProtocol(activeProtocol);
+    protocolSelector.setSelectedId(config.getId(), juce::dontSendNotification);
 }
 
 void FigureParticleSelection::updateParams(
@@ -113,7 +94,7 @@ void FigureParticleSelection::updateParams(
 
 void FigureParticleSelection::configureProtocolSelector()
 {
-    for(auto &&config : protocolConfigurations) {
+    for(auto &&config : ProtocolConfig::getConfigurations()) {
         protocolSelector.addItem(config.getName(), config.getId());
     }
 }

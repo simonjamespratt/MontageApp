@@ -24,20 +24,13 @@ class FigureParticleSelection : public juce::Component {
 
   private:
     std::shared_ptr<aleatoric::CollectionsProducer<Particle>> producer;
+    std::unique_ptr<NumberProtocolController> controller;
+
     juce::Label heading;
     juce::Label protocolSelectorLabel;
     juce::ComboBox protocolSelector;
 
-    std::unique_ptr<NumberProtocolController> controller;
-
-    // TODO: this probably needs to go somethere accessible from other classes,
-    // e.g. Onset/duration selector when it's created. Maybe ProtocolConfig
-    // should be extracted from here and should have a static method that
-    // returns a vector containing all protocol configs?
-    std::vector<ProtocolConfig> protocolConfigurations;
-
     void configureProtocolSelector();
-
     void protocolChanged();
     void setInitialActiveProtocol();
     void updateParams(aleatoric::NumberProtocolParameters::Protocols newParams);

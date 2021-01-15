@@ -55,3 +55,27 @@ std::vector<ProtocolConfig> ProtocolConfig::getConfigurations()
 {
     return configs;
 }
+
+ProtocolConfig ProtocolConfig::findByActiveProtocol(
+    const aleatoric::NumberProtocolParameters::Protocols::ActiveProtocol
+        &activeProtocol)
+{
+    auto it =
+        std::find_if(configs.begin(),
+                     configs.end(),
+                     [&activeProtocol](const ProtocolConfig &config) {
+                         return config.getActiveProtocol() == activeProtocol;
+                     });
+    jassert(it != configs.end());
+    return *it;
+}
+
+ProtocolConfig ProtocolConfig::findById(const int &id)
+{
+    auto it = std::find_if(
+        configs.begin(),
+        configs.end(),
+        [&id](const ProtocolConfig &config) { return config.getId() == id; });
+    jassert(it != configs.end());
+    return *it;
+}
