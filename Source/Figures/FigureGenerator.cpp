@@ -3,9 +3,12 @@
 #include "FigureCollection.h"
 #include "FigureProcessor.h"
 
-#include <DurationsProducer.hpp>
-
-FigureGenerator::FigureGenerator(juce::ValueTree as) : appState(as)
+FigureGenerator::FigureGenerator(juce::ValueTree as)
+: appState(as),
+  onsetProducer(
+      aleatoric::DurationProtocol::createPrescribed(
+          std::vector<int> {1000, 2000}),
+      aleatoric::NumberProtocol::create(aleatoric::NumberProtocol::Type::basic))
 {
     // TODO: Data management: when proper data handling is in place this will
     // need to be addressed
@@ -67,8 +70,6 @@ void FigureGenerator::resized()
 
 Figure FigureGenerator::generateFigure()
 {
-    using namespace aleatoric;
-
     jassert(particleProducer != nullptr);
 
     auto figureCollectionState = appState.getChildWithName(IDs::FIGURES);
@@ -78,18 +79,13 @@ Figure FigureGenerator::generateFigure()
 
     // TODO: replace this with user error message
     jassert(numOfEventsToMake > 0);
-
-    // TODO: delete this when UI for selection of protocol etc. is in place
-    // Basic predictable results using prescribed durations and cycling of
-    // durations
-    std::vector<int> durations {1000, 2000};
-    DurationsProducer durationsProducer(
-        DurationProtocol::createPrescribed(durations),
-        NumberProtocol::create(NumberProtocol::Type::cycle));
+    DBG("Got here!!!!!!!!!");
+    auto result = onsetProducer.getDuration();
+    DBG(juce::String(result));
 
     FigureProcessor processor;
     return processor.composeFigure(numOfEventsToMake,
-                                   durationsProducer,
+                                   onsetProducer,
                                    *particleProducer,
                                    figureCollection);
 }

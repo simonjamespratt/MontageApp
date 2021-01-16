@@ -35,10 +35,29 @@ class FigureGenerator : public juce::Component,
     juce::ValueTree appState;
     std::unique_ptr<ParticleCollection> particleCollection;
 
+    // TODO: I think there's a problem with AdjacentSteps protocol which doesn't
+    // seem to be selecting anything other than the first and second particles.
+    // Hunch is that this is because params are not being set correctly to
+    // mirror the size of the collection that the CollectionProducer is working
+    // with. This could be an indicator of a general problem at the
+    // CollectionProducer level in Montage or in Aleatoric, or it could be a bug
+    // with just AdjacentSteps protocol. Check the former first. Reason for
+    // hunch is that protocols are set to a range of 0-1 on construction and
+    // require params being set to change this.
     std::shared_ptr<aleatoric::CollectionsProducer<Particle>> particleProducer;
     std::unique_ptr<FigureParticleSelection> figureParticleSelection;
 
-    // std::shared_ptr<aleatoric::DurationsProducer> durationProducer;
+    // TODO: DurationProtocols take some of their constructor args by const ref.
+    // (e.g. Prescribed takes durations this way) and keeps a const ref to them
+    // as private members of the class instance. This means you can't pass by
+    // value and more importantly, means that if you change the thing it is
+    // referencing, it'll be updated in the DurationProtocol and therefore could
+    // cause internal issues as I don't think this was ever the intention of
+    // using const ref. I think the intention was to avoid passing potentially
+    // large blocks of memory by value. This is a premature enhancement. Suggest
+    // changing DurationProtocols to pass by value and set their members by
+    // value also.
+    aleatoric::DurationsProducer onsetProducer;
     FigureOnsetSelection figureOnsetSelection;
 
     juce::Label blockedMessage;
