@@ -2,7 +2,6 @@
 
 #include "NumberProtocolController.h"
 #include "Particle.h"
-#include "ProtocolConfig.h"
 
 #include <CollectionsProducer.hpp>
 #include <juce_gui_basics/juce_gui_basics.h>
@@ -34,4 +33,6 @@ class FigureParticleSelection : public juce::Component {
     void protocolChanged();
     void setInitialActiveProtocol();
     void updateParams(aleatoric::NumberProtocolParameters::Protocols newParams);
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(FigureParticleSelection)
 };

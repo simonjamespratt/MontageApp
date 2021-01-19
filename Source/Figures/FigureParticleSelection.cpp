@@ -1,5 +1,7 @@
 #include "FigureParticleSelection.h"
 
+#include "ProtocolConfig.h"
+
 #include <algorithm>
 
 FigureParticleSelection::FigureParticleSelection(

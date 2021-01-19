@@ -19,7 +19,6 @@ FigureGenerator::FigureGenerator(juce::ValueTree as)
     blockedMessage.setText("Not enough particles to generate a figure",
                            juce::dontSendNotification);
 
-    // GLOBAL
     globalSettingsHeading.setText("Global settings",
                                   juce::dontSendNotification);
     addChildComponent(&globalSettingsHeading);
