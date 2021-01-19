@@ -1,10 +1,11 @@
 #pragma once
 
+#include <DurationsProducer.hpp>
 #include <juce_gui_basics/juce_gui_basics.h>
 
 class FigureOnsetSelection : public juce::Component {
   public:
-    FigureOnsetSelection();
+    FigureOnsetSelection(aleatoric::DurationsProducer &producer);
     ~FigureOnsetSelection();
 
     void paint(juce::Graphics &) override;

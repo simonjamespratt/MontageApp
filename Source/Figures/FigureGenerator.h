@@ -47,16 +47,6 @@ class FigureGenerator : public juce::Component,
     std::shared_ptr<aleatoric::CollectionsProducer<Particle>> particleProducer;
     std::unique_ptr<FigureParticleSelection> figureParticleSelection;
 
-    // TODO: DurationProtocols take some of their constructor args by const ref.
-    // (e.g. Prescribed takes durations this way) and keeps a const ref to them
-    // as private members of the class instance. This means you can't pass by
-    // value and more importantly, means that if you change the thing it is
-    // referencing, it'll be updated in the DurationProtocol and therefore could
-    // cause internal issues as I don't think this was ever the intention of
-    // using const ref. I think the intention was to avoid passing potentially
-    // large blocks of memory by value. This is a premature enhancement. Suggest
-    // changing DurationProtocols to pass by value and set their members by
-    // value also.
     aleatoric::DurationsProducer onsetProducer;
     FigureOnsetSelection figureOnsetSelection;
 

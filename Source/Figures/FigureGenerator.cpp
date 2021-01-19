@@ -5,10 +5,11 @@
 
 FigureGenerator::FigureGenerator(juce::ValueTree as)
 : appState(as),
-  onsetProducer(
-      aleatoric::DurationProtocol::createPrescribed(
-          std::vector<int> {1000, 2000}),
-      aleatoric::NumberProtocol::create(aleatoric::NumberProtocol::Type::basic))
+  onsetProducer(aleatoric::DurationProtocol::createPrescribed(
+                    std::vector<int> {1000, 2000}),
+                aleatoric::NumberProtocol::create(
+                    aleatoric::NumberProtocol::Type::basic)),
+  figureOnsetSelection(onsetProducer)
 {
     // TODO: Data management: when proper data handling is in place this will
     // need to be addressed
@@ -79,10 +80,6 @@ Figure FigureGenerator::generateFigure()
 
     // TODO: replace this with user error message
     jassert(numOfEventsToMake > 0);
-    DBG("Got here!!!!!!!!!");
-    auto result = onsetProducer.getDuration();
-    DBG(juce::String(result));
-
     FigureProcessor processor;
     return processor.composeFigure(numOfEventsToMake,
                                    onsetProducer,

@@ -1,6 +1,7 @@
 #include "FigureOnsetSelection.h"
 
-FigureOnsetSelection::FigureOnsetSelection()
+FigureOnsetSelection::FigureOnsetSelection(
+    aleatoric::DurationsProducer &producer)
 {
     onsetSelectionHeading.setText("Onset selection",
                                   juce::dontSendNotification);
