@@ -18,6 +18,11 @@ FigureOnsetSelection::FigureOnsetSelection(
 
     addAndMakeVisible(&numberProtocolSelector);
     configureNumberProtocolSelector();
+    numberProtocolSelector.onChange = [this] {
+        numberProtocolChanged();
+    };
+
+    // TODO: set initial active number protocol
 }
 
 FigureOnsetSelection::~FigureOnsetSelection()
@@ -42,6 +47,10 @@ void FigureOnsetSelection::resized()
     numberProtocolSelector.setBounds(chooseNumberProtocolArea.reduced(margin));
 
     auto numberProtocolControlsArea = area;
+
+    if(numberProtocolController != nullptr) {
+        numberProtocolController->setBounds(numberProtocolControlsArea);
+    }
 }
 
 // Private methods
@@ -51,4 +60,33 @@ void FigureOnsetSelection::configureNumberProtocolSelector()
     for(auto &&config : ProtocolConfig::getConfigurations()) {
         numberProtocolSelector.addItem(config.getName(), config.getId());
     }
+}
+
+void FigureOnsetSelection::numberProtocolChanged()
+{
+    using namespace aleatoric;
+
+    auto id = numberProtocolSelector.getSelectedId();
+    auto selectedConfig = ProtocolConfig::findById(id);
+
+    producer.setNumberProtocol(
+        NumberProtocol::create(selectedConfig.getProtocolType()));
+
+    numberProtocolController =
+        NumberProtocolController::create(selectedConfig.getProtocolType(),
+                                         producer.getParams());
+
+    numberProtocolController->attach(
+        [this](aleatoric::NumberProtocolParameters::Protocols newParams) {
+            updateNumberProtocolParams(newParams);
+        });
+
+    addAndMakeVisible(*numberProtocolController);
+    resized();
+}
+
+void FigureOnsetSelection::updateNumberProtocolParams(
+    aleatoric::NumberProtocolParameters::Protocols newParams)
+{
+    producer.setParams(newParams);
 }
