@@ -1,5 +1,7 @@
 #include "ProtocolConfig.h"
 
+#include <algorithm>
+
 ProtocolConfig::ProtocolConfig(
     int id,
     juce::String name,

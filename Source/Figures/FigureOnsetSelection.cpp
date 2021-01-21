@@ -11,7 +11,7 @@ FigureOnsetSelection::FigureOnsetSelection(
     addAndMakeVisible(&onsetSelectionHeading);
     onsetSelectionHeading.setFont(juce::Font(20.0f, juce::Font::bold));
 
-    // identical to FigParticleSel except for name changes
+    // below is identical to FigParticleSel except for name changes
     numberProtocolSelectorLabel.setText("Selection strategy: ",
                                         juce::dontSendNotification);
     addAndMakeVisible(&numberProtocolSelectorLabel);
@@ -22,7 +22,7 @@ FigureOnsetSelection::FigureOnsetSelection(
         numberProtocolChanged();
     };
 
-    // TODO: set initial active number protocol
+    setInitialActiveNumberProtocol();
 }
 
 FigureOnsetSelection::~FigureOnsetSelection()
@@ -38,7 +38,7 @@ void FigureOnsetSelection::resized()
 
     onsetSelectionHeading.setBounds(area.removeFromTop(50));
 
-    // this is not much different from FigParticleSel
+    // this is almost identical to FigParticleSel
     auto chooseNumberProtocolArea = area.removeFromTop(45);
     auto numberProtocolColWidth = chooseNumberProtocolArea.getWidth() / 2;
     numberProtocolSelectorLabel.setBounds(
@@ -64,6 +64,8 @@ void FigureOnsetSelection::configureNumberProtocolSelector()
 
 void FigureOnsetSelection::numberProtocolChanged()
 {
+    // logic is identical to FigParticleSel. Differs only in how producer is
+    // called because they differ ever so slightly
     using namespace aleatoric;
 
     auto id = numberProtocolSelector.getSelectedId();
@@ -88,5 +90,15 @@ void FigureOnsetSelection::numberProtocolChanged()
 void FigureOnsetSelection::updateNumberProtocolParams(
     aleatoric::NumberProtocolParameters::Protocols newParams)
 {
+    // identical to FigParticleSel
     producer.setParams(newParams);
+}
+
+void FigureOnsetSelection::setInitialActiveNumberProtocol()
+{
+    // identical to FigParticleSel
+    auto activeProtocol = producer.getParams().getActiveProtocol();
+    auto config = ProtocolConfig::findByActiveProtocol(activeProtocol);
+    numberProtocolSelector.setSelectedId(config.getId(),
+                                         juce::dontSendNotification);
 }

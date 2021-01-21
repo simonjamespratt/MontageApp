@@ -2,8 +2,6 @@
 
 #include "ProtocolConfig.h"
 
-#include <algorithm>
-
 FigureParticleSelection::FigureParticleSelection(
     std::shared_ptr<aleatoric::CollectionsProducer<Particle>> particleProducer)
 : producer(particleProducer)
