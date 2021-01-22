@@ -3,13 +3,7 @@
 #include "FigureCollection.h"
 #include "FigureProcessor.h"
 
-FigureGenerator::FigureGenerator(juce::ValueTree as)
-: appState(as),
-  onsetProducer(aleatoric::DurationProtocol::createPrescribed(
-                    std::vector<int> {1000, 2000}),
-                aleatoric::NumberProtocol::create(
-                    aleatoric::NumberProtocol::Type::basic)),
-  figureOnsetSelection(onsetProducer)
+FigureGenerator::FigureGenerator(juce::ValueTree as) : appState(as)
 {
     // TODO: Data management: when proper data handling is in place this will
     // need to be addressed
@@ -31,8 +25,6 @@ FigureGenerator::FigureGenerator(juce::ValueTree as)
 
     numEventsLabel.setText("Number of events: ", juce::dontSendNotification);
     addChildComponent(&numEventsLabel);
-
-    addAndMakeVisible(&figureOnsetSelection);
 }
 
 FigureGenerator::~FigureGenerator()
@@ -65,7 +57,9 @@ void FigureGenerator::resized()
     }
 
     auto onsetSelectionArea = area;
-    figureOnsetSelection.setBounds(onsetSelectionArea);
+    if(figureOnsetSelection != nullptr) {
+        figureOnsetSelection->setBounds(onsetSelectionArea);
+    }
 }
 
 Figure FigureGenerator::generateFigure()
@@ -81,7 +75,7 @@ Figure FigureGenerator::generateFigure()
     jassert(numOfEventsToMake > 0);
     FigureProcessor processor;
     return processor.composeFigure(numOfEventsToMake,
-                                   onsetProducer,
+                                   *onsetProducer,
                                    *particleProducer,
                                    figureCollection);
 }
@@ -120,11 +114,24 @@ void FigureGenerator::valueTreeChildAdded(juce::ValueTree &parent,
                 figureParticleSelection->resetParams();
             }
 
+            if(onsetProducer == nullptr) {
+                onsetProducer = std::make_shared<aleatoric::DurationsProducer>(
+                    aleatoric::DurationProtocol::createPrescribed(
+                        std::vector<int> {1000, 2000}),
+                    aleatoric::NumberProtocol::create(
+                        aleatoric::NumberProtocol::Type::basic));
+            }
+
+            if(figureOnsetSelection == nullptr) {
+                figureOnsetSelection =
+                    std::make_unique<FigureOnsetSelection>(onsetProducer);
+                addAndMakeVisible(*figureOnsetSelection);
+            }
+
             blockedMessage.setVisible(false);
             globalSettingsHeading.setVisible(true);
             numEventsInput.setVisible(true);
             numEventsLabel.setVisible(true);
-            figureOnsetSelection.setVisible(true);
 
             resized();
         }
@@ -145,12 +152,13 @@ void FigureGenerator::valueTreeChildRemoved(juce::ValueTree &parent,
         if(particles.size() < 2) {
             particleProducer = nullptr;
             figureParticleSelection = nullptr;
+            onsetProducer = nullptr;
+            figureOnsetSelection = nullptr;
 
             blockedMessage.setVisible(true);
             globalSettingsHeading.setVisible(false);
             numEventsInput.setVisible(false);
             numEventsLabel.setVisible(false);
-            figureOnsetSelection.setVisible(false);
 
             resized();
         } else {

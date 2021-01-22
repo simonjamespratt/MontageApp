@@ -3,7 +3,7 @@
 #include "ProtocolConfig.h"
 
 FigureOnsetSelection::FigureOnsetSelection(
-    aleatoric::DurationsProducer &durationsProducer)
+    std::shared_ptr<aleatoric::DurationsProducer> durationsProducer)
 : producer(durationsProducer)
 {
     onsetSelectionHeading.setText("Onset selection",
@@ -71,12 +71,12 @@ void FigureOnsetSelection::numberProtocolChanged()
     auto id = numberProtocolSelector.getSelectedId();
     auto selectedConfig = ProtocolConfig::findById(id);
 
-    producer.setNumberProtocol(
+    producer->setNumberProtocol(
         NumberProtocol::create(selectedConfig.getProtocolType()));
 
     numberProtocolController =
         NumberProtocolController::create(selectedConfig.getProtocolType(),
-                                         producer.getParams());
+                                         producer->getParams());
 
     numberProtocolController->attach(
         [this](aleatoric::NumberProtocolParameters::Protocols newParams) {
@@ -91,13 +91,13 @@ void FigureOnsetSelection::updateNumberProtocolParams(
     aleatoric::NumberProtocolParameters::Protocols newParams)
 {
     // identical to FigParticleSel
-    producer.setParams(newParams);
+    producer->setParams(newParams);
 }
 
 void FigureOnsetSelection::setInitialActiveNumberProtocol()
 {
     // identical to FigParticleSel
-    auto activeProtocol = producer.getParams().getActiveProtocol();
+    auto activeProtocol = producer->getParams().getActiveProtocol();
     auto config = ProtocolConfig::findByActiveProtocol(activeProtocol);
     numberProtocolSelector.setSelectedId(config.getId(),
                                          juce::dontSendNotification);

@@ -47,8 +47,8 @@ class FigureGenerator : public juce::Component,
     std::shared_ptr<aleatoric::CollectionsProducer<Particle>> particleProducer;
     std::unique_ptr<FigureParticleSelection> figureParticleSelection;
 
-    aleatoric::DurationsProducer onsetProducer;
-    FigureOnsetSelection figureOnsetSelection;
+    std::shared_ptr<aleatoric::DurationsProducer> onsetProducer;
+    std::unique_ptr<FigureOnsetSelection> figureOnsetSelection;
 
     juce::Label blockedMessage;
     juce::Label globalSettingsHeading;

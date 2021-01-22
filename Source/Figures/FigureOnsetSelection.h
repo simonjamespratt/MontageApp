@@ -4,10 +4,12 @@
 
 #include <DurationsProducer.hpp>
 #include <juce_gui_basics/juce_gui_basics.h>
+#include <memory>
 
 class FigureOnsetSelection : public juce::Component {
   public:
-    FigureOnsetSelection(aleatoric::DurationsProducer &durationsProducer);
+    FigureOnsetSelection(
+        std::shared_ptr<aleatoric::DurationsProducer> durationsProducer);
     ~FigureOnsetSelection();
 
     void paint(juce::Graphics &) override;
@@ -24,7 +26,7 @@ class FigureOnsetSelection : public juce::Component {
     // Aleatoric. If it is, change Aleatoric to handle it with errors, then
     // catch them in Montage and handle UI messaging. If it isn't disallowed
     // behaviour in Aleatoric, then don't worry about it here!
-    aleatoric::DurationsProducer &producer;
+    std::shared_ptr<aleatoric::DurationsProducer> producer;
     std::unique_ptr<NumberProtocolController> numberProtocolController;
 
     juce::Label onsetSelectionHeading;
