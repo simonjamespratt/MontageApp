@@ -7,6 +7,8 @@ target_sources(Montage PRIVATE
     FigureParticleSelection.h
     FigureProcessor.cpp
     FigureProcessor.h
+    NumberProtocolSelector.cpp
+    NumberProtocolSelector.h
     ProtocolConfig.cpp
     ProtocolConfig.h
 )
