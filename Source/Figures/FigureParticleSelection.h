@@ -1,12 +1,10 @@
 #pragma once
 
-#include "NumberProtocolController.h"
-#include "Particle.h"
+#include "NumberProtocolSelector.h"
 
 #include <CollectionsProducer.hpp>
 #include <juce_gui_basics/juce_gui_basics.h>
 #include <memory>
-#include <vector>
 
 class FigureParticleSelection : public juce::Component {
   public:
@@ -22,17 +20,8 @@ class FigureParticleSelection : public juce::Component {
     void resetParams();
 
   private:
-    std::shared_ptr<aleatoric::CollectionsProducer<Particle>> producer;
-    std::unique_ptr<NumberProtocolController> controller;
-
+    NumberProtocolSelector selector;
     juce::Label heading;
-    juce::Label protocolSelectorLabel;
-    juce::ComboBox protocolSelector;
-
-    void configureProtocolSelector();
-    void protocolChanged();
-    void setInitialActiveProtocol();
-    void updateParams(aleatoric::NumberProtocolParameters::Protocols newParams);
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(FigureParticleSelection)
 };

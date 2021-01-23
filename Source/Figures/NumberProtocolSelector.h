@@ -20,12 +20,23 @@ class NumberProtocolSelector : public juce::Component {
     void paint(juce::Graphics &g) override;
     void resized() override;
 
+    void resetParams();
+
   private:
     std::shared_ptr<aleatoric::CollectionsProducer<Particle>>
         m_particleProducer;
     std::shared_ptr<aleatoric::DurationsProducer> m_durationsProducer;
 
     std::unique_ptr<NumberProtocolController> controller;
+
+    juce::Label protocolSelectorLabel;
+    juce::ComboBox protocolSelector;
+
+    void initialise();
+    void configureProtocolSelector();
+    void protocolChanged();
+    void updateParams(aleatoric::NumberProtocolParameters::Protocols newParams);
+    void setInitialActiveProtocol();
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(NumberProtocolSelector)
 };
