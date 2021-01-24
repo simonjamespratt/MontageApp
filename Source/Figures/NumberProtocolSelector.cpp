@@ -86,6 +86,15 @@ void NumberProtocolSelector::protocolChanged()
                                              m_particleProducer->getParams());
     }
 
+    if(m_durationsProducer != nullptr) {
+        m_durationsProducer->setNumberProtocol(
+            NumberProtocol::create(selectedConfig.getProtocolType()));
+
+        controller =
+            NumberProtocolController::create(selectedConfig.getProtocolType(),
+                                             m_durationsProducer->getParams());
+    }
+
     controller->attach(
         [this](aleatoric::NumberProtocolParameters::Protocols newParams) {
             updateParams(newParams);
@@ -101,15 +110,25 @@ void NumberProtocolSelector::updateParams(
     if(m_particleProducer != nullptr) {
         m_particleProducer->setParams(newParams);
     }
+
+    if(m_durationsProducer != nullptr) {
+        m_durationsProducer->setParams(newParams);
+    }
 }
 
 void NumberProtocolSelector::setInitialActiveProtocol()
 {
+    aleatoric::NumberProtocolParameters::Protocols::ActiveProtocol
+        activeProtocol;
+
     if(m_particleProducer != nullptr) {
-        auto activeProtocol =
-            m_particleProducer->getParams().getActiveProtocol();
-        auto config = ProtocolConfig::findByActiveProtocol(activeProtocol);
-        protocolSelector.setSelectedId(config.getId(),
-                                       juce::dontSendNotification);
+        activeProtocol = m_particleProducer->getParams().getActiveProtocol();
     }
+
+    if(m_durationsProducer != nullptr) {
+        activeProtocol = m_durationsProducer->getParams().getActiveProtocol();
+    }
+
+    auto config = ProtocolConfig::findByActiveProtocol(activeProtocol);
+    protocolSelector.setSelectedId(config.getId(), juce::dontSendNotification);
 }
