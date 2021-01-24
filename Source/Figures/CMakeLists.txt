@@ -1,4 +1,6 @@
 target_sources(Montage PRIVATE
+    DurationProtocolSelector.cpp
+    DurationProtocolSelector.h
     FigureGenerator.cpp
     FigureGenerator.h
     FigureOnsetSelection.cpp

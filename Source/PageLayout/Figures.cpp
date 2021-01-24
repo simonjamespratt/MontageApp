@@ -16,9 +16,9 @@ Figures::Figures(te::Engine &e, juce::ValueTree &as)
     addAndMakeVisible(&heading);
 
     generateButton.setButtonText("Generate");
-    // TODO: Generate button should not be visible when there aren't enough
-    // particles to make figure. This is another good reason why this should be
-    // in the figure generator component
+    // TODO: FIG-GEN-UI: Generate button should not be visible when there aren't
+    // enough particles to make figure. This is another good reason why this
+    // should be in the figure generator component
     addAndMakeVisible(&generateButton);
     generateButton.onClick = [this] {
         generateAndArrangeFigure();

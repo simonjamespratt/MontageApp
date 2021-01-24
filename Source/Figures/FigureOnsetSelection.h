@@ -6,9 +6,9 @@
 #include <juce_gui_basics/juce_gui_basics.h>
 #include <memory>
 
-// TODO: check that the duration protocol is not set in such a way that it
-// will have a collectionSize < 2 as this will cause the number protocol to
-// throw error (or at least I think it will). Need to check this in
+// TODO: FIG-GEN-UI: check that the duration protocol is not set in such a way
+// that it will have a collectionSize < 2 as this will cause the number protocol
+// to throw error (or at least I think it will). Need to check this in
 // Aleatoric. I don't think it is accounted for in the Aleatoric tests.
 // Aleatoric should be throwing an error if this behaviour is not allowed
 // and then Montage can catch the error and handle the UI messaging

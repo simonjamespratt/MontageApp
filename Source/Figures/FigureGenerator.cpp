@@ -25,6 +25,13 @@ FigureGenerator::FigureGenerator(juce::ValueTree as) : appState(as)
 
     numEventsLabel.setText("Number of events: ", juce::dontSendNotification);
     addChildComponent(&numEventsLabel);
+
+    generateButton.setButtonText("Generate");
+    addAndMakeVisible(&generateButton);
+    // TODO: reinstate this when know how to handle it
+    // generateButton.onClick = [this] {
+    //     generateAndArrangeFigure();
+    // };
 }
 
 FigureGenerator::~FigureGenerator()
@@ -51,6 +58,10 @@ void FigureGenerator::resized()
     numEventsInput.setBounds(
         numEventsArea.removeFromRight(numEventsColWidth).reduced(margin));
 
+    auto generateButtonArea =
+        globalSettingsArea.removeFromTop(50).reduced(margin);
+    generateButton.setBounds(generateButtonArea);
+
     auto particleSelectionArea = area.removeFromLeft(colWidth);
     if(figureParticleSelection != nullptr) {
         figureParticleSelection->setBounds(particleSelectionArea);
@@ -71,7 +82,7 @@ Figure FigureGenerator::generateFigure()
 
     auto numOfEventsToMake = numEventsInput.getText().getIntValue();
 
-    // TODO: replace this with user error message
+    // TODO: FIG-GEN-UI: replace this with user error message
     jassert(numOfEventsToMake > 0);
     FigureProcessor processor;
     return processor.composeFigure(numOfEventsToMake,

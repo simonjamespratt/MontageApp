@@ -35,15 +35,15 @@ class FigureGenerator : public juce::Component,
     juce::ValueTree appState;
     std::unique_ptr<ParticleCollection> particleCollection;
 
-    // TODO: I think there's a problem with AdjacentSteps protocol which doesn't
-    // seem to be selecting anything other than the first and second particles.
-    // Hunch is that this is because params are not being set correctly to
-    // mirror the size of the collection that the CollectionProducer is working
-    // with. This could be an indicator of a general problem at the
-    // CollectionProducer level in Montage or in Aleatoric, or it could be a bug
-    // with just AdjacentSteps protocol. Check the former first. Reason for
-    // hunch is that protocols are set to a range of 0-1 on construction and
-    // require params being set to change this.
+    // TODO: FIG-GEN-UI: I think there's a problem with AdjacentSteps protocol
+    // which doesn't seem to be selecting anything other than the first and
+    // second particles. Hunch is that this is because params are not being set
+    // correctly to mirror the size of the collection that the
+    // CollectionProducer is working with. This could be an indicator of a
+    // general problem at the CollectionProducer level in Montage or in
+    // Aleatoric, or it could be a bug with just AdjacentSteps protocol. Check
+    // the former first. Reason for hunch is that protocols are set to a range
+    // of 0-1 on construction and require params being set to change this.
     std::shared_ptr<aleatoric::CollectionsProducer<Particle>> particleProducer;
     std::unique_ptr<FigureParticleSelection> figureParticleSelection;
 
@@ -54,6 +54,7 @@ class FigureGenerator : public juce::Component,
     juce::Label globalSettingsHeading;
     juce::TextEditor numEventsInput;
     juce::Label numEventsLabel;
+    juce::TextButton generateButton;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(FigureGenerator)
 };

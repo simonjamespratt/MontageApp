@@ -5,10 +5,10 @@
 #include <vector>
 
 struct ProtocolConfig {
-    // TODO: Could Aleatoric use NumberProtocol::Type for ActiveProtcol instead
-    // of having to have a separate enum class? Also should the nested classes
-    // in NumberProtocolParameters be split out to avoid the :: everywhere in
-    // the calling code?
+    // TODO: FIG-GEN-UI: Could Aleatoric use NumberProtocol::Type for
+    // ActiveProtcol instead of having to have a separate enum class? Also
+    // should the nested classes in NumberProtocolParameters be split out to
+    // avoid the :: everywhere in the calling code?
     ProtocolConfig(
         int id,
         juce::String name,
