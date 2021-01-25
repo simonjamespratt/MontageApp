@@ -16,7 +16,6 @@ class Figures : public juce::Component {
 
   private:
     juce::Label heading;
-    juce::TextButton generateButton;
     te::Engine &engine;
     juce::ValueTree &appState;
     Sequencer sequencer;

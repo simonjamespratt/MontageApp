@@ -31,6 +31,12 @@ class FigureGenerator : public juce::Component,
 
     Figure generateFigure();
 
+    // TODO: Data management: This is a hack - when Figures can listen for a
+    // value tree figure addition, this can be made private and can call
+    // generateFigure() itself (currently Figures sets the callback for this
+    // button's onClick method).
+    juce::TextButton generateButton;
+
   private:
     juce::ValueTree appState;
     std::unique_ptr<ParticleCollection> particleCollection;
@@ -54,7 +60,6 @@ class FigureGenerator : public juce::Component,
     juce::Label globalSettingsHeading;
     juce::TextEditor numEventsInput;
     juce::Label numEventsLabel;
-    juce::TextButton generateButton;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(FigureGenerator)
 };

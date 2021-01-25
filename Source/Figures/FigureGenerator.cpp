@@ -28,10 +28,6 @@ FigureGenerator::FigureGenerator(juce::ValueTree as) : appState(as)
 
     generateButton.setButtonText("Generate");
     addAndMakeVisible(&generateButton);
-    // TODO: reinstate this when know how to handle it
-    // generateButton.onClick = [this] {
-    //     generateAndArrangeFigure();
-    // };
 }
 
 FigureGenerator::~FigureGenerator()

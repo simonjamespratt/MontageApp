@@ -15,12 +15,10 @@ Figures::Figures(te::Engine &e, juce::ValueTree &as)
     heading.setFont(juce::Font(24.0f, juce::Font::bold));
     addAndMakeVisible(&heading);
 
-    generateButton.setButtonText("Generate");
-    // TODO: FIG-GEN-UI: Generate button should not be visible when there aren't
-    // enough particles to make figure. This is another good reason why this
-    // should be in the figure generator component
-    addAndMakeVisible(&generateButton);
-    generateButton.onClick = [this] {
+    // TODO: Data management: This is a hack. Ideally this component would
+    // listen to a value tree to know a figure has been added and then get a
+    // Figure data object and call the sequencer with it.
+    figureGenerator.generateButton.onClick = [this] {
         generateAndArrangeFigure();
     };
 }
@@ -37,7 +35,6 @@ void Figures::resized()
 
     auto headingArea = area.removeFromTop(50);
     heading.setBounds(headingArea.removeFromLeft(250));
-    generateButton.setBounds(headingArea.removeFromLeft(200).reduced(10));
 
     auto heightUnit = area.getHeight() / 3;
     auto figureControlArea = area.removeFromTop(heightUnit);
