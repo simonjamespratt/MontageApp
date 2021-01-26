@@ -1,5 +1,6 @@
 #pragma once
 
+#include "DurationProtocolSelector.h"
 #include "NumberProtocolSelector.h"
 
 #include <DurationsProducer.hpp>
@@ -27,8 +28,9 @@ class FigureOnsetSelection : public juce::Component {
     void resized() override;
 
   private:
-    NumberProtocolSelector numberProtocolSelector;
     juce::Label heading;
+    NumberProtocolSelector numberProtocolSelector;
+    DurationProtocolSelector durationProtocolSelector;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(FigureOnsetSelection)
 };

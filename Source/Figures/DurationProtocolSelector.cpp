@@ -1,6 +1,8 @@
 #include "DurationProtocolSelector.h"
 
-DurationProtocolSelector::DurationProtocolSelector()
+DurationProtocolSelector::DurationProtocolSelector(
+    std::shared_ptr<aleatoric::DurationsProducer> durationsProducer)
+: producer(durationsProducer)
 {
     protocolSelectorLabel.setText("Durations strategy: ",
                                   juce::dontSendNotification);

@@ -1,14 +1,22 @@
 #pragma once
 
+#include <DurationsProducer.hpp>
 #include <juce_gui_basics/juce_gui_basics.h>
+#include <memory>
 
 class DurationProtocolSelector : public juce::Component {
-    DurationProtocolSelector();
+  public:
+    DurationProtocolSelector(
+        std::shared_ptr<aleatoric::DurationsProducer> durationsProducer);
+
     void paint(juce::Graphics &) override;
     void resized() override;
 
   private:
+    std::shared_ptr<aleatoric::DurationsProducer> producer;
+
     juce::Label protocolSelectorLabel;
     juce::ComboBox protocolSelector;
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(DurationProtocolSelector)
 };

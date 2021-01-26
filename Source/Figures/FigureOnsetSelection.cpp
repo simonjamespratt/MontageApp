@@ -1,16 +1,16 @@
 #include "FigureOnsetSelection.h"
 
-#include "ProtocolConfig.h"
-
 FigureOnsetSelection::FigureOnsetSelection(
     std::shared_ptr<aleatoric::DurationsProducer> durationsProducer)
-: numberProtocolSelector(durationsProducer)
+: numberProtocolSelector(durationsProducer),
+  durationProtocolSelector(durationsProducer)
 {
     heading.setText("Onset selection", juce::dontSendNotification);
     addAndMakeVisible(&heading);
     heading.setFont(juce::Font(20.0f, juce::Font::bold));
 
     addAndMakeVisible(&numberProtocolSelector);
+    addAndMakeVisible(&durationProtocolSelector);
 }
 
 FigureOnsetSelection::~FigureOnsetSelection()
@@ -24,5 +24,6 @@ void FigureOnsetSelection::resized()
     auto area = getLocalBounds();
     auto colWidth = area.getWidth() / 2;
     heading.setBounds(area.removeFromTop(50));
-    numberProtocolSelector.setBounds(area.removeFromLeft(colWidth));
+    durationProtocolSelector.setBounds(area.removeFromLeft(colWidth));
+    numberProtocolSelector.setBounds(area);
 }
