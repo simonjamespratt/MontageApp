@@ -40,11 +40,13 @@ void FigureGenerator::resized()
 {
     auto margin = 10;
     auto area = getLocalBounds();
-    auto colWidth = area.getWidth() / 3;
+    auto colWidth = area.getWidth() / 4;
+    auto globalSettingsArea = area.removeFromLeft(colWidth);
+    auto particleSelectionArea = area.removeFromLeft(colWidth);
+    auto onsetSelectionArea = area;
 
     blockedMessage.setBounds(area);
 
-    auto globalSettingsArea = area.removeFromLeft(colWidth);
     globalSettingsHeading.setBounds(globalSettingsArea.removeFromTop(50));
 
     auto numEventsArea = globalSettingsArea.removeFromTop(45);
@@ -58,12 +60,10 @@ void FigureGenerator::resized()
         globalSettingsArea.removeFromTop(50).reduced(margin);
     generateButton.setBounds(generateButtonArea);
 
-    auto particleSelectionArea = area.removeFromLeft(colWidth);
     if(figureParticleSelection != nullptr) {
         figureParticleSelection->setBounds(particleSelectionArea);
     }
 
-    auto onsetSelectionArea = area;
     if(figureOnsetSelection != nullptr) {
         figureOnsetSelection->setBounds(onsetSelectionArea);
     }

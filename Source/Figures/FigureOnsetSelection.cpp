@@ -22,6 +22,7 @@ void FigureOnsetSelection::paint(juce::Graphics &g)
 void FigureOnsetSelection::resized()
 {
     auto area = getLocalBounds();
+    auto colWidth = area.getWidth() / 2;
     heading.setBounds(area.removeFromTop(50));
-    numberProtocolSelector.setBounds(area);
+    numberProtocolSelector.setBounds(area.removeFromLeft(colWidth));
 }

@@ -7,8 +7,14 @@ Figures::Figures(te::Engine &e, juce::ValueTree &as)
   figureGenerator(appState),
   figureManager(appState)
 {
+    addAndMakeVisible(&toggleGenerateManagerButton);
+    toggleGenerateManagerButton.setButtonText("Show Manager");
+    toggleGenerateManagerButton.onClick = [this] {
+        toggleGenerateManagerState();
+    };
+
     addAndMakeVisible(&figureGenerator);
-    addAndMakeVisible(&figureManager);
+    addChildComponent(&figureManager);
     addAndMakeVisible(&sequencer);
 
     heading.setText("Figures", juce::dontSendNotification);
@@ -31,19 +37,18 @@ void Figures::paint(juce::Graphics &g)
 
 void Figures::resized()
 {
+    auto margin = 10;
     auto area = getLocalBounds();
 
     auto headingArea = area.removeFromTop(50);
-    heading.setBounds(headingArea.removeFromLeft(250));
+    heading.setBounds(headingArea.removeFromLeft(100));
+    toggleGenerateManagerButton.setBounds(
+        headingArea.removeFromLeft(150).reduced(margin));
 
     auto heightUnit = area.getHeight() / 3;
     auto figureControlArea = area.removeFromTop(heightUnit);
 
-    auto figureManagerAreaColUnit = figureControlArea.getWidth() / 3.0;
-
-    figureManager.setBounds(
-        figureControlArea.removeFromRight(figureManagerAreaColUnit));
-
+    figureManager.setBounds(figureControlArea);
     figureGenerator.setBounds(figureControlArea);
 
     sequencer.setBounds(area);
@@ -53,4 +58,18 @@ void Figures::generateAndArrangeFigure()
 {
     auto figure = figureGenerator.generateFigure();
     sequencer.readFigure(figure);
+}
+
+void Figures::toggleGenerateManagerState()
+{
+    showGenerator = !showGenerator;
+
+    if(showGenerator) {
+        figureManager.setVisible(false);
+        figureGenerator.setVisible(true);
+
+    } else {
+        figureGenerator.setVisible(false);
+        figureManager.setVisible(true);
+    }
 }
