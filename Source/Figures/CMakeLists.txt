@@ -1,4 +1,6 @@
 target_sources(Montage PRIVATE
+    DurationProtocolConfig.cpp
+    DurationProtocolConfig.h
     DurationProtocolSelector.cpp
     DurationProtocolSelector.h
     FigureGenerator.cpp
@@ -9,10 +11,10 @@ target_sources(Montage PRIVATE
     FigureParticleSelection.h
     FigureProcessor.cpp
     FigureProcessor.h
+    NumberProtocolConfig.cpp
+    NumberProtocolConfig.h
     NumberProtocolSelector.cpp
     NumberProtocolSelector.h
-    ProtocolConfig.cpp
-    ProtocolConfig.h
 )
 
 target_include_directories(Montage

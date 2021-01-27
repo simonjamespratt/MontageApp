@@ -1,5 +1,7 @@
 #include "DurationProtocolSelector.h"
 
+#include "DurationProtocolConfig.h"
+
 DurationProtocolSelector::DurationProtocolSelector(
     std::shared_ptr<aleatoric::DurationsProducer> durationsProducer)
 : producer(durationsProducer)
@@ -9,6 +11,7 @@ DurationProtocolSelector::DurationProtocolSelector(
     addAndMakeVisible(&protocolSelectorLabel);
 
     addAndMakeVisible(&protocolSelector);
+    configureProtocolSelector();
 }
 
 void DurationProtocolSelector::paint(juce::Graphics &g)
@@ -27,4 +30,12 @@ void DurationProtocolSelector::resized()
     auto controlsArea = area;
 
     // TODO: set the controller area if controller exists
+}
+
+// Private methods
+void DurationProtocolSelector::configureProtocolSelector()
+{
+    for(auto &&config : DurationProtocolConfig::getConfigurations()) {
+        protocolSelector.addItem(config.getName(), config.getId());
+    }
 }

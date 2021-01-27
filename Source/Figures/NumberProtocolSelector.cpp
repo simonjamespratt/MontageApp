@@ -1,6 +1,6 @@
 #include "NumberProtocolSelector.h"
 
-#include "ProtocolConfig.h"
+#include "NumberProtocolConfig.h"
 
 NumberProtocolSelector::NumberProtocolSelector(
     std::shared_ptr<aleatoric::CollectionsProducer<Particle>> particleProducer)
@@ -65,7 +65,7 @@ void NumberProtocolSelector::initialise()
 
 void NumberProtocolSelector::configureProtocolSelector()
 {
-    for(auto &&config : ProtocolConfig::getConfigurations()) {
+    for(auto &&config : NumberProtocolConfig::getConfigurations()) {
         protocolSelector.addItem(config.getName(), config.getId());
     }
 }
@@ -75,7 +75,7 @@ void NumberProtocolSelector::protocolChanged()
     using namespace aleatoric;
 
     auto id = protocolSelector.getSelectedId();
-    auto selectedConfig = ProtocolConfig::findById(id);
+    auto selectedConfig = NumberProtocolConfig::findById(id);
 
     if(m_particleProducer != nullptr) {
         m_particleProducer->setProtocol(
@@ -129,6 +129,6 @@ void NumberProtocolSelector::setInitialActiveProtocol()
         activeProtocol = m_durationsProducer->getParams().getActiveProtocol();
     }
 
-    auto config = ProtocolConfig::findByActiveProtocol(activeProtocol);
+    auto config = NumberProtocolConfig::findByActiveProtocol(activeProtocol);
     protocolSelector.setSelectedId(config.getId(), juce::dontSendNotification);
 }

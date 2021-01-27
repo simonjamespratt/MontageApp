@@ -1,8 +1,8 @@
-#include "ProtocolConfig.h"
+#include "NumberProtocolConfig.h"
 
 #include <algorithm>
 
-ProtocolConfig::ProtocolConfig(
+NumberProtocolConfig::NumberProtocolConfig(
     int id,
     juce::String name,
     aleatoric::NumberProtocol::Type protocolType,
@@ -14,70 +14,71 @@ ProtocolConfig::ProtocolConfig(
   m_activeProtocol(activeProtocol)
 {}
 
-int ProtocolConfig::getId() const
+int NumberProtocolConfig::getId() const
 {
     return m_id;
 }
 
-juce::String ProtocolConfig::getName() const
+juce::String NumberProtocolConfig::getName() const
 {
     return m_name;
 }
 
-aleatoric::NumberProtocol::Type ProtocolConfig::getProtocolType() const
+aleatoric::NumberProtocol::Type NumberProtocolConfig::getProtocolType() const
 {
     return m_protocolType;
 }
 
 aleatoric::NumberProtocolParameters::Protocols::ActiveProtocol
-ProtocolConfig::getActiveProtocol() const
+NumberProtocolConfig::getActiveProtocol() const
 {
     return m_activeProtocol;
 }
 
 // Static stuff
-std::vector<ProtocolConfig> ProtocolConfig::configs {
-    ProtocolConfig(1,
-                   "Adjacent Steps",
-                   aleatoric::NumberProtocol::Type::adjacentSteps,
-                   aleatoric::NumberProtocolParameters::Protocols::
-                       ActiveProtocol::adjacentSteps),
-    ProtocolConfig(
+std::vector<NumberProtocolConfig> NumberProtocolConfig::configs {
+    NumberProtocolConfig(1,
+                         "Adjacent Steps",
+                         aleatoric::NumberProtocol::Type::adjacentSteps,
+                         aleatoric::NumberProtocolParameters::Protocols::
+                             ActiveProtocol::adjacentSteps),
+    NumberProtocolConfig(
         2,
         "Basic",
         aleatoric::NumberProtocol::Type::basic,
         aleatoric::NumberProtocolParameters::Protocols::ActiveProtocol::basic),
-    ProtocolConfig(
+    NumberProtocolConfig(
         3,
         "Cycle",
         aleatoric::NumberProtocol::Type::cycle,
         aleatoric::NumberProtocolParameters::Protocols::ActiveProtocol::cycle)};
 
-std::vector<ProtocolConfig> ProtocolConfig::getConfigurations()
+std::vector<NumberProtocolConfig> NumberProtocolConfig::getConfigurations()
 {
     return configs;
 }
 
-ProtocolConfig ProtocolConfig::findByActiveProtocol(
+NumberProtocolConfig NumberProtocolConfig::findByActiveProtocol(
     const aleatoric::NumberProtocolParameters::Protocols::ActiveProtocol
         &activeProtocol)
 {
     auto it =
         std::find_if(configs.begin(),
                      configs.end(),
-                     [&activeProtocol](const ProtocolConfig &config) {
+                     [&activeProtocol](const NumberProtocolConfig &config) {
                          return config.getActiveProtocol() == activeProtocol;
                      });
     jassert(it != configs.end());
     return *it;
 }
 
-ProtocolConfig ProtocolConfig::findById(const int &id)
+NumberProtocolConfig NumberProtocolConfig::findById(const int &id)
 {
-    auto it = std::find_if(
-        configs.begin(),
-        configs.end(),
-        [&id](const ProtocolConfig &config) { return config.getId() == id; });
+    auto it = std::find_if(configs.begin(),
+                           configs.end(),
+                           [&id](const NumberProtocolConfig &config) {
+                               return config.getId() == id;
+                           });
     jassert(it != configs.end());
     return *it;
 }

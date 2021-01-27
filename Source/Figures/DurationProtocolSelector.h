@@ -15,8 +15,12 @@ class DurationProtocolSelector : public juce::Component {
   private:
     std::shared_ptr<aleatoric::DurationsProducer> producer;
 
+    // TODO: Add controller
+
     juce::Label protocolSelectorLabel;
     juce::ComboBox protocolSelector;
+
+    void configureProtocolSelector();
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(DurationProtocolSelector)
 };
