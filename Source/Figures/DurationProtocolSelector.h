@@ -21,6 +21,7 @@ class DurationProtocolSelector : public juce::Component {
     juce::ComboBox protocolSelector;
 
     void configureProtocolSelector();
+    void protocolChanged();
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(DurationProtocolSelector)
 };

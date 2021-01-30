@@ -12,6 +12,10 @@ DurationProtocolSelector::DurationProtocolSelector(
 
     addAndMakeVisible(&protocolSelector);
     configureProtocolSelector();
+    protocolSelector.onChange = [this] {
+        protocolChanged();
+    };
+    // TODO: set initial active protocol
 }
 
 void DurationProtocolSelector::paint(juce::Graphics &g)
@@ -39,3 +43,6 @@ void DurationProtocolSelector::configureProtocolSelector()
         protocolSelector.addItem(config.getName(), config.getId());
     }
 }
+
+void DurationProtocolSelector::protocolChanged()
+{}

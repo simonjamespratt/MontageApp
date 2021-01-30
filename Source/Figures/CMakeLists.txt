@@ -33,3 +33,4 @@ target_include_directories(Tests
 )
 
 add_subdirectory(NumberProtocolControllers)
+add_subdirectory(DurationProtocolControllers)
