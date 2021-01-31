@@ -1,4 +1,5 @@
 #pragma once
+#include "DurationProtocolController.h"
 
 #include <DurationsProducer.hpp>
 #include <juce_gui_basics/juce_gui_basics.h>
@@ -15,7 +16,7 @@ class DurationProtocolSelector : public juce::Component {
   private:
     std::shared_ptr<aleatoric::DurationsProducer> producer;
 
-    // TODO: Add controller
+    std::unique_ptr<DurationProtocolController> controller;
 
     juce::Label protocolSelectorLabel;
     juce::ComboBox protocolSelector;

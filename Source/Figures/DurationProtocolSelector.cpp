@@ -33,7 +33,9 @@ void DurationProtocolSelector::resized()
 
     auto controlsArea = area;
 
-    // TODO: set the controller area if controller exists
+    if(controller != nullptr) {
+        controller->setBounds(controlsArea);
+    }
 }
 
 // Private methods
@@ -45,4 +47,11 @@ void DurationProtocolSelector::configureProtocolSelector()
 }
 
 void DurationProtocolSelector::protocolChanged()
-{}
+{
+    auto id = protocolSelector.getSelectedId();
+    auto selectedConfig = DurationProtocolConfig::findById(id);
+    controller =
+        DurationProtocolController::create(selectedConfig.getProtocolType());
+    addAndMakeVisible(*controller);
+    resized();
+}
