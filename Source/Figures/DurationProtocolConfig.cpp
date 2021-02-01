@@ -46,3 +46,15 @@ DurationProtocolConfig DurationProtocolConfig::findById(const int &id)
     jassert(it != configs.end());
     return *it;
 }
+
+DurationProtocolConfig
+DurationProtocolConfig::findByType(const DurationProtocolController::Type &type)
+{
+    auto it = std::find_if(configs.begin(),
+                           configs.end(),
+                           [&type](const DurationProtocolConfig &config) {
+                               return config.getProtocolType() == type;
+                           });
+    jassert(it != configs.end());
+    return *it;
+}

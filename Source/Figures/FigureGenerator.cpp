@@ -1,5 +1,6 @@
 #include "FigureGenerator.h"
 
+#include "DurationProtocolParams.h"
 #include "FigureCollection.h"
 #include "FigureProcessor.h"
 
@@ -130,8 +131,12 @@ void FigureGenerator::valueTreeChildAdded(juce::ValueTree &parent,
             }
 
             if(figureOnsetSelection == nullptr) {
+                DurationProtocolParams params(
+                    DurationProtocolController::Type::prescribed);
+                params.durations = {1000, 2000};
                 figureOnsetSelection =
-                    std::make_unique<FigureOnsetSelection>(onsetProducer);
+                    std::make_unique<FigureOnsetSelection>(onsetProducer,
+                                                           params);
                 addAndMakeVisible(*figureOnsetSelection);
             }
 

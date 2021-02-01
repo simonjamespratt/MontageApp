@@ -131,4 +131,5 @@ void NumberProtocolSelector::setInitialActiveProtocol()
 
     auto config = NumberProtocolConfig::findByActiveProtocol(activeProtocol);
     protocolSelector.setSelectedId(config.getId(), juce::dontSendNotification);
+    protocolChanged();
 }

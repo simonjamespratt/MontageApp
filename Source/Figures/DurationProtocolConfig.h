@@ -16,6 +16,9 @@ struct DurationProtocolConfig {
 
     static DurationProtocolConfig findById(const int &id);
 
+    static DurationProtocolConfig
+    findByType(const DurationProtocolController::Type &type);
+
   private:
     int m_id;
     juce::String m_name;

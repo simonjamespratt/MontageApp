@@ -1,5 +1,6 @@
 #pragma once
 
+#include "DurationProtocolParams.h"
 #include "DurationProtocolSelector.h"
 #include "NumberProtocolSelector.h"
 
@@ -21,7 +22,8 @@
 class FigureOnsetSelection : public juce::Component {
   public:
     FigureOnsetSelection(
-        std::shared_ptr<aleatoric::DurationsProducer> durationsProducer);
+        std::shared_ptr<aleatoric::DurationsProducer> durationsProducer,
+        DurationProtocolParams durationProtocolParams);
     ~FigureOnsetSelection();
 
     void paint(juce::Graphics &) override;

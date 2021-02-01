@@ -1,9 +1,10 @@
 #include "FigureOnsetSelection.h"
 
 FigureOnsetSelection::FigureOnsetSelection(
-    std::shared_ptr<aleatoric::DurationsProducer> durationsProducer)
+    std::shared_ptr<aleatoric::DurationsProducer> durationsProducer,
+    DurationProtocolParams durationProtocolParams)
 : numberProtocolSelector(durationsProducer),
-  durationProtocolSelector(durationsProducer)
+  durationProtocolSelector(durationsProducer, durationProtocolParams)
 {
     heading.setText("Onset selection", juce::dontSendNotification);
     addAndMakeVisible(&heading);
