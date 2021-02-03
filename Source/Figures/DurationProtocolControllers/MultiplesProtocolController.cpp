@@ -1,6 +1,7 @@
 #include "MultiplesProtocolController.h"
 
-MultiplesProtocolController::MultiplesProtocolController()
+MultiplesProtocolController::MultiplesProtocolController(
+    DurationProtocolParams &params)
 {
     text.setText("Multiples Protocol Controller", juce::dontSendNotification);
     addAndMakeVisible(&text);

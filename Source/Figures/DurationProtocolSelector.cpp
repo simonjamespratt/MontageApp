@@ -51,9 +51,9 @@ void DurationProtocolSelector::protocolChanged()
 {
     auto id = protocolSelector.getSelectedId();
     auto selectedConfig = DurationProtocolConfig::findById(id);
-    // TODO: pass the params into the controllers
     controller =
-        DurationProtocolController::create(selectedConfig.getProtocolType());
+        DurationProtocolController::create(selectedConfig.getProtocolType(),
+                                           params);
     addAndMakeVisible(*controller);
     resized();
 }

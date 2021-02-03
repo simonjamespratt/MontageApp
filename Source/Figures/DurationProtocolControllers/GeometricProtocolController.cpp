@@ -1,6 +1,7 @@
 #include "GeometricProtocolController.h"
 
-GeometricProtocolController::GeometricProtocolController()
+GeometricProtocolController::GeometricProtocolController(
+    DurationProtocolParams &params)
 {
     text.setText("Geometric Protocol Controller", juce::dontSendNotification);
     addAndMakeVisible(&text);
