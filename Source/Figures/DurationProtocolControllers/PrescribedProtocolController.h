@@ -2,8 +2,15 @@
 #include "DurationProtocolController.h"
 #include "DurationProtocolParams.h"
 
+#include <memory>
+#include <tuple>
 #include <vector>
 
+// TODO: add value
+// TODO: delete value
+// TODO: update params
+// TODO: add button to set protocol
+// TODO: set the protocol using params
 class PrescribedProtocolController : public DurationProtocolController {
   public:
     PrescribedProtocolController(DurationProtocolParams &params);
@@ -11,9 +18,19 @@ class PrescribedProtocolController : public DurationProtocolController {
     void resized() override;
 
   private:
+    struct Value {
+        juce::Label label;
+        juce::TextEditor input;
+    };
+
     void setProtocol() override;
     DurationProtocolParams &m_params;
-    std::vector<juce::Label> durationValues {};
+
+    // NB: have to use pointers because juce components have their copy
+    // constructors deleted and both vector and list (despite what link below
+    // says) require objects being stored to have copy constructors. See:
+    // https://forum.juce.com/t/adding-components-to-std-vector-with-emplace-back/35193
+    std::vector<std::unique_ptr<Value>> durationValues {};
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PrescribedProtocolController)
 };
