@@ -8,7 +8,6 @@
 
 // TODO: add value
 // TODO: delete value
-// TODO: add button to set protocol
 // TODO: set the protocol using params
 class PrescribedProtocolController : public DurationProtocolController {
   public:
@@ -21,6 +20,7 @@ class PrescribedProtocolController : public DurationProtocolController {
         Value(int &value);
         juce::Label label;
         juce::TextEditor input;
+        juce::TextButton deleteButton;
         int &paramsDurationValue;
     };
 
@@ -32,6 +32,8 @@ class PrescribedProtocolController : public DurationProtocolController {
     // says) require objects being stored to have copy constructors. See:
     // https://forum.juce.com/t/adding-components-to-std-vector-with-emplace-back/35193
     std::vector<std::shared_ptr<Value>> durationValues {};
+
+    juce::TextButton saveButton;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PrescribedProtocolController)
 };
