@@ -16,11 +16,17 @@ class PrescribedProtocolController : public DurationProtocolController {
     void resized() override;
 
   private:
-    struct Value {
-        Value(int &value);
+    juce::Identifier duration_id {"duration"};
+    juce::Identifier duration_value_id {"duration_value"};
+    juce::Identifier durations_model_id {"durations_model"};
+    juce::ValueTree durationsModel {durations_model_id};
+
+    struct DurationView {
+        DurationView(int &value, int index);
         juce::Label label;
         juce::TextEditor input;
         juce::TextButton deleteButton;
+        juce::ValueTree duration;
         int &paramsDurationValue;
     };
 
@@ -31,7 +37,7 @@ class PrescribedProtocolController : public DurationProtocolController {
     // constructors deleted and both vector and list (despite what link below
     // says) require objects being stored to have copy constructors. See:
     // https://forum.juce.com/t/adding-components-to-std-vector-with-emplace-back/35193
-    std::vector<std::shared_ptr<Value>> durationValues {};
+    std::vector<std::shared_ptr<DurationView>> durationViews {};
 
     juce::TextButton saveButton;
 
