@@ -2,7 +2,8 @@
 
 #include <iterator>
 
-PrescribedProtocolController::DurationView::DurationView(int &value, int index)
+PrescribedProtocolController::DurationView::DurationView(
+    int &value, int index, std::function<void(int index)> onDelete)
 : paramsDurationValue(value)
 {
     input.setText(juce::String(value));
@@ -19,43 +20,32 @@ PrescribedProtocolController::DurationView::DurationView(int &value, int index)
     label.attachToComponent(&input, true);
 
     deleteButton.setButtonText("Delete");
-    // remove corresponding value from m_params.durations
-    // remove durationView from vector durationViews
-    // call resized()
+    deleteButton.onClick = [index, onDelete] {
+        onDelete(index);
+    };
 };
 
 PrescribedProtocolController::PrescribedProtocolController(
     DurationProtocolParams &params)
 : m_params(params)
 {
-    for(auto &&value : m_params.durations) {
-        juce::ValueTree duration(duration_id);
-        duration.setProperty(duration_value_id, value, nullptr);
-        durationsModel.addChild(duration, -1, nullptr);
-    }
+    // for(auto &&value : m_params.durations) {
+    //     juce::ValueTree duration(duration_id);
+    //     duration.setProperty(duration_value_id, value, nullptr);
+    //     durationsModel.addChild(duration, -1, nullptr);
+    // }
 
-    auto numChildren = durationsModel.getNumChildren();
+    // auto numChildren = durationsModel.getNumChildren();
 
-    for(int i = 0; i < numChildren; i++) {
-        auto duration = durationsModel.getChild(i);
-        int value = duration.getProperty(duration_value_id);
-        DBG("value: " << value);
-        auto index = durationsModel.indexOf(duration);
-        DBG("value index: " << index);
+    // for(int i = 0; i < numChildren; i++) {
+    //     auto duration = durationsModel.getChild(i);
+    //     int value = duration.getProperty(duration_value_id);
+    //     DBG("value: " << value);
+    //     auto index = durationsModel.indexOf(duration);
+    //     DBG("value index: " << index);
+    // }
 
-        // TODO: remove value passed here
-        // auto durationView = std::make_shared<DurationView>(999);
-    }
-
-    auto &values = m_params.durations;
-    for(auto it = begin(values); it != end(values); ++it) {
-        int index = std::distance(values.begin(), it);
-        auto view = std::make_shared<DurationView>(*it, index);
-        addAndMakeVisible(&view->input);
-        addAndMakeVisible(&view->label);
-        addAndMakeVisible(&view->deleteButton);
-        durationViews.emplace_back(view);
-    }
+    drawView();
 
     saveButton.setButtonText("Set protocol");
     saveButton.onClick = [this] {
@@ -92,4 +82,28 @@ void PrescribedProtocolController::setProtocol()
     for(auto &&value : m_params.durations) {
         DBG("in params.durations" << juce::String(value));
     }
+}
+
+void PrescribedProtocolController::drawView()
+{
+    auto &values = m_params.durations;
+    for(auto it = begin(values); it != end(values); ++it) {
+        int index = std::distance(values.begin(), it);
+        auto view =
+            std::make_shared<DurationView>(*it, index, [this](int index) {
+                onDelete(index);
+            });
+        addAndMakeVisible(&view->input);
+        addAndMakeVisible(&view->label);
+        addAndMakeVisible(&view->deleteButton);
+        durationViews.emplace_back(view);
+    }
+}
+
+void PrescribedProtocolController::onDelete(int index)
+{
+    durationViews.clear();
+    m_params.durations.erase(m_params.durations.begin() + index);
+    drawView();
+    resized();
 }

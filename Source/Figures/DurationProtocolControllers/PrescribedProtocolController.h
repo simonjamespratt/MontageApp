@@ -2,6 +2,7 @@
 #include "DurationProtocolController.h"
 #include "DurationProtocolParams.h"
 
+#include <functional>
 #include <memory>
 #include <tuple>
 #include <vector>
@@ -16,27 +17,32 @@ class PrescribedProtocolController : public DurationProtocolController {
     void resized() override;
 
   private:
-    juce::Identifier duration_id {"duration"};
-    juce::Identifier duration_value_id {"duration_value"};
-    juce::Identifier durations_model_id {"durations_model"};
-    juce::ValueTree durationsModel {durations_model_id};
+    // juce::Identifier duration_id {"duration"};
+    // juce::Identifier duration_value_id {"duration_value"};
+    // juce::Identifier durations_model_id {"durations_model"};
+    // juce::ValueTree durationsModel {durations_model_id};
 
     struct DurationView {
-        DurationView(int &value, int index);
+        DurationView(int &value,
+                     int index,
+                     std::function<void(int index)> onDelete);
         juce::Label label;
         juce::TextEditor input;
         juce::TextButton deleteButton;
-        juce::ValueTree duration;
+        // juce::ValueTree duration;
         int &paramsDurationValue;
     };
 
     void setProtocol() override;
+    void drawView();
+    void onDelete(int index);
     DurationProtocolParams &m_params;
 
     // NB: have to use pointers because juce components have their copy
     // constructors deleted and both vector and list (despite what link below
     // says) require objects being stored to have copy constructors. See:
     // https://forum.juce.com/t/adding-components-to-std-vector-with-emplace-back/35193
+    // TODO: Try unique ptr here now things have changed
     std::vector<std::shared_ptr<DurationView>> durationViews {};
 
     juce::TextButton saveButton;
