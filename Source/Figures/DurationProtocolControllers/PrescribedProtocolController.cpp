@@ -24,7 +24,23 @@ DurationView::DurationView(int &value,
     deleteButton.onClick = [index, onDelete] {
         onDelete(index);
     };
+
+    addAndMakeVisible(&input);
+    addAndMakeVisible(&label);
+    addAndMakeVisible(&deleteButton);
 };
+
+void DurationView::resized()
+{
+    auto margin = 10;
+    auto area = getLocalBounds();
+    area.removeFromLeft(50); // label gutter
+    input.setBounds(area.removeFromLeft(100).reduced(margin));
+    deleteButton.setBounds(area.reduced(margin));
+}
+
+void DurationViewCollection::resized()
+{}
 
 PrescribedProtocolController::PrescribedProtocolController(
     DurationProtocolParams &params)
@@ -52,13 +68,10 @@ void PrescribedProtocolController::resized()
 {
     auto margin = 10;
     auto area = getLocalBounds();
-    area.removeFromLeft(50); // label gutter
-    auto viewsArea = area.removeFromLeft(200);
+    auto viewsArea = area.removeFromLeft(250);
     for(auto &&view : durationViews) {
         auto itemArea = viewsArea.removeFromTop(45);
-        auto labelArea = itemArea.removeFromLeft(100);
-        view->input.setBounds(labelArea.reduced(margin));
-        view->deleteButton.setBounds(itemArea.reduced(margin));
+        view->setBounds(itemArea);
     }
     saveButton.setBounds(area.removeFromTop(45).reduced(margin));
     addButton.setBounds(area.removeFromTop(45).reduced(margin));
@@ -85,9 +98,7 @@ void PrescribedProtocolController::drawView()
             std::make_unique<DurationView>(*it, index, [this](int index) {
                 onDelete(index);
             });
-        addAndMakeVisible(&view->input);
-        addAndMakeVisible(&view->label);
-        addAndMakeVisible(&view->deleteButton);
+        addAndMakeVisible(*view);
         durationViews.emplace_back(std::move(view));
     }
 }

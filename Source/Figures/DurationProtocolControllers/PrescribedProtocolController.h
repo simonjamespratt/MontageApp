@@ -9,14 +9,25 @@
 // TODO: set the protocol using params
 // TODO: make the area scrollable
 
-struct DurationView {
+struct DurationView : public juce::Component {
     DurationView(int &value,
                  int index,
                  std::function<void(int index)> onDelete);
+    void resized() override;
     juce::Label label;
     juce::TextEditor input;
     juce::TextButton deleteButton;
     int &paramsDurationValue;
+
+  private:
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(DurationView)
+};
+
+struct DurationViewCollection : public juce::Component {
+    void resized() override;
+
+  private:
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(DurationViewCollection)
 };
 
 class PrescribedProtocolController : public DurationProtocolController {
