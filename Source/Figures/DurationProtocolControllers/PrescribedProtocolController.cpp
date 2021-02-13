@@ -39,24 +39,31 @@ void DurationView::resized()
     deleteButton.setBounds(area.reduced(margin));
 }
 
-DurationViewCollection::DurationViewCollection()
+DurationViewContainer::DurationViewContainer()
 {}
 
-void DurationViewCollection::resized()
+void DurationViewContainer::resized()
 {
+    int viewInstanceHeight = 45;
+
+    auto height = getNumChildComponents() * viewInstanceHeight;
+    setSize(getWidth(), height);
+
     auto area = getLocalBounds();
 
     auto children = getChildren();
     for(auto *child : children) {
-        child->setBounds(area.removeFromTop(45));
+        child->setBounds(area.removeFromTop(viewInstanceHeight));
     }
 }
 
 PrescribedProtocolController::PrescribedProtocolController(
     DurationProtocolParams &params)
-: m_params(params), durationViewCollection()
+: m_params(params), durationViewContainer()
 {
-    addAndMakeVisible(&durationViewCollection);
+    viewport.setViewedComponent(&durationViewContainer, false);
+    viewport.setScrollBarsShown(true, false);
+    addAndMakeVisible(&viewport);
     drawView();
 
     saveButton.setButtonText("Set protocol");
@@ -81,7 +88,8 @@ void PrescribedProtocolController::resized()
     auto area = getLocalBounds();
 
     auto viewsArea = area.removeFromLeft(250);
-    durationViewCollection.setBounds(viewsArea);
+    viewport.setBounds(viewsArea);
+    durationViewContainer.setBounds(viewsArea);
 
     saveButton.setBounds(area.removeFromTop(45).reduced(margin));
     addButton.setBounds(area.removeFromTop(45).reduced(margin));
@@ -108,7 +116,7 @@ void PrescribedProtocolController::drawView()
             std::make_unique<DurationView>(*it, index, [this](int index) {
                 onDelete(index);
             });
-        durationViewCollection.addAndMakeVisible(*view);
+        durationViewContainer.addAndMakeVisible(*view);
         durationViews.emplace_back(std::move(view));
     }
 }
@@ -118,7 +126,7 @@ void PrescribedProtocolController::onDelete(int index)
     durationViews.clear();
     m_params.durations.erase(m_params.durations.begin() + index);
     drawView();
-    durationViewCollection.resized();
+    durationViewContainer.resized();
 }
 
 void PrescribedProtocolController::onAdd()
@@ -126,5 +134,5 @@ void PrescribedProtocolController::onAdd()
     durationViews.clear();
     m_params.durations.emplace_back(1);
     drawView();
-    durationViewCollection.resized();
+    durationViewContainer.resized();
 }

@@ -7,7 +7,6 @@
 #include <vector>
 
 // TODO: set the protocol using params
-// TODO: make the area scrollable
 
 struct DurationView : public juce::Component {
     DurationView(int &value,
@@ -23,12 +22,12 @@ struct DurationView : public juce::Component {
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(DurationView)
 };
 
-struct DurationViewCollection : public juce::Component {
-    DurationViewCollection();
+struct DurationViewContainer : public juce::Component {
+    DurationViewContainer();
     void resized() override;
 
   private:
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(DurationViewCollection)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(DurationViewContainer)
 };
 
 class PrescribedProtocolController : public DurationProtocolController {
@@ -49,7 +48,8 @@ class PrescribedProtocolController : public DurationProtocolController {
     // says) require objects being stored to have copy constructors. See:
     // https://forum.juce.com/t/adding-components-to-std-vector-with-emplace-back/35193
     std::vector<std::unique_ptr<DurationView>> durationViews {};
-    DurationViewCollection durationViewCollection;
+    DurationViewContainer durationViewContainer;
+    juce::Viewport viewport;
 
     juce::TextButton saveButton;
     juce::TextButton addButton;
