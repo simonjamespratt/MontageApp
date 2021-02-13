@@ -24,6 +24,7 @@ struct DurationView : public juce::Component {
 };
 
 struct DurationViewCollection : public juce::Component {
+    DurationViewCollection();
     void resized() override;
 
   private:
@@ -48,6 +49,7 @@ class PrescribedProtocolController : public DurationProtocolController {
     // says) require objects being stored to have copy constructors. See:
     // https://forum.juce.com/t/adding-components-to-std-vector-with-emplace-back/35193
     std::vector<std::unique_ptr<DurationView>> durationViews {};
+    DurationViewCollection durationViewCollection;
 
     juce::TextButton saveButton;
     juce::TextButton addButton;

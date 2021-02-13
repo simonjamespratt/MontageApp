@@ -39,13 +39,24 @@ void DurationView::resized()
     deleteButton.setBounds(area.reduced(margin));
 }
 
-void DurationViewCollection::resized()
+DurationViewCollection::DurationViewCollection()
 {}
+
+void DurationViewCollection::resized()
+{
+    auto area = getLocalBounds();
+
+    auto children = getChildren();
+    for(auto *child : children) {
+        child->setBounds(area.removeFromTop(45));
+    }
+}
 
 PrescribedProtocolController::PrescribedProtocolController(
     DurationProtocolParams &params)
-: m_params(params)
+: m_params(params), durationViewCollection()
 {
+    addAndMakeVisible(&durationViewCollection);
     drawView();
 
     saveButton.setButtonText("Set protocol");
@@ -68,11 +79,10 @@ void PrescribedProtocolController::resized()
 {
     auto margin = 10;
     auto area = getLocalBounds();
+
     auto viewsArea = area.removeFromLeft(250);
-    for(auto &&view : durationViews) {
-        auto itemArea = viewsArea.removeFromTop(45);
-        view->setBounds(itemArea);
-    }
+    durationViewCollection.setBounds(viewsArea);
+
     saveButton.setBounds(area.removeFromTop(45).reduced(margin));
     addButton.setBounds(area.removeFromTop(45).reduced(margin));
 }
@@ -98,7 +108,7 @@ void PrescribedProtocolController::drawView()
             std::make_unique<DurationView>(*it, index, [this](int index) {
                 onDelete(index);
             });
-        addAndMakeVisible(*view);
+        durationViewCollection.addAndMakeVisible(*view);
         durationViews.emplace_back(std::move(view));
     }
 }
@@ -108,7 +118,7 @@ void PrescribedProtocolController::onDelete(int index)
     durationViews.clear();
     m_params.durations.erase(m_params.durations.begin() + index);
     drawView();
-    resized();
+    durationViewCollection.resized();
 }
 
 void PrescribedProtocolController::onAdd()
@@ -116,5 +126,5 @@ void PrescribedProtocolController::onAdd()
     durationViews.clear();
     m_params.durations.emplace_back(1);
     drawView();
-    resized();
+    durationViewCollection.resized();
 }
