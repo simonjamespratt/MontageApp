@@ -2,6 +2,16 @@
 #include "DurationProtocolController.h"
 #include "DurationProtocolParams.h"
 
+struct NumericParamWithLabel : public juce::Component {
+    NumericParamWithLabel(int &paramValue, juce::String labelText);
+    void resized() override;
+
+    private:
+    int &value;
+    juce::TextEditor input;
+    juce::Label label;
+};
+
 class GeometricProtocolController : public DurationProtocolController {
   public:
     GeometricProtocolController(DurationProtocolParams &params);
@@ -10,5 +20,8 @@ class GeometricProtocolController : public DurationProtocolController {
 
   private:
     void setProtocol() override;
-    juce::Label text;
+
+    DurationProtocolParams &m_params;
+    juce::Label rangeStartLabel;
+    juce::TextEditor rangeStartInput;
 };

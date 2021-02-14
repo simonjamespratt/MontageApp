@@ -131,12 +131,10 @@ void FigureGenerator::valueTreeChildAdded(juce::ValueTree &parent,
             }
 
             if(figureOnsetSelection == nullptr) {
-                DurationProtocolParams params(
-                    DurationProtocolController::Type::prescribed);
-                params.durations = {1000, 2000};
-                figureOnsetSelection =
-                    std::make_unique<FigureOnsetSelection>(onsetProducer,
-                                                           params);
+                figureOnsetSelection = std::make_unique<FigureOnsetSelection>(
+                    onsetProducer,
+                    DurationProtocolParams(
+                        DurationProtocolController::Type::prescribed));
                 addAndMakeVisible(*figureOnsetSelection);
             }
 

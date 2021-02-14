@@ -100,14 +100,15 @@ void PrescribedProtocolController::resized()
 void PrescribedProtocolController::setProtocol()
 {
     m_producer->setDurationProtocol(
-        aleatoric::DurationProtocol::createPrescribed(m_params.durations));
+        aleatoric::DurationProtocol::createPrescribed(
+            m_params.prescribed.durations));
 }
 
 void PrescribedProtocolController::drawView()
 {
-    auto &values = m_params.durations;
-    for(auto it = begin(values); it != end(values); ++it) {
-        int index = std::distance(values.begin(), it);
+    auto &durations = m_params.prescribed.durations;
+    for(auto it = begin(durations); it != end(durations); ++it) {
+        int index = std::distance(durations.begin(), it);
         auto view =
             std::make_unique<DurationView>(*it, index, [this](int index) {
                 onDelete(index);
@@ -120,7 +121,8 @@ void PrescribedProtocolController::drawView()
 void PrescribedProtocolController::onDelete(int index)
 {
     durationViews.clear();
-    m_params.durations.erase(m_params.durations.begin() + index);
+    m_params.prescribed.durations.erase(m_params.prescribed.durations.begin() +
+                                        index);
     drawView();
     durationViewContainer.resized();
 }
@@ -128,7 +130,7 @@ void PrescribedProtocolController::onDelete(int index)
 void PrescribedProtocolController::onAdd()
 {
     durationViews.clear();
-    m_params.durations.emplace_back(1);
+    m_params.prescribed.durations.emplace_back(1);
     drawView();
     durationViewContainer.resized();
 }
