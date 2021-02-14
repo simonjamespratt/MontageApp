@@ -58,8 +58,9 @@ void DurationViewContainer::resized()
 }
 
 PrescribedProtocolController::PrescribedProtocolController(
-    DurationProtocolParams &params)
-: m_params(params), durationViewContainer()
+    DurationProtocolParams &params,
+    std::shared_ptr<aleatoric::DurationsProducer> producer)
+: m_params(params), m_producer(producer), durationViewContainer()
 {
     viewport.setViewedComponent(&durationViewContainer, false);
     viewport.setScrollBarsShown(true, false);
@@ -98,13 +99,8 @@ void PrescribedProtocolController::resized()
 // Private methods
 void PrescribedProtocolController::setProtocol()
 {
-    for(auto &&value : durationViews) {
-        DBG("in durationViews" << juce::String(value->paramsDurationValue));
-    }
-
-    for(auto &&value : m_params.durations) {
-        DBG("in params.durations" << juce::String(value));
-    }
+    m_producer->setDurationProtocol(
+        aleatoric::DurationProtocol::createPrescribed(m_params.durations));
 }
 
 void PrescribedProtocolController::drawView()

@@ -53,7 +53,8 @@ void DurationProtocolSelector::protocolChanged()
     auto selectedConfig = DurationProtocolConfig::findById(id);
     controller =
         DurationProtocolController::create(selectedConfig.getProtocolType(),
-                                           params);
+                                           params,
+                                           producer);
     addAndMakeVisible(*controller);
     resized();
 }

@@ -6,8 +6,6 @@
 #include <memory>
 #include <vector>
 
-// TODO: set the protocol using params
-
 struct DurationView : public juce::Component {
     DurationView(int &value,
                  int index,
@@ -32,7 +30,10 @@ struct DurationViewContainer : public juce::Component {
 
 class PrescribedProtocolController : public DurationProtocolController {
   public:
-    PrescribedProtocolController(DurationProtocolParams &params);
+    PrescribedProtocolController(
+        DurationProtocolParams &params,
+        std::shared_ptr<aleatoric::DurationsProducer> producer);
+
     void paint(juce::Graphics &g) override;
     void resized() override;
 
@@ -42,6 +43,7 @@ class PrescribedProtocolController : public DurationProtocolController {
     void onDelete(int index);
     void onAdd();
     DurationProtocolParams &m_params;
+    std::shared_ptr<aleatoric::DurationsProducer> m_producer;
 
     // NB: have to use pointers because juce components have their copy
     // constructors deleted and both vector and list (despite what link below

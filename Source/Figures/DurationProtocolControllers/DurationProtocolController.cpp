@@ -6,8 +6,10 @@
 
 #include <stdexcept>
 
-std::unique_ptr<DurationProtocolController>
-DurationProtocolController::create(Type type, DurationProtocolParams &params)
+std::unique_ptr<DurationProtocolController> DurationProtocolController::create(
+    Type type,
+    DurationProtocolParams &params,
+    std::shared_ptr<aleatoric::DurationsProducer> producer)
 {
     switch(type) {
     case Type::geometric:
@@ -17,7 +19,7 @@ DurationProtocolController::create(Type type, DurationProtocolParams &params)
         return std::make_unique<MultiplesProtocolController>(params);
         break;
     case Type::prescribed:
-        return std::make_unique<PrescribedProtocolController>(params);
+        return std::make_unique<PrescribedProtocolController>(params, producer);
         break;
 
     default:
