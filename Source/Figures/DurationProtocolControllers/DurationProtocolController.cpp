@@ -14,7 +14,7 @@ std::unique_ptr<DurationProtocolController> DurationProtocolController::create(
     switch(type) {
     case Type::geometric:
         params.activeType = DurationProtocolController::Type::geometric;
-        return std::make_unique<GeometricProtocolController>(params);
+        return std::make_unique<GeometricProtocolController>(params, producer);
         break;
     case Type::multiples:
         params.activeType = DurationProtocolController::Type::multiples;

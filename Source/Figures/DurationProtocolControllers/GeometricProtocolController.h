@@ -2,11 +2,13 @@
 #include "DurationProtocolController.h"
 #include "DurationProtocolParams.h"
 
+#include <memory>
+
 struct NumericParamWithLabel : public juce::Component {
     NumericParamWithLabel(int &paramValue, juce::String labelText);
     void resized() override;
 
-    private:
+  private:
     int &value;
     juce::TextEditor input;
     juce::Label label;
@@ -14,7 +16,9 @@ struct NumericParamWithLabel : public juce::Component {
 
 class GeometricProtocolController : public DurationProtocolController {
   public:
-    GeometricProtocolController(DurationProtocolParams &params);
+    GeometricProtocolController(
+        DurationProtocolParams &params,
+        std::shared_ptr<aleatoric::DurationsProducer> producer);
     void paint(juce::Graphics &g) override;
     void resized() override;
 
@@ -22,6 +26,10 @@ class GeometricProtocolController : public DurationProtocolController {
     void setProtocol() override;
 
     DurationProtocolParams &m_params;
-    juce::Label rangeStartLabel;
-    juce::TextEditor rangeStartInput;
+    std::shared_ptr<aleatoric::DurationsProducer> m_producer;
+
+    NumericParamWithLabel rangeStart;
+    NumericParamWithLabel rangeEnd;
+    NumericParamWithLabel collectionSize;
+    juce::TextButton saveButton;
 };
