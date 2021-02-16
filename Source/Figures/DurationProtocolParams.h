@@ -19,6 +19,7 @@ struct MultiplesProtocolParams {
     int rangeEnd = 10;
     std::vector<int> multipliers = {1000, 2000};
     int baseIncrement = 100;
+    double deviationFactor = 0;
 };
 
 struct DurationProtocolParams {

@@ -18,7 +18,7 @@ std::unique_ptr<DurationProtocolController> DurationProtocolController::create(
         break;
     case Type::multiples:
         params.activeType = DurationProtocolController::Type::multiples;
-        return std::make_unique<MultiplesProtocolController>(params);
+        return std::make_unique<MultiplesProtocolController>(params, producer);
         break;
     case Type::prescribed:
         params.activeType = DurationProtocolController::Type::prescribed;

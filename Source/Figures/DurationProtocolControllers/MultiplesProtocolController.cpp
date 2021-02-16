@@ -1,10 +1,13 @@
 #include "MultiplesProtocolController.h"
 
 MultiplesProtocolController::MultiplesProtocolController(
-    DurationProtocolParams &params)
+    DurationProtocolParams &params,
+    std::shared_ptr<aleatoric::DurationsProducer> producer)
+: m_params(params),
+  m_producer(producer),
+  baseIncrementEditor(m_params.multiples.baseIncrement, "Base increment")
 {
-    text.setText("Multiples Protocol Controller", juce::dontSendNotification);
-    addAndMakeVisible(&text);
+    addAndMakeVisible(&baseIncrementEditor);
 }
 
 void MultiplesProtocolController::paint(juce::Graphics &g)
@@ -13,7 +16,7 @@ void MultiplesProtocolController::paint(juce::Graphics &g)
 void MultiplesProtocolController::resized()
 {
     auto area = getLocalBounds();
-    text.setBounds(area);
+    baseIncrementEditor.setBounds(area.removeFromTop(45));
 }
 
 // Private methods
