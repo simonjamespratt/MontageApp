@@ -5,28 +5,14 @@
 DurationView::DurationView(int &value,
                            int index,
                            std::function<void(int index)> onDelete)
-: paramsDurationValue(value)
+: valueEditor(value, juce::String(index + 1), 50)
 {
-    input.setText(juce::String(value));
-    input.setInputRestrictions(0, "0123456789");
-    input.setJustification(juce::Justification::centredLeft);
-    input.onTextChange = [this] {
-        // keep params and ui in sync
-        paramsDurationValue = input.getText().getIntValue();
-    };
-
-    auto listPosition = index + 1;
-    auto labelName = juce::String(listPosition) + ": ";
-    label.setText(labelName, juce::dontSendNotification);
-    label.attachToComponent(&input, true);
-
     deleteButton.setButtonText("Delete");
     deleteButton.onClick = [index, onDelete] {
         onDelete(index);
     };
 
-    addAndMakeVisible(&input);
-    addAndMakeVisible(&label);
+    addAndMakeVisible(&valueEditor);
     addAndMakeVisible(&deleteButton);
 };
 
@@ -34,8 +20,7 @@ void DurationView::resized()
 {
     auto margin = 10;
     auto area = getLocalBounds();
-    area.removeFromLeft(50); // label gutter
-    input.setBounds(area.removeFromLeft(100).reduced(margin));
+    valueEditor.setBounds(area.removeFromLeft(150));
     deleteButton.setBounds(area.reduced(margin));
 }
 
@@ -99,6 +84,10 @@ void PrescribedProtocolController::resized()
 // Private methods
 void PrescribedProtocolController::setProtocol()
 {
+    for(auto &&i : m_params.prescribed.durations) {
+        DBG("duration: " << i);
+    }
+
     m_producer->setDurationProtocol(
         aleatoric::DurationProtocol::createPrescribed(
             m_params.prescribed.durations));

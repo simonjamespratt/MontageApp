@@ -2,6 +2,8 @@ target_sources(Montage PRIVATE
     Icons.cpp
     Icons.h
     Identifiers.h
+    NumericValueEditorWithLabel.h
+    NumericValueEditorWithLabel.cpp
 )
 
 target_include_directories(Montage

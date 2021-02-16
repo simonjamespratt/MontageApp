@@ -14,10 +14,18 @@ struct GeometricProtocolParams {
     int collectionSize = 5;
 };
 
+struct MultiplesProtocolParams {
+    int rangeStart = 1;
+    int rangeEnd = 10;
+    std::vector<int> multipliers = {1000, 2000};
+    int baseIncrement = 100;
+};
+
 struct DurationProtocolParams {
     DurationProtocolParams(DurationProtocolController::Type type);
     DurationProtocolController::Type activeType;
     std::vector<int> durations {};
     PrescribedProtocolParams prescribed;
     GeometricProtocolParams geometric;
+    MultiplesProtocolParams multiples;
 };

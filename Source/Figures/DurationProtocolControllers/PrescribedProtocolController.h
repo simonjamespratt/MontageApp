@@ -1,6 +1,7 @@
 #pragma once
 #include "DurationProtocolController.h"
 #include "DurationProtocolParams.h"
+#include "NumericValueEditorWithLabel.h"
 
 #include <functional>
 #include <memory>
@@ -10,11 +11,11 @@ struct DurationView : public juce::Component {
     DurationView(int &value,
                  int index,
                  std::function<void(int index)> onDelete);
+
     void resized() override;
-    juce::Label label;
-    juce::TextEditor input;
+
+    NumericValueEditorWithLabel valueEditor;
     juce::TextButton deleteButton;
-    int &paramsDurationValue;
 
   private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(DurationView)

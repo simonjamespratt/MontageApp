@@ -1,18 +1,9 @@
 #pragma once
 #include "DurationProtocolController.h"
 #include "DurationProtocolParams.h"
+#include "NumericValueEditorWithLabel.h"
 
 #include <memory>
-
-struct NumericParamWithLabel : public juce::Component {
-    NumericParamWithLabel(int &paramValue, juce::String labelText);
-    void resized() override;
-
-  private:
-    int &value;
-    juce::TextEditor input;
-    juce::Label label;
-};
 
 class GeometricProtocolController : public DurationProtocolController {
   public:
@@ -28,8 +19,10 @@ class GeometricProtocolController : public DurationProtocolController {
     DurationProtocolParams &m_params;
     std::shared_ptr<aleatoric::DurationsProducer> m_producer;
 
-    NumericParamWithLabel rangeStart;
-    NumericParamWithLabel rangeEnd;
-    NumericParamWithLabel collectionSize;
+    NumericValueEditorWithLabel rangeStart;
+    NumericValueEditorWithLabel rangeEnd;
+    NumericValueEditorWithLabel collectionSize;
     juce::TextButton saveButton;
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(GeometricProtocolController)
 };

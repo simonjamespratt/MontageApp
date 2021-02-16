@@ -11,4 +11,6 @@ class MultiplesProtocolController : public DurationProtocolController {
   private:
     void setProtocol() override;
     juce::Label text;
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MultiplesProtocolController)
 };
