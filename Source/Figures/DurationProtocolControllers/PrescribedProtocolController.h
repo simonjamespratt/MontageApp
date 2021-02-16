@@ -7,10 +7,10 @@
 #include <memory>
 #include <vector>
 
-struct DurationView : public juce::Component {
-    DurationView(int &value,
-                 int index,
-                 std::function<void(int index)> onDelete);
+struct NumericItemEditor : public juce::Component {
+    NumericItemEditor(int &value,
+                      int index,
+                      std::function<void(int index)> onDelete);
 
     void resized() override;
 
@@ -18,15 +18,29 @@ struct DurationView : public juce::Component {
     juce::TextButton deleteButton;
 
   private:
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(DurationView)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(NumericItemEditor)
 };
 
-struct DurationViewContainer : public juce::Component {
-    DurationViewContainer();
+struct NumericCollectionEditor : public juce::Component {
+    NumericCollectionEditor(std::vector<int> &numericCollection);
     void resized() override;
 
+    // TODO: make this private when the add button is in this component
+    void onAdd();
+
   private:
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(DurationViewContainer)
+    std::vector<int> &collection;
+
+    // NB: have to use pointers because juce components have their copy
+    // constructors deleted and both vector and list (despite what link below
+    // says) require objects being stored to have copy constructors. See:
+    // https://forum.juce.com/t/adding-components-to-std-vector-with-emplace-back/35193
+    std::vector<std::unique_ptr<NumericItemEditor>> editors {};
+
+    void drawView();
+    void onDelete(int index);
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(NumericCollectionEditor)
 };
 
 class PrescribedProtocolController : public DurationProtocolController {
@@ -40,18 +54,11 @@ class PrescribedProtocolController : public DurationProtocolController {
 
   private:
     void setProtocol() override;
-    void drawView();
-    void onDelete(int index);
     void onAdd();
     DurationProtocolParams &m_params;
     std::shared_ptr<aleatoric::DurationsProducer> m_producer;
 
-    // NB: have to use pointers because juce components have their copy
-    // constructors deleted and both vector and list (despite what link below
-    // says) require objects being stored to have copy constructors. See:
-    // https://forum.juce.com/t/adding-components-to-std-vector-with-emplace-back/35193
-    std::vector<std::unique_ptr<DurationView>> durationViews {};
-    DurationViewContainer durationViewContainer;
+    NumericCollectionEditor durationsEditor;
     juce::Viewport viewport;
 
     juce::TextButton saveButton;

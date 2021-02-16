@@ -2,9 +2,9 @@
 
 #include <iterator>
 
-DurationView::DurationView(int &value,
-                           int index,
-                           std::function<void(int index)> onDelete)
+NumericItemEditor::NumericItemEditor(int &value,
+                                     int index,
+                                     std::function<void(int index)> onDelete)
 : valueEditor(value, juce::String(index + 1), 50)
 {
     deleteButton.setButtonText("Delete");
@@ -16,7 +16,7 @@ DurationView::DurationView(int &value,
     addAndMakeVisible(&deleteButton);
 };
 
-void DurationView::resized()
+void NumericItemEditor::resized()
 {
     auto margin = 10;
     auto area = getLocalBounds();
@@ -24,10 +24,16 @@ void DurationView::resized()
     deleteButton.setBounds(area.reduced(margin));
 }
 
-DurationViewContainer::DurationViewContainer()
-{}
+// ==========================================================================
 
-void DurationViewContainer::resized()
+NumericCollectionEditor::NumericCollectionEditor(
+    std::vector<int> &numericCollection)
+: collection(numericCollection)
+{
+    drawView();
+}
+
+void NumericCollectionEditor::resized()
 {
     int viewInstanceHeight = 45;
 
@@ -42,15 +48,48 @@ void DurationViewContainer::resized()
     }
 }
 
+// Private methods
+void NumericCollectionEditor::drawView()
+{
+    for(auto it = begin(collection); it != end(collection); ++it) {
+        int index = std::distance(collection.begin(), it);
+        auto editor =
+            std::make_unique<NumericItemEditor>(*it, index, [this](int index) {
+                onDelete(index);
+            });
+        addAndMakeVisible(*editor);
+        editors.emplace_back(std::move(editor));
+    }
+}
+
+void NumericCollectionEditor::onDelete(int index)
+{
+    editors.clear();
+    collection.erase(collection.begin() + index);
+    drawView();
+    resized();
+}
+
+void NumericCollectionEditor::onAdd()
+{
+    editors.clear();
+    collection.emplace_back(1);
+    drawView();
+    resized();
+}
+
+// =====================================================
+
 PrescribedProtocolController::PrescribedProtocolController(
     DurationProtocolParams &params,
     std::shared_ptr<aleatoric::DurationsProducer> producer)
-: m_params(params), m_producer(producer), durationViewContainer()
+: m_params(params),
+  m_producer(producer),
+  durationsEditor(m_params.prescribed.durations)
 {
-    viewport.setViewedComponent(&durationViewContainer, false);
+    viewport.setViewedComponent(&durationsEditor, false);
     viewport.setScrollBarsShown(true, false);
     addAndMakeVisible(&viewport);
-    drawView();
 
     saveButton.setButtonText("Set protocol");
     saveButton.onClick = [this] {
@@ -75,7 +114,7 @@ void PrescribedProtocolController::resized()
 
     auto viewsArea = area.removeFromLeft(250);
     viewport.setBounds(viewsArea);
-    durationViewContainer.setBounds(viewsArea);
+    durationsEditor.setBounds(viewsArea);
 
     saveButton.setBounds(area.removeFromTop(45).reduced(margin));
     addButton.setBounds(area.removeFromTop(45).reduced(margin));
@@ -93,33 +132,8 @@ void PrescribedProtocolController::setProtocol()
             m_params.prescribed.durations));
 }
 
-void PrescribedProtocolController::drawView()
-{
-    auto &durations = m_params.prescribed.durations;
-    for(auto it = begin(durations); it != end(durations); ++it) {
-        int index = std::distance(durations.begin(), it);
-        auto view =
-            std::make_unique<DurationView>(*it, index, [this](int index) {
-                onDelete(index);
-            });
-        durationViewContainer.addAndMakeVisible(*view);
-        durationViews.emplace_back(std::move(view));
-    }
-}
-
-void PrescribedProtocolController::onDelete(int index)
-{
-    durationViews.clear();
-    m_params.prescribed.durations.erase(m_params.prescribed.durations.begin() +
-                                        index);
-    drawView();
-    durationViewContainer.resized();
-}
-
+// TODO: When button is in DurationViewContainer, bin this
 void PrescribedProtocolController::onAdd()
 {
-    durationViews.clear();
-    m_params.prescribed.durations.emplace_back(1);
-    drawView();
-    durationViewContainer.resized();
+    durationsEditor.onAdd();
 }

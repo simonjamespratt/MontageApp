@@ -24,7 +24,6 @@ struct MultiplesProtocolParams {
 struct DurationProtocolParams {
     DurationProtocolParams(DurationProtocolController::Type type);
     DurationProtocolController::Type activeType;
-    std::vector<int> durations {};
     PrescribedProtocolParams prescribed;
     GeometricProtocolParams geometric;
     MultiplesProtocolParams multiples;
