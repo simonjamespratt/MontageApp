@@ -20,7 +20,10 @@ class MultiplesProtocolController : public DurationProtocolController {
     std::shared_ptr<aleatoric::DurationsProducer> m_producer;
 
     NumericValueEditorWithLabel baseIncrementEditor;
-    // TODO: Add deviation factor as a knob ot slider
+    juce::Slider deviationFactorSlider;
+    juce::Label deviationFactorLabel;
+
+    juce::TextButton saveButton;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MultiplesProtocolController)
 };
