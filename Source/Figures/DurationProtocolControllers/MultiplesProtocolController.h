@@ -23,7 +23,12 @@ class MultiplesProtocolController : public DurationProtocolController {
     juce::Slider deviationFactorSlider;
     juce::Label deviationFactorLabel;
 
+    NumericValueEditorWithLabel rangeStartEditor;
+    NumericValueEditorWithLabel rangeEndEditor;
+
     juce::TextButton saveButton;
+
+    // TODO: need a container and a viewport
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MultiplesProtocolController)
 };
