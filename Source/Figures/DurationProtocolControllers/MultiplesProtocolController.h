@@ -2,25 +2,9 @@
 #include "DurationProtocolController.h"
 #include "DurationProtocolParams.h"
 #include "NumericValueEditorWithLabel.h"
+#include "SliderWithLabel.h"
 
 #include <memory>
-
-class SliderWithLabel : public juce::Component {
-  public:
-    SliderWithLabel(double &value,
-                    juce::String labelText,
-                    int textBoxWidth = 100,
-                    juce::String unit = "",
-                    int decimalPlacesToDisplay = 2);
-    void resized() override;
-
-  private:
-    double &m_value;
-    juce::Slider slider;
-    juce::Label label;
-
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SliderWithLabel)
-};
 
 class MultiplesProtocolController : public DurationProtocolController {
   public:
@@ -51,7 +35,6 @@ class MultiplesProtocolController : public DurationProtocolController {
     NumericValueEditorWithLabel rangeEndEditor;
 
     Container container;
-
     juce::Viewport viewport;
 
     juce::TextButton saveButton;

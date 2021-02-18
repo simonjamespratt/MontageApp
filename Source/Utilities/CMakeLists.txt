@@ -6,6 +6,8 @@ target_sources(Montage PRIVATE
     NumericCollectionEditor.h
     NumericValueEditorWithLabel.cpp
     NumericValueEditorWithLabel.h
+    SliderWithLabel.cpp
+    SliderWithLabel.h
 )
 
 target_include_directories(Montage
