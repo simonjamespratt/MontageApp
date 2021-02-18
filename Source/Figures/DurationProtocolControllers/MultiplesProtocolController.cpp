@@ -1,7 +1,18 @@
 #include "MultiplesProtocolController.h"
 
 void MultiplesProtocolController::Container::resized()
-{}
+{
+    int componentHeight = 45;
+
+    auto totalHeight = getNumChildComponents() * componentHeight;
+    setSize(getWidth(), totalHeight);
+
+    auto area = getLocalBounds();
+
+    for(auto *child : getChildren()) {
+        child->setBounds(area.removeFromTop(componentHeight));
+    }
+}
 
 MultiplesProtocolController::MultiplesProtocolController(
     DurationProtocolParams &params,
@@ -19,10 +30,14 @@ MultiplesProtocolController::MultiplesProtocolController(
                         1,
                         50)
 {
-    addAndMakeVisible(&baseIncrementEditor);
-    addAndMakeVisible(&rangeStartEditor);
-    addAndMakeVisible(&rangeEndEditor);
-    addAndMakeVisible(&deviationFactorEditor);
+    container.addAndMakeVisible(&baseIncrementEditor);
+    container.addAndMakeVisible(&rangeStartEditor);
+    container.addAndMakeVisible(&rangeEndEditor);
+    container.addAndMakeVisible(&deviationFactorEditor);
+
+    viewport.setViewedComponent(&container, false);
+    viewport.setScrollBarsShown(true, false);
+    addAndMakeVisible(&viewport);
 
     saveButton.setButtonText("Set protocol");
     saveButton.onClick = [this] {
@@ -41,10 +56,12 @@ void MultiplesProtocolController::resized()
 
     // params
     auto paramsArea = area.removeFromLeft(250);
-    baseIncrementEditor.setBounds(paramsArea.removeFromTop(45));
-    deviationFactorEditor.setBounds(paramsArea.removeFromTop(45));
-    rangeStartEditor.setBounds(paramsArea.removeFromTop(45));
-    rangeEndEditor.setBounds(paramsArea.removeFromTop(45));
+    container.setBounds(paramsArea);
+    viewport.setBounds(paramsArea);
+    // baseIncrementEditor.setBounds(paramsArea.removeFromTop(45));
+    // deviationFactorEditor.setBounds(paramsArea.removeFromTop(45));
+    // rangeStartEditor.setBounds(paramsArea.removeFromTop(45));
+    // rangeEndEditor.setBounds(paramsArea.removeFromTop(45));
 
     saveButton.setBounds(area.removeFromTop(45).reduced(margin));
 }
