@@ -1,5 +1,39 @@
 #include "MultiplesProtocolController.h"
 
+SliderWithLabel::SliderWithLabel(double &value,
+                                 juce::String labelText,
+                                 int textBoxWidth,
+                                 juce::String unit,
+                                 int decimalPlacesToDisplay)
+: m_value(value)
+{
+    slider.setRange(0.0, 100.0);
+    slider.setTextValueSuffix(" %");
+    slider.setValue(m_value);
+    slider.onValueChange = [this] {
+        m_value = slider.getValue();
+    };
+    slider.setNumDecimalPlacesToDisplay(1);
+    slider.setTextBoxStyle(juce::Slider::TextBoxLeft,
+                           false,
+                           50,
+                           slider.getTextBoxHeight());
+
+    addAndMakeVisible(&slider);
+
+    label.setText("Deviation factor: ", juce::dontSendNotification);
+    label.attachToComponent(&slider, true);
+    addAndMakeVisible(&label);
+}
+
+void SliderWithLabel::resized()
+{}
+
+// =======================================================================
+
+void MultiplesProtocolController::Container::resized()
+{}
+
 MultiplesProtocolController::MultiplesProtocolController(
     DurationProtocolParams &params,
     std::shared_ptr<aleatoric::DurationsProducer> producer)
@@ -10,26 +44,6 @@ MultiplesProtocolController::MultiplesProtocolController(
   rangeEndEditor(m_params.multiples.rangeEnd, "Range end")
 {
     addAndMakeVisible(&baseIncrementEditor);
-
-    deviationFactorSlider.setRange(0.0, 100.0);
-    deviationFactorSlider.setTextValueSuffix(" %");
-    deviationFactorSlider.setValue(m_params.multiples.deviationFactor);
-    deviationFactorSlider.onValueChange = [this] {
-        m_params.multiples.deviationFactor = deviationFactorSlider.getValue();
-    };
-    deviationFactorSlider.setNumDecimalPlacesToDisplay(1);
-    deviationFactorSlider.setTextBoxStyle(
-        juce::Slider::TextBoxLeft,
-        false,
-        50,
-        deviationFactorSlider.getTextBoxHeight());
-
-    addAndMakeVisible(&deviationFactorSlider);
-
-    deviationFactorLabel.setText("Deviation factor: ",
-                                 juce::dontSendNotification);
-    deviationFactorLabel.attachToComponent(&deviationFactorSlider, true);
-    addAndMakeVisible(&deviationFactorLabel);
 
     addAndMakeVisible(&rangeStartEditor);
     addAndMakeVisible(&rangeEndEditor);
@@ -48,11 +62,11 @@ void MultiplesProtocolController::resized()
 {
     auto margin = 10;
     auto area = getLocalBounds();
-    auto paramsArea = area.removeFromLeft(250);
-    // auto topBit = area.removeFromTop(45);
-    baseIncrementEditor.setBounds(paramsArea.removeFromTop(45));
 
-    saveButton.setBounds(area.removeFromTop(45).reduced(margin));
+    // params
+    auto paramsArea = area.removeFromLeft(250);
+
+    baseIncrementEditor.setBounds(paramsArea.removeFromTop(45));
 
     auto devFactorArea = paramsArea.removeFromTop(45);
     devFactorArea.removeFromLeft(100); // label gutter
@@ -60,6 +74,8 @@ void MultiplesProtocolController::resized()
 
     rangeStartEditor.setBounds(paramsArea.removeFromTop(45));
     rangeEndEditor.setBounds(paramsArea.removeFromTop(45));
+
+    saveButton.setBounds(area.removeFromTop(45).reduced(margin));
 }
 
 // Private methods
