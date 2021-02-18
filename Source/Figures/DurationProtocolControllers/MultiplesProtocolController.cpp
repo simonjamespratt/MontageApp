@@ -31,9 +31,9 @@ MultiplesProtocolController::MultiplesProtocolController(
                         50)
 {
     container.addAndMakeVisible(&baseIncrementEditor);
+    container.addAndMakeVisible(&deviationFactorEditor);
     container.addAndMakeVisible(&rangeStartEditor);
     container.addAndMakeVisible(&rangeEndEditor);
-    container.addAndMakeVisible(&deviationFactorEditor);
 
     viewport.setViewedComponent(&container, false);
     viewport.setScrollBarsShown(true, false);
@@ -44,6 +44,10 @@ MultiplesProtocolController::MultiplesProtocolController(
         setProtocol();
     };
     addAndMakeVisible(&saveButton);
+
+    multipliersSelectionHeading.setText("Multipliers",
+                                        juce::dontSendNotification);
+    addAndMakeVisible(&multipliersSelectionHeading);
 }
 
 void MultiplesProtocolController::paint(juce::Graphics &g)
@@ -58,12 +62,10 @@ void MultiplesProtocolController::resized()
     auto paramsArea = area.removeFromLeft(250);
     container.setBounds(paramsArea);
     viewport.setBounds(paramsArea);
-    // baseIncrementEditor.setBounds(paramsArea.removeFromTop(45));
-    // deviationFactorEditor.setBounds(paramsArea.removeFromTop(45));
-    // rangeStartEditor.setBounds(paramsArea.removeFromTop(45));
-    // rangeEndEditor.setBounds(paramsArea.removeFromTop(45));
 
     saveButton.setBounds(area.removeFromTop(45).reduced(margin));
+    multipliersSelectionHeading.setBounds(
+        area.removeFromTop(45).reduced(margin));
 }
 
 // Private methods

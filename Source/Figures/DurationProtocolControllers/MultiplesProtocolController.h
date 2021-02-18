@@ -38,6 +38,7 @@ class MultiplesProtocolController : public DurationProtocolController {
     juce::Viewport viewport;
 
     juce::TextButton saveButton;
+    juce::Label multipliersSelectionHeading;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MultiplesProtocolController)
 };
