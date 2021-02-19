@@ -34,11 +34,18 @@ class MultiplesProtocolController : public DurationProtocolController {
     NumericValueEditorWithLabel rangeStartEditor;
     NumericValueEditorWithLabel rangeEndEditor;
 
+    juce::Label holdingForMultiples;
+
     Container container;
     juce::Viewport viewport;
 
     juce::TextButton saveButton;
+
     juce::Label multipliersSelectionHeading;
+    juce::ToggleButton multipliersByRange {"By Range"};
+    juce::ToggleButton multipliersByHand {"By hand"};
+    int multipliersRadioGroup = 1001;
+    void toggleMultiplierStrategy(juce::Button *button, juce::String name);
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MultiplesProtocolController)
 };

@@ -35,6 +35,10 @@ MultiplesProtocolController::MultiplesProtocolController(
     container.addAndMakeVisible(&rangeStartEditor);
     container.addAndMakeVisible(&rangeEndEditor);
 
+    holdingForMultiples.setText("Holding for multiples",
+                                juce::dontSendNotification);
+    container.addChildComponent(&holdingForMultiples);
+
     viewport.setViewedComponent(&container, false);
     viewport.setScrollBarsShown(true, false);
     addAndMakeVisible(&viewport);
@@ -48,6 +52,21 @@ MultiplesProtocolController::MultiplesProtocolController(
     multipliersSelectionHeading.setText("Multipliers",
                                         juce::dontSendNotification);
     addAndMakeVisible(&multipliersSelectionHeading);
+
+    multipliersByRange.setRadioGroupId(multipliersRadioGroup);
+    multipliersByHand.setRadioGroupId(multipliersRadioGroup);
+
+    addAndMakeVisible(&multipliersByRange);
+    addAndMakeVisible(&multipliersByHand);
+
+    multipliersByRange.onClick = [this] {
+        toggleMultiplierStrategy(&multipliersByRange, "RANGE");
+    };
+    multipliersByHand.onClick = [this] {
+        toggleMultiplierStrategy(&multipliersByHand, "HAND");
+    };
+
+    multipliersByRange.setToggleState(true, juce::sendNotification);
 }
 
 void MultiplesProtocolController::paint(juce::Graphics &g)
@@ -64,12 +83,31 @@ void MultiplesProtocolController::resized()
     viewport.setBounds(paramsArea);
 
     saveButton.setBounds(area.removeFromTop(45).reduced(margin));
+
     multipliersSelectionHeading.setBounds(
         area.removeFromTop(45).reduced(margin));
+
+    multipliersByRange.setBounds(area.removeFromTop(45).reduced(margin));
+    multipliersByHand.setBounds(area.removeFromTop(45).reduced(margin));
 }
 
 // Private methods
 void MultiplesProtocolController::setProtocol()
 {
     DBG("dev factor: " << m_params.multiples.deviationFactor);
+}
+
+void MultiplesProtocolController::toggleMultiplierStrategy(juce::Button *button,
+                                                           juce::String name)
+{
+    if(name == "HAND") {
+        auto newState = button->getToggleState();
+        holdingForMultiples.setVisible(newState);
+    }
+
+    if(name == "RANGE") {
+        auto newState = button->getToggleState();
+        rangeStartEditor.setVisible(newState);
+        rangeEndEditor.setVisible(newState);
+    }
 }
