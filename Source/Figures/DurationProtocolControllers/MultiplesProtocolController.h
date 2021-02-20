@@ -1,6 +1,7 @@
 #pragma once
 #include "DurationProtocolController.h"
 #include "DurationProtocolParams.h"
+#include "NumericCollectionEditor.h"
 #include "NumericValueEditorWithLabel.h"
 #include "SliderWithLabel.h"
 
@@ -15,14 +16,6 @@ class MultiplesProtocolController : public DurationProtocolController {
     void resized() override;
 
   private:
-    struct Container : public juce::Component {
-        Container() = default;
-        void resized() override;
-
-      private:
-        JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Container)
-    };
-
     void setProtocol() override;
 
     DurationProtocolParams &m_params;
@@ -34,10 +27,8 @@ class MultiplesProtocolController : public DurationProtocolController {
     NumericValueEditorWithLabel rangeStartEditor;
     NumericValueEditorWithLabel rangeEndEditor;
 
-    juce::Label holdingForMultiples;
-
-    Container container;
-    juce::Viewport viewport;
+    NumericCollectionEditor multipliersByHandEditor;
+    juce::Viewport multipliersByHandEditorViewport;
 
     juce::TextButton saveButton;
 

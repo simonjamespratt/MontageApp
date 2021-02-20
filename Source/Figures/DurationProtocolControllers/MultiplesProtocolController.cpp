@@ -1,19 +1,5 @@
 #include "MultiplesProtocolController.h"
 
-void MultiplesProtocolController::Container::resized()
-{
-    int componentHeight = 45;
-
-    auto totalHeight = getNumChildComponents() * componentHeight;
-    setSize(getWidth(), totalHeight);
-
-    auto area = getLocalBounds();
-
-    for(auto *child : getChildren()) {
-        child->setBounds(area.removeFromTop(componentHeight));
-    }
-}
-
 MultiplesProtocolController::MultiplesProtocolController(
     DurationProtocolParams &params,
     std::shared_ptr<aleatoric::DurationsProducer> producer)
@@ -28,20 +14,20 @@ MultiplesProtocolController::MultiplesProtocolController(
                         100.0,
                         "%",
                         1,
-                        50)
+                        50),
+  multipliersByHandEditor(m_params.multiples.multipliers)
 {
-    container.addAndMakeVisible(&baseIncrementEditor);
-    container.addAndMakeVisible(&deviationFactorEditor);
-    container.addAndMakeVisible(&rangeStartEditor);
-    container.addAndMakeVisible(&rangeEndEditor);
+    addAndMakeVisible(&baseIncrementEditor);
+    addAndMakeVisible(&deviationFactorEditor);
+    addAndMakeVisible(&rangeStartEditor);
+    addAndMakeVisible(&rangeEndEditor);
 
-    holdingForMultiples.setText("Holding for multiples",
-                                juce::dontSendNotification);
-    container.addChildComponent(&holdingForMultiples);
+    // addChildComponent(&multipliersByHandEditor);
 
-    viewport.setViewedComponent(&container, false);
-    viewport.setScrollBarsShown(true, false);
-    addAndMakeVisible(&viewport);
+    multipliersByHandEditorViewport.setViewedComponent(&multipliersByHandEditor,
+                                                       false);
+    multipliersByHandEditorViewport.setScrollBarsShown(true, false);
+    addChildComponent(&multipliersByHandEditorViewport);
 
     saveButton.setButtonText("Set protocol");
     saveButton.onClick = [this] {
@@ -75,20 +61,26 @@ void MultiplesProtocolController::paint(juce::Graphics &g)
 void MultiplesProtocolController::resized()
 {
     auto margin = 10;
+    auto marginSmall = 5;
     auto area = getLocalBounds();
 
     // params
     auto paramsArea = area.removeFromLeft(250);
-    container.setBounds(paramsArea);
-    viewport.setBounds(paramsArea);
+    baseIncrementEditor.setBounds(paramsArea.removeFromTop(45));
+    deviationFactorEditor.setBounds(paramsArea.removeFromTop(45));
+
+    multipliersByHandEditorViewport.setBounds(paramsArea);
+
+    rangeStartEditor.setBounds(paramsArea.removeFromTop(45));
+    rangeEndEditor.setBounds(paramsArea.removeFromTop(45));
 
     saveButton.setBounds(area.removeFromTop(45).reduced(margin));
 
     multipliersSelectionHeading.setBounds(
-        area.removeFromTop(45).reduced(margin));
+        area.removeFromTop(30).reduced(marginSmall));
 
-    multipliersByRange.setBounds(area.removeFromTop(45).reduced(margin));
-    multipliersByHand.setBounds(area.removeFromTop(45).reduced(margin));
+    multipliersByRange.setBounds(area.removeFromTop(30).reduced(marginSmall));
+    multipliersByHand.setBounds(area.removeFromTop(30).reduced(marginSmall));
 }
 
 // Private methods
@@ -102,7 +94,7 @@ void MultiplesProtocolController::toggleMultiplierStrategy(juce::Button *button,
 {
     if(name == "HAND") {
         auto newState = button->getToggleState();
-        holdingForMultiples.setVisible(newState);
+        multipliersByHandEditorViewport.setVisible(newState);
     }
 
     if(name == "RANGE") {
@@ -110,4 +102,5 @@ void MultiplesProtocolController::toggleMultiplierStrategy(juce::Button *button,
         rangeStartEditor.setVisible(newState);
         rangeEndEditor.setVisible(newState);
     }
+    resized();
 }
