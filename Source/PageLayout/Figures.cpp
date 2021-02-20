@@ -7,15 +7,15 @@ Figures::Figures(te::Engine &e, juce::ValueTree &as)
   figureGenerator(appState),
   figureManager(appState)
 {
-    addAndMakeVisible(&toggleGenerateManagerButton);
-    toggleGenerateManagerButton.setButtonText("Show Manager");
-    toggleGenerateManagerButton.onClick = [this] {
+    addAndMakeVisible(&toggleGeneratOutputButton);
+    toggleGeneratOutputButton.setButtonText("Show Output");
+    toggleGeneratOutputButton.onClick = [this] {
         toggleGenerateManagerState();
     };
 
     addAndMakeVisible(&figureGenerator);
     addChildComponent(&figureManager);
-    addAndMakeVisible(&sequencer);
+    addChildComponent(&sequencer);
 
     heading.setText("Figures", juce::dontSendNotification);
     heading.setFont(juce::Font(24.0f, juce::Font::bold));
@@ -42,22 +42,25 @@ void Figures::resized()
 
     auto headingArea = area.removeFromTop(50);
     heading.setBounds(headingArea.removeFromLeft(100));
-    toggleGenerateManagerButton.setBounds(
+    toggleGeneratOutputButton.setBounds(
         headingArea.removeFromLeft(150).reduced(margin));
 
     auto heightUnit = area.getHeight() / 3;
-    auto figureControlArea = area.removeFromTop(heightUnit);
 
-    figureManager.setBounds(figureControlArea);
-    figureGenerator.setBounds(figureControlArea);
+    auto generatorArea = area;
+    auto managerArea = area.removeFromTop(heightUnit);
+    auto sequencerArea = area;
 
-    sequencer.setBounds(area);
+    figureGenerator.setBounds(generatorArea);
+    figureManager.setBounds(managerArea);
+    sequencer.setBounds(sequencerArea);
 }
 
 void Figures::generateAndArrangeFigure()
 {
     auto figure = figureGenerator.generateFigure();
     sequencer.readFigure(figure);
+    toggleGenerateManagerState();
 }
 
 void Figures::toggleGenerateManagerState()
@@ -66,10 +69,14 @@ void Figures::toggleGenerateManagerState()
 
     if(showGenerator) {
         figureManager.setVisible(false);
+        sequencer.setVisible(false);
         figureGenerator.setVisible(true);
+        toggleGeneratOutputButton.setButtonText("Show output");
 
     } else {
         figureGenerator.setVisible(false);
         figureManager.setVisible(true);
+        sequencer.setVisible(true);
+        toggleGeneratOutputButton.setButtonText("Show generator");
     }
 }

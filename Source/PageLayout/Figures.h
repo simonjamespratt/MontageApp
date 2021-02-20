@@ -24,7 +24,7 @@ class Figures : public juce::Component {
 
     juce::Label heading;
     bool showGenerator {true};
-    juce::TextButton toggleGenerateManagerButton;
+    juce::TextButton toggleGeneratOutputButton;
     void toggleGenerateManagerState();
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Figures)
