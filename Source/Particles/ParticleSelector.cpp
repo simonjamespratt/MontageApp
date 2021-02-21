@@ -2,14 +2,14 @@
 
 ParticleSelector::ParticleSelector(te::Engine &eng, juce::ValueTree &as)
 : engine(eng),
-  edit(
-      engine,
-      /* TODO: method signature for te::createEmptyEdit() is a legacy signature.
-         Update to newer version. See tracktion_EditFileOperations.h */
-      te::createEmptyEdit(engine),
-      te::Edit::forEditing,
-      nullptr,
-      0),
+  edit(engine,
+       /* TODO: TRACKTION: method signature for te::createEmptyEdit() is a
+          legacy signature. Update to newer version. See
+          tracktion_EditFileOperations.h */
+       te::createEmptyEdit(engine),
+       te::Edit::forEditing,
+       nullptr,
+       0),
   transport(edit.getTransport()),
   appState(as),
   sources(),

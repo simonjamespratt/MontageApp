@@ -6,7 +6,7 @@
 
 FigureGenerator::FigureGenerator(juce::ValueTree as) : appState(as)
 {
-    // TODO: Data management: when proper data handling is in place this will
+    // TODO: DATA-MANAGEMENT: when proper data handling is in place this will
     // need to be addressed
     appState.addListener(this);
 

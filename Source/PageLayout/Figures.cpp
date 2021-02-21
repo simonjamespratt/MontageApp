@@ -21,7 +21,7 @@ Figures::Figures(te::Engine &e, juce::ValueTree &as)
     heading.setFont(juce::Font(24.0f, juce::Font::bold));
     addAndMakeVisible(&heading);
 
-    // TODO: Data management: This is a hack. Ideally this component would
+    // TODO: DATA-MANAGEMENT: This is a hack. Ideally this component would
     // listen to a value tree to know a figure has been added and then get a
     // Figure data object and call the sequencer with it.
     figureGenerator.generateButton.onClick = [this] {

@@ -24,7 +24,7 @@ class FigureGenerator : public juce::Component,
     void paint(juce::Graphics &) override;
     void resized() override;
 
-    // TODO: Data management: VT listeners - reevaluate when proper data
+    // TODO: DATA-MANAGEMENT: VT listeners - reevaluate when proper data
     // handling is implemented
     void valueTreeChildAdded(juce::ValueTree &parent,
                              juce::ValueTree &childAdded) override;
@@ -35,7 +35,7 @@ class FigureGenerator : public juce::Component,
 
     Figure generateFigure();
 
-    // TODO: Data management: This is a hack - when Figures can listen for a
+    // TODO: DATA-MANAGEMENT: This is a hack - when Figures can listen for a
     // value tree figure addition, this can be made private and can call
     // generateFigure() itself (currently Figures sets the callback for this
     // button's onClick method).
