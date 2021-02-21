@@ -15,19 +15,16 @@ MultiplesProtocolController::MultiplesProtocolController(
                         "%",
                         1,
                         50),
-  multipliersByHandEditor(m_params.multiples.multipliers)
+  multipliersEditor(m_params.multiples.multipliers)
 {
     addAndMakeVisible(&baseIncrementEditor);
     addAndMakeVisible(&deviationFactorEditor);
     addAndMakeVisible(&rangeStartEditor);
     addAndMakeVisible(&rangeEndEditor);
 
-    // addChildComponent(&multipliersByHandEditor);
-
-    multipliersByHandEditorViewport.setViewedComponent(&multipliersByHandEditor,
-                                                       false);
-    multipliersByHandEditorViewport.setScrollBarsShown(true, false);
-    addChildComponent(&multipliersByHandEditorViewport);
+    multipliersEditorViewport.setViewedComponent(&multipliersEditor, false);
+    multipliersEditorViewport.setScrollBarsShown(true, false);
+    addChildComponent(&multipliersEditorViewport);
 
     saveButton.setButtonText("Set protocol");
     saveButton.onClick = [this] {
@@ -39,20 +36,22 @@ MultiplesProtocolController::MultiplesProtocolController(
                                         juce::dontSendNotification);
     addAndMakeVisible(&multipliersSelectionHeading);
 
-    multipliersByRange.setRadioGroupId(multipliersRadioGroup);
-    multipliersByHand.setRadioGroupId(multipliersRadioGroup);
+    multipliersByRangeButton.setRadioGroupId(multipliersRadioGroup);
+    multipliersByHandButton.setRadioGroupId(multipliersRadioGroup);
 
-    addAndMakeVisible(&multipliersByRange);
-    addAndMakeVisible(&multipliersByHand);
+    addAndMakeVisible(&multipliersByRangeButton);
+    addAndMakeVisible(&multipliersByHandButton);
 
-    multipliersByRange.onClick = [this] {
-        toggleMultiplierStrategy(&multipliersByRange, "RANGE");
+    multipliersByRangeButton.onClick = [this] {
+        toggleMultiplierStrategy(&multipliersByRangeButton,
+                                 MultiplierStrategy::range);
     };
-    multipliersByHand.onClick = [this] {
-        toggleMultiplierStrategy(&multipliersByHand, "HAND");
+    multipliersByHandButton.onClick = [this] {
+        toggleMultiplierStrategy(&multipliersByHandButton,
+                                 MultiplierStrategy::hand);
     };
 
-    multipliersByRange.setToggleState(true, juce::sendNotification);
+    multipliersByRangeButton.setToggleState(true, juce::sendNotification);
 }
 
 void MultiplesProtocolController::paint(juce::Graphics &g)
@@ -69,7 +68,8 @@ void MultiplesProtocolController::resized()
     baseIncrementEditor.setBounds(paramsArea.removeFromTop(45));
     deviationFactorEditor.setBounds(paramsArea.removeFromTop(45));
 
-    multipliersByHandEditorViewport.setBounds(paramsArea);
+    multipliersEditorViewport.setBounds(paramsArea);
+    multipliersEditor.setBounds(paramsArea);
 
     rangeStartEditor.setBounds(paramsArea.removeFromTop(45));
     rangeEndEditor.setBounds(paramsArea.removeFromTop(45));
@@ -79,28 +79,63 @@ void MultiplesProtocolController::resized()
     multipliersSelectionHeading.setBounds(
         area.removeFromTop(30).reduced(marginSmall));
 
-    multipliersByRange.setBounds(area.removeFromTop(30).reduced(marginSmall));
-    multipliersByHand.setBounds(area.removeFromTop(30).reduced(marginSmall));
+    multipliersByRangeButton.setBounds(
+        area.removeFromTop(30).reduced(marginSmall));
+    multipliersByHandButton.setBounds(
+        area.removeFromTop(30).reduced(marginSmall));
 }
 
 // Private methods
 void MultiplesProtocolController::setProtocol()
 {
-    DBG("dev factor: " << m_params.multiples.deviationFactor);
-}
-
-void MultiplesProtocolController::toggleMultiplierStrategy(juce::Button *button,
-                                                           juce::String name)
-{
-    if(name == "HAND") {
-        auto newState = button->getToggleState();
-        multipliersByHandEditorViewport.setVisible(newState);
+    auto &params = m_params.multiples;
+    DBG("base increment: " << params.baseIncrement);
+    DBG("dev factor: " << params.deviationFactor);
+    DBG("range start: " << params.rangeStart);
+    DBG("range end: " << params.rangeEnd);
+    for(auto &&i : params.multipliers) {
+        DBG("multiplier value: " << i);
     }
 
-    if(name == "RANGE") {
-        auto newState = button->getToggleState();
+    if(currentMultiplierStrategy == MultiplierStrategy::range) {
+        DBG("range strategy is active");
+
+        m_producer->setDurationProtocol(
+            aleatoric::DurationProtocol::createMultiples(
+                params.baseIncrement,
+                aleatoric::Range(params.rangeStart, params.rangeEnd),
+                params.deviationFactor));
+    }
+
+    if(currentMultiplierStrategy == MultiplierStrategy::hand) {
+        DBG("hand strategy is active");
+
+        m_producer->setDurationProtocol(
+            aleatoric::DurationProtocol::createMultiples(
+                params.baseIncrement,
+                params.multipliers,
+                params.deviationFactor));
+    }
+}
+
+void MultiplesProtocolController::toggleMultiplierStrategy(
+    juce::Button *button, MultiplierStrategy strategy)
+{
+    auto newState = button->getToggleState();
+    auto isActive = newState;
+
+    if(strategy == MultiplierStrategy::hand) {
+        multipliersEditorViewport.setVisible(newState);
+    }
+
+    if(strategy == MultiplierStrategy::range) {
         rangeStartEditor.setVisible(newState);
         rangeEndEditor.setVisible(newState);
     }
+
+    if(isActive) {
+        currentMultiplierStrategy = strategy;
+    }
+
     resized();
 }
