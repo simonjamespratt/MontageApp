@@ -1,5 +1,7 @@
 #include "Figures.h"
 
+#include "ErrorManager.h"
+
 Figures::Figures(te::Engine &e, juce::ValueTree &as)
 : engine(e),
   appState(as),
@@ -58,9 +60,17 @@ void Figures::resized()
 
 void Figures::generateAndArrangeFigure()
 {
-    auto figure = figureGenerator.generateFigure();
-    sequencer.readFigure(figure);
-    toggleGenerateManagerState();
+    try {
+        auto figure = figureGenerator.generateFigure();
+        sequencer.readFigure(figure);
+        toggleGenerateManagerState();
+    } catch(const std::runtime_error &e) {
+        // NB: this should really be a subclassed exception specific to number
+        // of events specified when generating a figure. This will do for now
+        // though
+        std::make_shared<ErrorManager>(ErrorType::FigureInvalidNumberOfEvents);
+        return;
+    }
 }
 
 void Figures::toggleGenerateManagerState()

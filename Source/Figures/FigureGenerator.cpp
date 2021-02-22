@@ -4,6 +4,8 @@
 #include "FigureCollection.h"
 #include "FigureProcessor.h"
 
+#include <stdexcept>
+
 FigureGenerator::FigureGenerator(juce::ValueTree as) : appState(as)
 {
     // TODO: DATA-MANAGEMENT: when proper data handling is in place this will
@@ -79,8 +81,14 @@ Figure FigureGenerator::generateFigure()
 
     auto numOfEventsToMake = numEventsInput.getText().getIntValue();
 
-    // TODO: FIG-GEN-UI: replace this with user error message
-    jassert(numOfEventsToMake > 0);
+    if(numOfEventsToMake == 0) {
+        // NB: this should really be a subclassed exception specific to number
+        // of events specified when generating a figure. This will do for now
+        // though
+        throw std::runtime_error(
+            "Invalid number of events specified during figure generation");
+    }
+
     FigureProcessor processor;
     return processor.composeFigure(numOfEventsToMake,
                                    *onsetProducer,
