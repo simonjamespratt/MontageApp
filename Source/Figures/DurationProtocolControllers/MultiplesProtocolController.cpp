@@ -11,8 +11,8 @@ MultiplesProtocolController::MultiplesProtocolController(
   deviationFactorEditor(m_params.multiples.deviationFactor,
                         "Deviation factor",
                         0,
-                        100.0,
-                        "%",
+                        1.0,
+                        "",
                         1,
                         50),
   multipliersEditor(m_params.multiples.multipliers)
