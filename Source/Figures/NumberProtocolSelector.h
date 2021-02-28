@@ -8,7 +8,7 @@
 #include <juce_gui_basics/juce_gui_basics.h>
 #include <memory>
 
-class NumberProtocolSelector : public juce::Component {
+class NumberProtocolSelector : public juce::Component, juce::Timer {
   public:
     NumberProtocolSelector(
         std::shared_ptr<aleatoric::CollectionsProducer<Particle>>
@@ -19,6 +19,7 @@ class NumberProtocolSelector : public juce::Component {
 
     void paint(juce::Graphics &g) override;
     void resized() override;
+    void timerCallback() override;
 
     void resetParams();
 
@@ -26,11 +27,14 @@ class NumberProtocolSelector : public juce::Component {
     std::shared_ptr<aleatoric::CollectionsProducer<Particle>>
         m_particleProducer;
     std::shared_ptr<aleatoric::DurationsProducer> m_durationsProducer;
+    int m_durationsProducerListenerToken;
+    size_t durationsSelectablesSize;
 
     std::unique_ptr<NumberProtocolController> controller;
 
     juce::Label protocolSelectorLabel;
     juce::ComboBox protocolSelector;
+    juce::Label paramsChangedWarningMessage;
 
     void initialise();
     void configureProtocolSelector();

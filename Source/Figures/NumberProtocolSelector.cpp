@@ -14,10 +14,21 @@ NumberProtocolSelector::NumberProtocolSelector(
 : m_durationsProducer(durationsProducer)
 {
     initialise();
+    m_durationsProducerListenerToken =
+        m_durationsProducer->addListenerForParamsChange(
+            [this]() { resetParams(); });
+
+    durationsSelectablesSize =
+        m_durationsProducer->getSelectableDurations().size();
 }
 
 NumberProtocolSelector::~NumberProtocolSelector()
-{}
+{
+    if(m_durationsProducer != nullptr) {
+        m_durationsProducer->removeListenerForParamsChange(
+            m_durationsProducerListenerToken);
+    }
+}
 
 void NumberProtocolSelector::paint(juce::Graphics &g)
 {}
@@ -26,11 +37,17 @@ void NumberProtocolSelector::resized()
 {
     auto area = getLocalBounds();
     auto margin = 10;
+
     auto chooseProtocolArea = area.removeFromTop(45);
     auto protocolColWidth = chooseProtocolArea.getWidth() / 2;
     protocolSelectorLabel.setBounds(
         chooseProtocolArea.removeFromLeft(protocolColWidth).reduced(margin));
     protocolSelector.setBounds(chooseProtocolArea.reduced(margin));
+
+    if(paramsChangedWarningMessage.isVisible()) {
+        paramsChangedWarningMessage.setBounds(
+            area.removeFromTop(80).reduced(margin));
+    }
 
     auto controlsArea = area;
 
@@ -45,7 +62,25 @@ void NumberProtocolSelector::resetParams()
         if(m_particleProducer != nullptr) {
             controller->setParams(m_particleProducer->getParams());
         }
+
+        if(m_durationsProducer != nullptr) {
+            controller->setParams(m_durationsProducer->getParams());
+            auto newSelectablesSize =
+                m_durationsProducer->getSelectableDurations().size();
+            if(newSelectablesSize != durationsSelectablesSize) {
+                paramsChangedWarningMessage.setVisible(true);
+                resized();
+                durationsSelectablesSize = newSelectablesSize;
+                startTimer(5000);
+            }
+        }
     }
+}
+
+void NumberProtocolSelector::timerCallback()
+{
+    paramsChangedWarningMessage.setVisible(false);
+    resized();
 }
 
 // Private methods
@@ -60,6 +95,17 @@ void NumberProtocolSelector::initialise()
     protocolSelector.onChange = [this] {
         protocolChanged();
     };
+
+    paramsChangedWarningMessage.setText(
+        "Number Protocol params have been reset to defaults because the "
+        "Duration Protocol collection size has changed.",
+        juce::dontSendNotification);
+    paramsChangedWarningMessage.setColour(juce::Label::outlineColourId,
+                                          juce::Colours::orangered);
+    paramsChangedWarningMessage.setColour(juce::Label::textColourId,
+                                          juce::Colours::orangered);
+    addChildComponent(&paramsChangedWarningMessage);
+
     setInitialActiveProtocol();
 }
 
