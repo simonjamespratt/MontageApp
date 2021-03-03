@@ -19,17 +19,6 @@
 // catch them in Montage and handle UI messaging. If it isn't disallowed
 // behaviour in Aleatoric, then don't worry about it here!
 
-// TODO: FIG-GEN-UI: when an Aleatoric DurationProducer's DurationProtocol is
-// changed, if the resultant collection size that is created is different from
-// the previous collection size, the NumberProtocol is set to its default
-// params (this is because the NumberProtocol's range will have changed and
-// therefore params can get out of sync), therefore overwriting whatever param
-// settings had been in place for the NumberProtocol, set here by Montage. This
-// needs handling here in Montage, either in a UI explaining that, or by trying
-// to re-apply the NumberProtocol params after the DurationProtocol has been
-// changed. See Aleatoric DurationProducer test file here:
-// https://github.com/simonjamespratt/Aleatoric/blob/master/tests/DurationsProducerTest.cpp
-
 class FigureOnsetSelection : public juce::Component {
   public:
     FigureOnsetSelection(

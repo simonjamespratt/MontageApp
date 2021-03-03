@@ -24,6 +24,7 @@ class PrescribedProtocolController : public DurationProtocolController {
     juce::Viewport viewport;
 
     juce::TextButton saveButton;
+    juce::Label errorMessage;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PrescribedProtocolController)
 };
