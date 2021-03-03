@@ -18,6 +18,15 @@ GeometricProtocolController::GeometricProtocolController(
         setProtocol();
     };
     addAndMakeVisible(&saveButton);
+
+    errorMessage.setText("New protocol was not set. The collection size needs "
+                         "to be 2 or greater",
+                         juce::dontSendNotification);
+    // TODO: GENERAL-UI: ErrorMessage: see PrescribedProtocolController
+    errorMessage.setColour(juce::Label::outlineColourId,
+                           juce::Colours::orangered);
+    errorMessage.setColour(juce::Label::textColourId, juce::Colours::orangered);
+    addChildComponent(&errorMessage);
 }
 
 void GeometricProtocolController::paint(juce::Graphics &g)
@@ -30,6 +39,11 @@ void GeometricProtocolController::resized()
 
     // Params controllers
     auto paramsArea = area.removeFromLeft(250);
+
+    if(errorMessage.isVisible()) {
+        errorMessage.setBounds(paramsArea.removeFromTop(80).reduced(margin));
+    }
+
     rangeStart.setBounds(paramsArea.removeFromTop(45));
     rangeEnd.setBounds(paramsArea.removeFromTop(45));
     collectionSize.setBounds(paramsArea.removeFromTop(45));
@@ -42,8 +56,19 @@ void GeometricProtocolController::resized()
 void GeometricProtocolController::setProtocol()
 {
     auto &params = m_params.geometric;
-    m_producer->setDurationProtocol(
-        aleatoric::DurationProtocol::createGeometric(
-            aleatoric::Range(params.rangeStart, params.rangeEnd),
-            params.collectionSize));
+    try {
+        m_producer->setDurationProtocol(
+            aleatoric::DurationProtocol::createGeometric(
+                aleatoric::Range(params.rangeStart, params.rangeEnd),
+                params.collectionSize));
+
+        if(errorMessage.isVisible()) {
+            errorMessage.setVisible(false);
+            resized();
+        }
+
+    } catch(const std::invalid_argument &e) {
+        errorMessage.setVisible(true);
+        resized();
+    }
 }

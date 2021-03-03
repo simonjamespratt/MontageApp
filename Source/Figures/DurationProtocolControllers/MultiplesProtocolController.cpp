@@ -32,6 +32,12 @@ MultiplesProtocolController::MultiplesProtocolController(
     };
     addAndMakeVisible(&saveButton);
 
+    // TODO: GENERAL-UI: ErrorMessage: see PrescribedProtocolController
+    errorMessage.setColour(juce::Label::outlineColourId,
+                           juce::Colours::orangered);
+    errorMessage.setColour(juce::Label::textColourId, juce::Colours::orangered);
+    addChildComponent(&errorMessage);
+
     multipliersSelectionHeading.setText("Multipliers",
                                         juce::dontSendNotification);
     addAndMakeVisible(&multipliersSelectionHeading);
@@ -65,6 +71,11 @@ void MultiplesProtocolController::resized()
 
     // params
     auto paramsArea = area.removeFromLeft(250);
+
+    if(errorMessage.isVisible()) {
+        errorMessage.setBounds(paramsArea.removeFromTop(80).reduced(margin));
+    }
+
     baseIncrementEditor.setBounds(paramsArea.removeFromTop(45));
     deviationFactorEditor.setBounds(paramsArea.removeFromTop(45));
 
@@ -100,21 +111,50 @@ void MultiplesProtocolController::setProtocol()
     if(currentMultiplierStrategy == MultiplierStrategy::range) {
         DBG("range strategy is active");
 
-        m_producer->setDurationProtocol(
-            aleatoric::DurationProtocol::createMultiples(
-                params.baseIncrement,
-                aleatoric::Range(params.rangeStart, params.rangeEnd),
-                params.deviationFactor));
+        try {
+            m_producer->setDurationProtocol(
+                aleatoric::DurationProtocol::createMultiples(
+                    params.baseIncrement,
+                    aleatoric::Range(params.rangeStart, params.rangeEnd),
+                    params.deviationFactor));
+
+            if(errorMessage.isVisible()) {
+                errorMessage.setVisible(false);
+                resized();
+            }
+
+        } catch(const std::invalid_argument &e) {
+            errorMessage.setText(
+                "New protocol was not set. When using range based multipliers, "
+                "the range must be 2 or greater",
+                juce::dontSendNotification);
+            errorMessage.setVisible(true);
+            resized();
+        }
     }
 
     if(currentMultiplierStrategy == MultiplierStrategy::hand) {
         DBG("hand strategy is active");
 
-        m_producer->setDurationProtocol(
-            aleatoric::DurationProtocol::createMultiples(
-                params.baseIncrement,
-                params.multipliers,
-                params.deviationFactor));
+        try {
+            m_producer->setDurationProtocol(
+                aleatoric::DurationProtocol::createMultiples(
+                    params.baseIncrement,
+                    params.multipliers,
+                    params.deviationFactor));
+
+            if(errorMessage.isVisible()) {
+                errorMessage.setVisible(false);
+                resized();
+            }
+        } catch(const std::invalid_argument &e) {
+            errorMessage.setText("New protocol was not set. When using hand "
+                                 "crafted multipliers, you must provide 2 or "
+                                 "more duration values",
+                                 juce::dontSendNotification);
+            errorMessage.setVisible(true);
+            resized();
+        }
     }
 }
 

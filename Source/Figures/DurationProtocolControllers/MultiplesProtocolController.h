@@ -34,6 +34,7 @@ class MultiplesProtocolController : public DurationProtocolController {
     juce::Viewport multipliersEditorViewport;
 
     juce::TextButton saveButton;
+    juce::Label errorMessage;
 
     juce::Label multipliersSelectionHeading;
     juce::ToggleButton multipliersByRangeButton {"By Range"};

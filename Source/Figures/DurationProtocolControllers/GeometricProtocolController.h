@@ -23,6 +23,7 @@ class GeometricProtocolController : public DurationProtocolController {
     NumericValueEditorWithLabel rangeEnd;
     NumericValueEditorWithLabel collectionSize;
     juce::TextButton saveButton;
+    juce::Label errorMessage;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(GeometricProtocolController)
 };
