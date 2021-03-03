@@ -55,10 +55,6 @@ class FigureGenerator : public juce::Component,
     // the former first. Reason for hunch is that protocols are set to a range
     // of 0-1 on construction and require params being set to change this.
 
-    // TODO: FIG-GEN-UI: when particles are added, if this results in the
-    // CollectionsProducer.setSource() being called, then the params are
-    // probably reset by Aletoric as per DurationsProducer. Check this.
-
     std::shared_ptr<aleatoric::CollectionsProducer<Particle>> particleProducer;
     std::unique_ptr<FigureParticleSelection> figureParticleSelection;
 

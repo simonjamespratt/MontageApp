@@ -61,6 +61,15 @@ void NumberProtocolSelector::resetParams()
     if(controller != nullptr) {
         if(m_particleProducer != nullptr) {
             controller->setParams(m_particleProducer->getParams());
+
+            paramsChangedWarningMessage.setText(
+                "Number Protocol params have been reset to defaults "
+                "because the the number of particles has "
+                "changed.",
+                juce::dontSendNotification);
+            paramsChangedWarningMessage.setVisible(true);
+            resized();
+            startTimer(5000);
         }
 
         if(m_durationsProducer != nullptr) {
@@ -68,6 +77,11 @@ void NumberProtocolSelector::resetParams()
             auto newSelectablesSize =
                 m_durationsProducer->getSelectableDurations().size();
             if(newSelectablesSize != durationsSelectablesSize) {
+                paramsChangedWarningMessage.setText(
+                    "Number Protocol params have been reset to defaults "
+                    "because the Duration Protocol collection size has "
+                    "changed.",
+                    juce::dontSendNotification);
                 paramsChangedWarningMessage.setVisible(true);
                 resized();
                 durationsSelectablesSize = newSelectablesSize;
@@ -96,10 +110,6 @@ void NumberProtocolSelector::initialise()
         protocolChanged();
     };
 
-    paramsChangedWarningMessage.setText(
-        "Number Protocol params have been reset to defaults because the "
-        "Duration Protocol collection size has changed.",
-        juce::dontSendNotification);
     paramsChangedWarningMessage.setColour(juce::Label::outlineColourId,
                                           juce::Colours::orangered);
     paramsChangedWarningMessage.setColour(juce::Label::textColourId,
