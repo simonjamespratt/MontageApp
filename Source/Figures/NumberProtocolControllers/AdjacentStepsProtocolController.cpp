@@ -19,12 +19,10 @@ void AdjacentStepsProtocolController::resized()
 }
 
 void AdjacentStepsProtocolController::setParams(
-    aleatoric::NumberProtocolParameters::Protocols params)
+    aleatoric::NumberProtocolParams params)
 {}
 
-aleatoric::NumberProtocolParameters::Protocols
-AdjacentStepsProtocolController::getParams()
+aleatoric::NumberProtocolParams AdjacentStepsProtocolController::getParams()
 {
-    return aleatoric::NumberProtocolParameters::Protocols(
-        aleatoric::NumberProtocolParameters::AdjacentSteps());
+    return aleatoric::NumberProtocolParams(aleatoric::AdjacentStepsParams());
 }

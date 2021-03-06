@@ -18,13 +18,10 @@ void BasicProtocolController::resized()
     text.setBounds(area);
 }
 
-void BasicProtocolController::setParams(
-    aleatoric::NumberProtocolParameters::Protocols params)
+void BasicProtocolController::setParams(aleatoric::NumberProtocolParams params)
 {}
 
-aleatoric::NumberProtocolParameters::Protocols
-BasicProtocolController::getParams()
+aleatoric::NumberProtocolParams BasicProtocolController::getParams()
 {
-    return aleatoric::NumberProtocolParameters::Protocols(
-        aleatoric::NumberProtocolParameters::Basic());
+    return aleatoric::NumberProtocolParams(aleatoric::BasicParams());
 }

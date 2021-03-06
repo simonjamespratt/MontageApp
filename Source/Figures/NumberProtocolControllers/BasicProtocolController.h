@@ -12,10 +12,9 @@ class BasicProtocolController : public NumberProtocolController {
 
     void resized() override;
 
-    void
-    setParams(aleatoric::NumberProtocolParameters::Protocols params) override;
+    void setParams(aleatoric::NumberProtocolParams params) override;
 
-    aleatoric::NumberProtocolParameters::Protocols getParams() override;
+    aleatoric::NumberProtocolParams getParams() override;
 
   private:
     juce::Label text;

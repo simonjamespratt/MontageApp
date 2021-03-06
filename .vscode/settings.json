@@ -96,6 +96,7 @@
         "codecvt": "cpp",
         "list": "cpp",
         "cfenv": "cpp",
-        "*.mm": "cpp"
+        "*.mm": "cpp",
+        "__functional_03": "cpp"
     }
 }

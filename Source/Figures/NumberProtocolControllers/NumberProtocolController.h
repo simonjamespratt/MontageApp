@@ -7,15 +7,14 @@
 #include <vector>
 
 class NumberProtocolController : public juce::Component {
-    using Params = aleatoric::NumberProtocolParameters::Protocols;
+    using Params = aleatoric::NumberProtocolParams;
     using Observer = std::function<void(Params newParams)>;
     using Type = aleatoric::NumberProtocol::Type;
 
   public:
-    virtual void
-    setParams(aleatoric::NumberProtocolParameters::Protocols params) = 0;
+    virtual void setParams(aleatoric::NumberProtocolParams params) = 0;
 
-    virtual aleatoric::NumberProtocolParameters::Protocols getParams() = 0;
+    virtual aleatoric::NumberProtocolParams getParams() = 0;
 
     virtual ~NumberProtocolController() = default;
 

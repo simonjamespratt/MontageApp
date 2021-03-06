@@ -39,7 +39,7 @@ class NumberProtocolSelector : public juce::Component, juce::Timer {
     void initialise();
     void configureProtocolSelector();
     void protocolChanged();
-    void updateParams(aleatoric::NumberProtocolParameters::Protocols newParams);
+    void updateParams(aleatoric::NumberProtocolParams newParams);
     void setInitialActiveProtocol();
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(NumberProtocolSelector)

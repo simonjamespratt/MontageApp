@@ -5,27 +5,17 @@
 #include <vector>
 
 struct NumberProtocolConfig {
-    // TODO: FIG-GEN-UI: Could Aleatoric use NumberProtocol::Type for
-    // ActiveProtcol instead of having to have a separate enum class? Also
-    // should the nested classes in NumberProtocolParameters be split out to
-    // avoid the :: everywhere in the calling code?
-    NumberProtocolConfig(
-        int id,
-        juce::String name,
-        aleatoric::NumberProtocol::Type protocolType,
-        aleatoric::NumberProtocolParameters::Protocols::ActiveProtocol
-            activeProtocol);
+    NumberProtocolConfig(int id,
+                         juce::String name,
+                         aleatoric::NumberProtocol::Type protocolType);
     int getId() const;
     juce::String getName() const;
     aleatoric::NumberProtocol::Type getProtocolType() const;
-    aleatoric::NumberProtocolParameters::Protocols::ActiveProtocol
-    getActiveProtocol() const;
 
     static std::vector<NumberProtocolConfig> getConfigurations();
 
-    static NumberProtocolConfig findByActiveProtocol(
-        const aleatoric::NumberProtocolParameters::Protocols::ActiveProtocol
-            &activeProtocol);
+    static NumberProtocolConfig
+    findByProtocolType(const aleatoric::NumberProtocol::Type &type);
 
     static NumberProtocolConfig findById(const int &id);
 
@@ -33,8 +23,6 @@ struct NumberProtocolConfig {
     int m_id;
     juce::String m_name;
     aleatoric::NumberProtocol::Type m_protocolType;
-    aleatoric::NumberProtocolParameters::Protocols::ActiveProtocol
-        m_activeProtocol;
 
     static std::vector<NumberProtocolConfig> configs;
 };

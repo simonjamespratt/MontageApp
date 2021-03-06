@@ -1,7 +1,7 @@
 #include "CycleProtocolController.h"
 
 CycleProtocolController::CycleProtocolController(
-    aleatoric::NumberProtocolParameters::Protocols initialParams)
+    aleatoric::NumberProtocolParams initialParams)
 : bidirectionalToggle("Bidirectional"),
   reverseDirectionToggle("Reverse Direction")
 {
@@ -31,12 +31,10 @@ void CycleProtocolController::resized()
     reverseDirectionToggle.setBounds(area.removeFromTop(45).reduced(margin));
 }
 
-void CycleProtocolController::setParams(
-    aleatoric::NumberProtocolParameters::Protocols params)
+void CycleProtocolController::setParams(aleatoric::NumberProtocolParams params)
 {
-    jassert(
-        params.getActiveProtocol() ==
-        aleatoric::NumberProtocolParameters::Protocols::ActiveProtocol::cycle);
+    jassert(params.getActiveProtocol() ==
+            aleatoric::NumberProtocol::Type::cycle);
 
     auto cylceParams = params.getCycle();
 
@@ -49,12 +47,10 @@ void CycleProtocolController::setParams(
                                           juce::dontSendNotification);
 }
 
-aleatoric::NumberProtocolParameters::Protocols
-CycleProtocolController::getParams()
+aleatoric::NumberProtocolParams CycleProtocolController::getParams()
 {
-    return aleatoric::NumberProtocolParameters::Protocols(
-        aleatoric::NumberProtocolParameters::Cycle(isBidirectional,
-                                                   isReverseDirection));
+    return aleatoric::NumberProtocolParams(
+        aleatoric::CycleParams(isBidirectional, isReverseDirection));
 }
 
 // Private methods

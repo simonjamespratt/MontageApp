@@ -3,8 +3,7 @@
 
 class CycleProtocolController : public NumberProtocolController {
   public:
-    CycleProtocolController(
-        aleatoric::NumberProtocolParameters::Protocols initialParams);
+    CycleProtocolController(aleatoric::NumberProtocolParams initialParams);
 
     ~CycleProtocolController();
 
@@ -12,10 +11,9 @@ class CycleProtocolController : public NumberProtocolController {
 
     void resized() override;
 
-    void
-    setParams(aleatoric::NumberProtocolParameters::Protocols params) override;
+    void setParams(aleatoric::NumberProtocolParams params) override;
 
-    aleatoric::NumberProtocolParameters::Protocols getParams() override;
+    aleatoric::NumberProtocolParams getParams() override;
 
   private:
     bool isBidirectional = false;
