@@ -27,7 +27,9 @@ std::vector<NumberProtocolConfig> NumberProtocolConfig::configs {
     NumberProtocolConfig(
         1, "Adjacent Steps", aleatoric::NumberProtocol::Type::adjacentSteps),
     NumberProtocolConfig(2, "Basic", aleatoric::NumberProtocol::Type::basic),
-    NumberProtocolConfig(3, "Cycle", aleatoric::NumberProtocol::Type::cycle)};
+    NumberProtocolConfig(3, "Cycle", aleatoric::NumberProtocol::Type::cycle),
+    NumberProtocolConfig(
+        4, "Granular Walk", aleatoric::NumberProtocol::Type::granularWalk)};
 
 std::vector<NumberProtocolConfig> NumberProtocolConfig::getConfigurations()
 {

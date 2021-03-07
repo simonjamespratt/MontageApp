@@ -3,6 +3,7 @@
 #include "AdjacentStepsProtocolController.h"
 #include "BasicProtocolController.h"
 #include "CycleProtocolController.h"
+#include "GranularWalkProtocolController.h"
 
 #include <stdexcept>
 
@@ -31,6 +32,9 @@ NumberProtocolController::create(Type type, Params params)
         break;
     case Type::cycle:
         return std::make_unique<CycleProtocolController>(params);
+        break;
+    case Type::granularWalk:
+        return std::make_unique<GranularWalkProtocolController>(params);
         break;
 
     default:

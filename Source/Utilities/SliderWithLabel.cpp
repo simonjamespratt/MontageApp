@@ -13,6 +13,9 @@ SliderWithLabel::SliderWithLabel(double &value,
     slider.setValue(m_value);
     slider.onValueChange = [this] {
         m_value = slider.getValue();
+        if(onChange) {
+            onChange();
+        }
     };
 
     if(unit != "") {
@@ -43,4 +46,9 @@ void SliderWithLabel::resized()
     auto area = getLocalBounds();
     area.removeFromLeft(100); // label gutter
     slider.setBounds(area.reduced(margin));
+}
+
+void SliderWithLabel::updateValue()
+{
+    slider.setValue(m_value);
 }

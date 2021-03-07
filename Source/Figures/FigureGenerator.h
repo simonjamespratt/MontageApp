@@ -11,10 +11,6 @@
 #include <juce_gui_basics/juce_gui_basics.h>
 #include <memory>
 
-// TODO: FIG-GEN-UI: Need to add error handling and/or UI error messages for
-// possible exceptions thrown by Aleatoric. Will need to check throughout all
-// classes involved in figure generation and/or that use Aleatoric
-
 class FigureGenerator : public juce::Component,
                         public juce::ValueTree::Listener {
   public:

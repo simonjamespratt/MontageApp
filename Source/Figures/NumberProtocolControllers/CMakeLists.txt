@@ -5,6 +5,8 @@ target_sources(Montage PRIVATE
     BasicProtocolController.h
     CycleProtocolController.cpp
     CycleProtocolController.h
+    GranularWalkProtocolController.cpp
+    GranularWalkProtocolController.h
     NumberProtocolController.h
     NumberProtocolController.cpp
 )

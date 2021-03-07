@@ -1,5 +1,6 @@
 #pragma once
 
+#include <functional>
 #include <juce_gui_basics/juce_gui_basics.h>
 
 class SliderWithLabel : public juce::Component {
@@ -12,6 +13,10 @@ class SliderWithLabel : public juce::Component {
                     int decimalPlacesToDisplay = -1,
                     int textBoxWidth = -1);
     void resized() override;
+
+    std::function<void()> onChange;
+
+    void updateValue();
 
   private:
     double &m_value;
