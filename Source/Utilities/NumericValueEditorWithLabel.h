@@ -7,6 +7,7 @@ struct NumericValueEditorWithLabel : public juce::Component {
                                 juce::String labelText,
                                 int labelSpace = 100);
     void resized() override;
+    std::function<void()> onChange;
 
   private:
     int &value;

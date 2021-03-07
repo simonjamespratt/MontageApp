@@ -7,6 +7,8 @@ target_sources(Montage PRIVATE
     CycleProtocolController.h
     GranularWalkProtocolController.cpp
     GranularWalkProtocolController.h
+    GroupedRepetitionProtocolController.cpp
+    GroupedRepetitionProtocolController.h
     NumberProtocolController.h
     NumberProtocolController.cpp
 )

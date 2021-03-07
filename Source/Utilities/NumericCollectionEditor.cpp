@@ -12,6 +12,12 @@ NumericItemEditor::NumericItemEditor(int &value,
         onDelete(index);
     };
 
+    valueEditor.onChange = [this] {
+        if(onChange) {
+            onChange();
+        }
+    };
+
     addAndMakeVisible(&valueEditor);
     addAndMakeVisible(&deleteButton);
 };
@@ -49,22 +55,34 @@ void NumericCollectionEditor::resized()
 
     auto area = getLocalBounds();
 
-    for(auto &&editor : editors) {
+    for(auto &editor : editors) {
         editor->setBounds(area.removeFromTop(componentHeight));
     }
 
     addButton.setBounds(area.removeFromTop(componentHeight).reduced(margin));
 }
 
+void NumericCollectionEditor::redraw()
+{
+    drawView();
+    resized();
+}
+
 // Private methods
 void NumericCollectionEditor::drawView()
 {
+    editors.clear();
     for(auto it = begin(collection); it != end(collection); ++it) {
         int index = std::distance(collection.begin(), it);
         auto editor =
             std::make_unique<NumericItemEditor>(*it, index, [this](int index) {
                 onDelete(index);
             });
+        editor->onChange = [this] {
+            if(onChange) {
+                onChange();
+            }
+        };
         addAndMakeVisible(*editor);
         editors.emplace_back(std::move(editor));
     }
@@ -72,16 +90,22 @@ void NumericCollectionEditor::drawView()
 
 void NumericCollectionEditor::onDelete(int index)
 {
-    editors.clear();
     collection.erase(collection.begin() + index);
     drawView();
     resized();
+
+    if(onChange) {
+        onChange();
+    }
 }
 
 void NumericCollectionEditor::onAdd()
 {
-    editors.clear();
     collection.emplace_back(1);
     drawView();
     resized();
+
+    if(onChange) {
+        onChange();
+    }
 }

@@ -12,17 +12,19 @@ struct NumericItemEditor : public juce::Component {
                       std::function<void(int index)> onDelete);
 
     void resized() override;
-
-    NumericValueEditorWithLabel valueEditor;
-    juce::TextButton deleteButton;
+    std::function<void()> onChange;
 
   private:
+    NumericValueEditorWithLabel valueEditor;
+    juce::TextButton deleteButton;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(NumericItemEditor)
 };
 
 struct NumericCollectionEditor : public juce::Component {
     NumericCollectionEditor(std::vector<int> &numericCollection);
     void resized() override;
+    std::function<void()> onChange;
+    void redraw();
 
   private:
     void drawView();

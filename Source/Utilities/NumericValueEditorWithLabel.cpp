@@ -10,6 +10,9 @@ NumericValueEditorWithLabel::NumericValueEditorWithLabel(int &editableValue,
     input.setJustification(juce::Justification::centredLeft);
     input.onTextChange = [this] {
         value = input.getText().getIntValue();
+        if(onChange) {
+            onChange();
+        }
     };
 
     label.setText(labelText + ": ", juce::dontSendNotification);
