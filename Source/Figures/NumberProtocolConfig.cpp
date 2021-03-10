@@ -32,7 +32,9 @@ std::vector<NumberProtocolConfig> NumberProtocolConfig::configs {
         4, "Granular Walk", aleatoric::NumberProtocol::Type::granularWalk),
     NumberProtocolConfig(5,
                          "Grouped Repetition",
-                         aleatoric::NumberProtocol::Type::groupedRepetition)};
+                         aleatoric::NumberProtocol::Type::groupedRepetition),
+    NumberProtocolConfig(
+        6, "No Repetition", aleatoric::NumberProtocol::Type::noRepetition)};
 
 std::vector<NumberProtocolConfig> NumberProtocolConfig::getConfigurations()
 {
