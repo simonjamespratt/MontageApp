@@ -13,6 +13,8 @@ target_sources(Montage PRIVATE
     NoRepetitionProtocolController.h
     NumberProtocolController.h
     NumberProtocolController.cpp
+    PeriodicProtocolController.cpp
+    PeriodicProtocolController.h
 )
 
 target_include_directories(Montage

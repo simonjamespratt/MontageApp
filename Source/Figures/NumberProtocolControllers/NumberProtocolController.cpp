@@ -6,6 +6,7 @@
 #include "GranularWalkProtocolController.h"
 #include "GroupedRepetitionProtocolController.h"
 #include "NoRepetitionProtocolController.h"
+#include "PeriodicProtocolController.h"
 
 #include <stdexcept>
 
@@ -43,6 +44,9 @@ NumberProtocolController::create(Type type, Params params)
         break;
     case Type::noRepetition:
         return std::make_unique<NoRepetitionProtocolController>();
+        break;
+    case Type::periodic:
+        return std::make_unique<PeriodicProtocolController>(params);
         break;
 
     default:
