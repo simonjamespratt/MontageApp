@@ -15,6 +15,8 @@ target_sources(Montage PRIVATE
     NumberProtocolController.cpp
     PeriodicProtocolController.cpp
     PeriodicProtocolController.h
+    PrecisionProtocolController.cpp
+    PrecisionProtocolController.h
 )
 
 target_include_directories(Montage

@@ -36,7 +36,9 @@ std::vector<NumberProtocolConfig> NumberProtocolConfig::configs {
     NumberProtocolConfig(
         6, "No Repetition", aleatoric::NumberProtocol::Type::noRepetition),
     NumberProtocolConfig(
-        7, "Periodic", aleatoric::NumberProtocol::Type::periodic)};
+        7, "Periodic", aleatoric::NumberProtocol::Type::periodic),
+    NumberProtocolConfig(
+        8, "Precision", aleatoric::NumberProtocol::Type::precision)};
 
 std::vector<NumberProtocolConfig> NumberProtocolConfig::getConfigurations()
 {

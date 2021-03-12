@@ -11,10 +11,16 @@ SliderWithLabel::SliderWithLabel(double &value,
 {
     slider.setRange(rangeMin, rangeMax);
     slider.setValue(m_value);
-    slider.onValueChange = [this] {
-        m_value = slider.getValue();
-        if(onChange) {
-            onChange();
+    slider.setScrollWheelEnabled(false);
+    slider.onDragEnd = [this] {
+        auto newValue = slider.getValue();
+
+        if(newValue != m_value) {
+            m_value = newValue;
+
+            if(onChange) {
+                onChange();
+            }
         }
     };
 

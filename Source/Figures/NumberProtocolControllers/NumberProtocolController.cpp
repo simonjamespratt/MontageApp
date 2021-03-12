@@ -7,6 +7,7 @@
 #include "GroupedRepetitionProtocolController.h"
 #include "NoRepetitionProtocolController.h"
 #include "PeriodicProtocolController.h"
+#include "PrecisionProtocolController.h"
 
 #include <stdexcept>
 
@@ -47,6 +48,9 @@ NumberProtocolController::create(Type type, Params params)
         break;
     case Type::periodic:
         return std::make_unique<PeriodicProtocolController>(params);
+        break;
+    case Type::precision:
+        return std::make_unique<PrecisionProtocolController>(params);
         break;
 
     default:

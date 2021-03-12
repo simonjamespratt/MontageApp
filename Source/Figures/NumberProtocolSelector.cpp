@@ -73,10 +73,11 @@ void NumberProtocolSelector::resetParams()
         }
 
         if(m_durationsProducer != nullptr) {
-            controller->setParams(m_durationsProducer->getParams());
             auto newSelectablesSize =
                 m_durationsProducer->getSelectableDurations().size();
+
             if(newSelectablesSize != durationsSelectablesSize) {
+                controller->setParams(m_durationsProducer->getParams());
                 paramsChangedWarningMessage.setText(
                     "Number Protocol params have been reset to defaults "
                     "because the Duration Protocol collection size has "
