@@ -21,6 +21,8 @@ target_sources(Montage PRIVATE
     RatioProtocolController.h
     SerialProtocolController.cpp
     SerialProtocolController.h
+    SubsetProtocolController.cpp
+    SubsetProtocolController.h
 )
 
 target_include_directories(Montage
