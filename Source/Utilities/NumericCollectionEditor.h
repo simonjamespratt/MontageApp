@@ -11,6 +11,8 @@ struct NumericItemEditor : public juce::Component {
                       int index,
                       std::function<void(int index)> onDelete);
 
+    NumericItemEditor(int &value, int index);
+
     void resized() override;
     std::function<void()> onChange;
 
@@ -21,7 +23,8 @@ struct NumericItemEditor : public juce::Component {
 };
 
 struct NumericCollectionEditor : public juce::Component {
-    NumericCollectionEditor(std::vector<int> &numericCollection);
+    NumericCollectionEditor(std::vector<int> &numericCollection,
+                            bool isEditOnly = false);
     void resized() override;
     std::function<void()> onChange;
     void redraw();
@@ -39,6 +42,7 @@ struct NumericCollectionEditor : public juce::Component {
     // https://forum.juce.com/t/adding-components-to-std-vector-with-emplace-back/35193
     std::vector<std::unique_ptr<NumericItemEditor>> editors {};
     juce::TextButton addButton;
+    bool isInEditOnlyMode;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(NumericCollectionEditor)
 };

@@ -39,8 +39,9 @@ std::vector<NumberProtocolConfig> NumberProtocolConfig::configs {
         7, "Periodic", aleatoric::NumberProtocol::Type::periodic),
     NumberProtocolConfig(
         8, "Precision", aleatoric::NumberProtocol::Type::precision),
-    // TODO: when ratio is in, change the numbers around
-    NumberProtocolConfig(9, "Serial", aleatoric::NumberProtocol::Type::serial)};
+    NumberProtocolConfig(9, "Ratio", aleatoric::NumberProtocol::Type::ratio),
+    NumberProtocolConfig(
+        10, "Serial", aleatoric::NumberProtocol::Type::serial)};
 
 std::vector<NumberProtocolConfig> NumberProtocolConfig::getConfigurations()
 {

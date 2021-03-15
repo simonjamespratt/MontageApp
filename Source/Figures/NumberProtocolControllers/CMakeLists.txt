@@ -17,6 +17,8 @@ target_sources(Montage PRIVATE
     PeriodicProtocolController.h
     PrecisionProtocolController.cpp
     PrecisionProtocolController.h
+    RatioProtocolController.cpp
+    RatioProtocolController.h
     SerialProtocolController.cpp
     SerialProtocolController.h
 )

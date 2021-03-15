@@ -8,6 +8,7 @@
 #include "NoRepetitionProtocolController.h"
 #include "PeriodicProtocolController.h"
 #include "PrecisionProtocolController.h"
+#include "RatioProtocolController.h"
 #include "SerialProtocolController.h"
 
 #include <stdexcept>
@@ -53,7 +54,9 @@ NumberProtocolController::create(Type type, Params params)
     case Type::precision:
         return std::make_unique<PrecisionProtocolController>(params);
         break;
-    // TODO:when ratio is in, change the order around
+    case Type::ratio:
+        return std::make_unique<RatioProtocolController>(params);
+        break;
     case Type::serial:
         return std::make_unique<SerialProtocolController>();
         break;
